@@ -1,7 +1,6 @@
 {
   description = "Nix Flake configuration";
 
-  # Test comment to verify pre-commit hooks
   inputs = {
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
