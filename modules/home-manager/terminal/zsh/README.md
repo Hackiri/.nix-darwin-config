@@ -1,160 +1,167 @@
-## Directory Structure
-
-```
-zsh/
-├── default.nix       # Main Nix configuration file
-├── aliases.nix      # Custom shell aliases
-├── scripts.nix      # Custom shell scripts
-└── themes/          # Starship theme files
-    └── jetpack.toml # Current Starship theme
-```
-
 # Zsh Configuration
 
-This directory contains a customized Zsh shell configuration managed through Home Manager. The setup includes Oh My Zsh, custom plugins, aliases, and Starship prompt integration.
+A modern, feature-rich Zsh configuration managed through Home Manager, providing an enhanced shell environment with integrated tools and productivity features.
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Maintenance](#maintenance)
+- [Troubleshooting](#troubleshooting)
+
+## Overview
+
+This configuration provides a comprehensive Zsh environment optimized for development workflows. It integrates Oh My Zsh, custom plugins, and the Starship prompt system to create a powerful and user-friendly shell experience.
 
 ## Features
 
-### Shell Configuration
-- Uses Home Manager's built-in Zsh module
-- Configured in `~/.config/zsh` directory
-- Interactive shell features enabled
-- Extended globbing support
-- Case-insensitive completion
+### Core Configuration
+- Home Manager integration for declarative configuration
+- Extended globbing and case-insensitive completion
+- Custom environment variables for development tools
+- Optimized history management
 
-### Oh My Zsh Integration
-Active plugins:
-- `git`: Enhanced Git commands and aliases
-- `sudo`: Press ESC twice to add sudo to current command
-- `history`: Enhanced history command functionality
-- `direnv`: Directory-specific environment variables
-- `copypath`: Copy current directory path to clipboard
-- `copyfile`: Copy file contents to clipboard
-- `extract`: Smart archive extraction
-- `z`: Quick directory jumping
-- `macos`: macOS-specific commands and aliases
+### Plugin Integration
 
-### Additional Plugins
-1. **zsh-autosuggestions** (v0.7.0)
-   - Fish-like autosuggestions for Zsh
-   - Suggests commands based on history
+#### Oh My Zsh
+- Git integration for enhanced repository management
+- Directory navigation with `z` jump
+- macOS-specific optimizations
+- Clipboard operations (`copypath`, `copyfile`)
+- Archive extraction utilities
+- Sudo command line editing
+- Directory-specific environment management
 
-2. **zsh-syntax-highlighting** (v0.7.1)
-   - Syntax highlighting for Zsh commands
-   - Highlights valid commands, paths, and options
+#### Additional Plugins
+- Auto-suggestions with smart history completion
+- Syntax highlighting for commands and arguments
+- Integration with direnv for environment management
+- Fuzzy finding capabilities with fzf
 
-### Aliases
-Comprehensive set of aliases for:
-- NixOS and Nix package management
-  - `swnix`: Rebuild and switch configuration
-  - `drynix`: Dry-build configuration
-  - `bootnix`: Rebuild for next boot
-  - `cleanix`: Clean Nix store
-  - `updatanix`: Update and rebuild configuration
-  
-- Kubernetes operations
-  - `k`: kubectl shorthand
-  - `kg`: kubectl get
-  - `kd`: kubectl describe
-  - `kap`: kubectl apply -f
-  
-- Podman container management
-  - `pps`: List containers with formatted output
-  - `pclean`: Clean up stopped containers
-  - `piclean`: Remove dangling images
+### Command Aliases
 
-## Starship Prompt
-
-### Current Setup
-- Integrated with Zsh using Starship
-- Configuration loaded from external TOML file
-- Custom prompt format with rich information display
-
-### Adding Custom Themes
-1. Create a new theme file in `/modules/home-manager/starship/themes/`:
-   ```bash
-gst          # git status
-ga           # git add
-gcm          # git checkout main
-gp           # git push
-```
-
-### Directory Navigation
+#### System Management
 ```bash
-z downloads  # Jump to Downloads directory
-copypath     # Copy current directory path
+# Nix Operations
+swnix        # Rebuild and switch configuration (verbose)
+drynix       # Dry-build configuration
+updatanix    # Update and rebuild configuration
+cleanix      # Clean Nix store
+nix-store-du # Print dead store entries
+
+# Development Environment
+nixdev       # Enter Nix development shell
 ```
 
-### File Operations
+#### Container Operations
 ```bash
-extract archive.tar.gz  # Extract any archive format
-copyfile script.sh      # Copy file contents to clipboard
+# Podman Management
+pps          # List containers (formatted)
+pclean       # Clean stopped containers
+piclean      # Remove dangling images
+pcomp        # Podman compose shorthand
 ```
 
-### Environment Management
+#### Kubernetes Operations
 ```bash
-# Create a .envrc file in your project directory
-echo 'export API_KEY="secret"' > .envrc
-# direnv will automatically load/unload when entering/leaving the directory
+# Cluster Management
+k            # kubectl shorthand
+kgaa         # Get all resources
+kgpsn        # Get pods in namespace
+krestartpo   # Restart deployment
 ```
 
-## Customization
+#### Version Control
+```bash
+# Git Operations
+gaa          # Git add all
+gcmsg        # Git commit with message
+gitsave      # Quick save changes
+gpush        # Push to current/specified branch
+```
 
-### Starship Theme
-The Starship prompt can be customized by modifying `themes/jetpack.toml`. Common customizations include:
-- Changing segment colors
-- Adding/removing prompt segments
-- Modifying segment content
+### Shell Functions
 
-### Adding New Aliases
-Add new aliases in `aliases.nix`:
-   ```nix
-   xdg.configFile."starship.toml" = {
-     source = ./themes/your-theme-name.toml;
-   };
-   ```
+#### Configuration Management
+- `dots()`: Navigate to Nix configuration
+- `savedots [message]`: Save configuration changes
+- `rebuild()`: Rebuild system configuration
 
-### Available Theme Palettes
-- Catppuccin Mocha
-- Tokyo Night
-- Custom color schemes can be added in the theme file
+#### Maintenance
+- `sfu()`: Update Nix flake
+- `garbage()`: Run store optimization
+- `news()`: Check Home Manager updates
 
-## Installation and Updates
+## Configuration
 
-### Prerequisites
+### Directory Structure
+```
+zsh/
+├── default.nix    # Main configuration
+├── aliases.nix    # Command aliases
+├── scripts.nix    # Shell functions
+└── themes/        # Prompt themes
+    └── jetpack.toml
+```
+
+### Required Components
 - Nix package manager
 - Home Manager
-- Git (for plugin management)
+- Git
+- Starship prompt
 
-### Required Packages
-The following packages are automatically installed:
-- `direnv`: For directory-specific environment management
-- `fzf`: For fuzzy finding functionality
+### Core Packages
+- `direnv`: Environment management
+- `fzf`: Fuzzy finding
+- Essential Unix utilities
 
-### Updating Configuration
-1. Modify the relevant files:
-   - `default.nix`: For Zsh and plugin configuration
-   - `aliases.nix`: For custom aliases
-   - `starship.toml`: For prompt configuration
+## Usage
 
-2. Rebuild your configuration:
-   ```bash
-   darwin-rebuild switch
-   ```
+### Installation
+Add to your Home Manager configuration:
+```nix
+{
+  programs.zsh.enable = true;
+  imports = [ ./zsh/default.nix ];
+}
+```
+
+### Updates
+```bash
+swnix        # Full rebuild with verbose output
+drynix       # Test configuration changes
+updatanix    # Update and rebuild system
+```
+
+## Maintenance
+
+### Configuration Files
+- `default.nix`: Shell and plugin settings
+- `aliases.nix`: Command shortcuts
+- `scripts.nix`: Shell functions
+- `themes/jetpack.toml`: Prompt configuration
+
+### Update Process
+1. Modify configuration files as needed
+2. Test changes with `drynix`
+3. Apply changes with `swnix`
+4. Monitor `news()` for updates
 
 ## Troubleshooting
 
 ### Common Issues
 1. **Plugin Loading Failures**
-   - Check if the plugin is properly defined in `default.nix`
-   - Verify the plugin's SHA256 hash
+   - Verify plugin configuration in `default.nix`
+   - Check package availability
 
-2. **Starship Prompt Issues**
-   - Ensure Starship is installed: `which starship`
-   - Check your theme file syntax
-   - Verify the theme path in `default.nix`
-
-3. **Performance Issues**
-   - Disable unused plugins
-   - Check for conflicting configurations
+2. **Performance Issues**
+   - Review enabled plugins
    - Monitor startup time with `zprof`
+   - Check for conflicting configurations
+
+3. **Prompt Display Problems**
+   - Verify Starship installation
+   - Check font compatibility
+   - Review theme configuration

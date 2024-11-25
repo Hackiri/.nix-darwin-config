@@ -1,184 +1,197 @@
 # Nix Darwin Configuration
 
-This repository contains my personal nix-darwin configuration for managing macOS system configuration using Nix. It uses a combination of nix-darwin and home-manager to provide a simple and efficient system and user environment management solution.
+A comprehensive system configuration for macOS using nix-darwin and Home Manager, providing a declarative and reproducible development environment.
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [System Architecture](#system-architecture)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Maintenance](#maintenance)
+
+## Overview
+
+This repository contains a complete nix-darwin configuration that manages both system-level settings and user environments on macOS. It combines nix-darwin for system configuration with Home Manager for user environment management, creating a fully reproducible and declarative setup.
 
 ## Features
 
-- 🚀 Complete macOS system configuration using nix-darwin
-- 🏠 User environment management with home-manager
-- 🛠 Neovim configuration with LSP support and essential development tools
-- 📦 Homebrew package management integration
-- ⚡️ Fast and reproducible system setup
-- 🧹 Automated maintenance (garbage collection and store optimization)
+### Core Components
+- 🚀 Declarative macOS system configuration
+- 🏠 User environment management
+- 📦 Homebrew integration
+- ⚡️ Fast and reproducible builds
+- 🧹 Automated maintenance
 
-## System Maintenance
+### Development Environment
+- **Neovim Configuration**
+  - LSP support for multiple languages
+  - Modern UI with Tokyo Night theme
+  - Efficient code navigation
+  - Integrated debugging
 
-The system is configured with automated maintenance tasks:
+- **Terminal Environment**
+  - Alacritty with GPU acceleration
+  - Custom font configuration
+  - Zsh with extensive customization
+  - Tmux integration
 
-### Garbage Collection
-- Runs automatically every Sunday at 2 AM
-- Deletes generations older than 30 days
-- Configured in `flake.nix`:
+- **Programming Support**
+  - Multiple language environments
+  - Build tools and debuggers
+  - Container management
+  - Kubernetes tooling
+
+### System Features
+- Touch ID authentication
+- Secure SSH configuration
+- Custom font management
+- Automated maintenance
+
+## System Architecture
+
+### Directory Structure
+```bash
+.nix-darwin-config/
+├── flake.nix                # System entry point
+├── home-manager/           # User configuration
+├── modules/                # Configuration modules
+│   ├── home-manager/      # User-specific settings
+│   │   ├── devshell/     # Development environment
+│   │   ├── neovim/       # Editor configuration
+│   │   └── terminal/     # Terminal setup
+│   └── nix-darwin/       # System-wide settings
+├── nixos/                 # Host configurations
+└── overlays/             # Package modifications
+```
+
+### Key Components
+
+#### System Configuration
 ```nix
+# System-wide settings in configuration.nix
+{
+  system = {
+    defaults = {
+      dock = {
+        autohide = true;
+        static-only = true;
+      };
+      finder.AppleShowAllExtensions = true;
+    };
+  };
+}
+```
+
+#### Package Management
+```nix
+# Flake-based configuration
+{
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    home-manager.url = "github:nix-community/home-manager";
+  };
+}
+```
+
+#### Maintenance
+```nix
+# Automated garbage collection
 nix.gc = {
   automatic = true;
   interval = { Weekday = 0; Hour = 2; Minute = 0; };
   options = "--delete-older-than 30d";
 };
-
-#### Neovim Configuration
-- **Neovim** with LSP support including:
-  - Lua, TypeScript, HTML/CSS/JSON, Bash
-  - Python, GraphQL, Rust, Terraform, Nix
-  - Markdown and LaTeX support
-- Modern UI with Tokyo Night theme integration
-- Efficient code navigation and editing features
-
-#### Terminal Setup
-- **Alacritty**: Modern GPU-accelerated terminal
-  - Custom font configuration (JetBrainsMono Nerd Font)
-  - Tokyo Night theme integration
-  - macOS-specific optimizations
-  - **Zsh**: Customized shell environment with Oh-My-Zsh ([configuration details](modules/home-manager/terminal/zsh/README.md))
-  - Integrated with Nix Home Manager
-
-#### Development Tools
-- Git configuration with meld integration
-- SSH configuration with macOS keychain integration
-- Lazygit with custom theme and keybindings
-- **DevShell**: Customized development environment ([configuration details](modules/home-manager/devshell/README.md))
-  - Python, Rust, Go, and Node.js support
-  - Build tools and debugging utilities
-  - Automated environment setup
-  - Pre-commit hooks for code formatting and analysis
-
-#### Kubernetes Management
-- Kubernetes tooling:
-  - kubectl, helm, k9s, cilium-cli
-  - kustomize, talosctl, krew
-
-### System Configuration
-
-#### Security
-- Touch ID authentication for sudo
-- Secure SSH configuration with keychain integration
-- Trusted Nix substituters and public keys
-
-#### UI/UX
-- Custom dock configuration
-  - Auto-hide enabled
-  - Persistent apps configuration
-- Finder enhancements
-  - POSIX path in title
-  - Column view by default
-- Screenshot location configuration
-
-#### Font Management
-- Nerd Fonts integration:
-  - JetBrainsMono
-  - FiraCode
-  - IBMPlexMono
-- Noto fonts for Unicode support
-```
-
-## Directory Structure
-```bash
-.nix-darwin-config/
-├── flake.lock               # Nix lock file
-├── flake.nix                # Nix flake definition
-├── home-manager
-│   └── home.nix             # Home-manager entry point
-├── modules
-│   ├── home-manager         # User-specific configurations
-│   │   ├── btop
-│   │   │   └── themes
-│   │   ├── cli
-│   │   │   └── zoxide
-│   │   ├── devshell
-│   │   ├── emacs
-│   │   ├── neovim
-│   │   │   └── lua
-│   │   │       ├── config
-│   │   │       └── plugins
-│   │   ├── starship
-│   │   ├── terminal
-│   │   │   ├── alacritty
-│   │   │   ├── wezterm
-│   │   │   ├── zellij
-│   │   │   └── zsh
-│   │   └── tmux
-│   │       └── scripts
-│   └── nix-darwin           # System-level configurations
-│       └── nixd
-├── nixos
-│   └── hosts                # Host-specific configurations
-│       └── wm-macbook-pro
-├── overlays                 # Nix overlays
-└── pkgs                     # Nix packages
 ```
 
 ## Installation
 
-1. Install Nix using Determinate Systems' installer:
+### Prerequisites
+- macOS 10.15 or later
+- Administrative access
+- Internet connection
+
+### Setup Process
+
+1. Install Nix
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
 ```
 
-2. Enable Flakes:
+2. Enable Flakes
 ```bash
 mkdir -p ~/.config/nix
 echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 ```
 
-3. Clone this repository:
+3. Clone Configuration
 ```bash
 git clone https://github.com/Hackiri/nix-darwin-config.git ~/.nix-darwin-config
 ```
 
-4. Edit the configuration to match your username and hostname:
-   - Open `flake.nix` and replace `wm-macbook-pro` with your desired hostname
-   - Open `nixos/hosts/wm-macbook-pro/configuration.nix` and update:
-     ```nix
-     # Replace with your username
-     users.users.wm = {
-       name = "your-username";
-       home = "/Users/your-username";
-     };
-     ```
-   - Rename the host directory to match your hostname:
-     ```bash
-     mv nixos/hosts/wm-macbook-pro nixos/hosts/your-hostname
-     ```
-   - Update references in `flake.nix` and other files to match your new hostname
+4. Customize Configuration
+- Update hostname in `flake.nix`
+- Modify user settings in `configuration.nix`
+- Adjust feature flags as needed
 
-5. Build and switch to the configuration:
+5. Apply Configuration
 ```bash
 cd ~/.nix-darwin-config
-nix build .#darwinConfigurations.your-hostname.system
 darwin-rebuild switch --flake .
 ```
+
+## Configuration
+
+### System Settings
+- **Security**
+  - Touch ID authentication
+  - SSH with keychain
+  - Secure defaults
+
+- **UI/UX**
+  - Dock configuration
+  - Finder preferences
+  - Screenshot settings
+
+- **Development**
+  - Programming languages
+  - Build tools
+  - Container support
+
+### User Environment
+- **Shell**: Customized Zsh environment
+- **Editor**: Neovim with LSP
+- **Terminal**: GPU-accelerated Alacritty
+- **Tools**: Development utilities
 
 ## Maintenance
 
-### Updates
-To update the system and all packages:
+### Regular Updates
 ```bash
+# Update and rebuild
 darwin-rebuild switch --flake .
+
+# Update specific inputs
+nix flake lock --update-input nixpkgs
 ```
 
-### Garbage Collection
-Automatic garbage collection is configured to run weekly, removing generations older than 30 days.
+### System Cleanup
+```bash
+# Manual garbage collection
+nix-collect-garbage -d
 
-### Application Management
-All applications are managed through a centralized system in `/Applications/Nix Apps/`, providing a clean and organized application structure.
+# Store optimization
+nix store optimise
+```
 
-## Customization
+### Monitoring
+- Check system status
+- Review logs
+- Monitor disk usage
+- Verify service health
 
-The configuration is modular and can be easily customized:
-- System-level settings in `nixos/hosts/wm-macbook-pro/configuration.nix`
-- User-level settings in `home-manager/home.nix`
-- Individual components in their respective module directories.
-
-## Contributing
-
-Feel free to use this configuration as inspiration for your own setup. Issues and pull requests are welcome for improvements or bug fixes.
+For detailed documentation of specific components, see:
+- [DevShell Configuration](modules/home-manager/devshell/README.md)
+- [Zsh Configuration](modules/home-manager/terminal/zsh/README.md)
+- [Neovim Setup](modules/home-manager/neovim/README.md)

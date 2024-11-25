@@ -1,245 +1,198 @@
-# Development Shell Configuration
+# Development Shell Environment
 
-This directory contains the configuration for a comprehensive development environment using Nix and Home Manager.
+A comprehensive, reproducible development environment powered by Nix and Home Manager, providing a consistent toolset across multiple programming languages and development workflows.
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Maintenance](#maintenance)
 
 ## Overview
 
-The development shell provides a consistent and reproducible development environment with pre-configured tools and settings for various programming languages and development tasks.
+The DevShell environment provides a declarative, version-controlled development setup that ensures consistency across different machines and team members. It integrates multiple programming languages, development tools, and productivity utilities into a cohesive environment.
 
 ## Features
 
-### Programming Languages & Tools
+### Programming Languages
 
-- **Python**
-  - Python 3.11 with pip and pipx
-  - Automatic virtual environment setup at `~/.local/share/devshell/venv`
-  - Virtual environment auto-activation in shell
-  - Project-specific venv management with `mkvenv` and `rmvenv` commands
+#### Python Development
+- Python 3 with pip and pipx integration
+- Virtual environment management
+- Package management tools
+- Development utilities and linters
 
-- **Rust**
-  - Rustup with stable toolchain
-  - Automatic toolchain initialization
-  - Cargo environment integration at `~/.cargo`
+#### Rust Development
+- Rustup toolchain management
+- Latest stable compiler and tools
+- Cargo package ecosystem
+- Cross-compilation support
 
-- **Go**
-  - Go development environment
-  - Configured GOPATH at `~/.go`
-  - Binary path integration
+#### Go Development
+- Go toolchain and compiler
+- Standard library and tools
+- Build and test utilities
+- Cross-platform support
 
-- **Node.js**
-  - Node.js 20.x
-  - NPM package management
-  - Global packages at `~/.npm-global`
-  - Node modules at `~/.node_modules`
+#### Node.js Development
+- Node.js runtime with npm
+- Package management tools
+- Build and development utilities
+- JavaScript/TypeScript support
 
 ### Development Tools
 
-- **Version Control**
-  - Git with LFS support
-  - Git Delta for better diffs
-  - Git-crypt for encryption
-  - Pre-commit hooks support
-  - Convenient git aliases (g, gst, gc, gp, gl)
+#### Version Control
+```bash
+# Core Git functionality
+git          # Version control
+git-lfs      # Large file support
+git-delta    # Enhanced diffs
+git-crypt    # File encryption
 
-- **Pre-commit Hooks**
-  - Nix code formatting with `nixpkgs-fmt` and `alejandra`
-  - Shell script analysis with `shellcheck`
-  - Dead code detection with `deadnix`
-  - Static analysis with `statix`
-  - Customizable through home.nix:
-    ```nix
-    programs.devshell.pre-commit.settings = {
-      hooks = {
-        nixpkgs-fmt.enable = true;
-        shellcheck.enable = true;
-        alejandra.enable = true;
-        deadnix.enable = true;
-        statix.enable = true;
-      };
-      settings = {
-        deadnix.noLambdaArg = true;
-        statix.format = "stderr";
-      };
-    };
-    ```
-
-- **Build Tools**
-  - GNU Make
-  - CMake
-  - Ninja
-  - GCC
-  - pkg-config
-  - autoconf
-  - automake
-  - libtool
-
-- **CLI Tools**
-  - ripgrep (fast text search)
-  - fd (better find)
-  - jq (JSON processor)
-  - yq (YAML processor)
-  - htop (process viewer)
-  - tree (directory structure viewer)
-  - curl & wget
-  - tmux (terminal multiplexer)
-
-- **Debugging**
-  - GDB
-  - LLDB
-  - Valgrind (non-Darwin systems only)
-
-### Shell Features
-
-- **Environment Information**
-  - Welcoming development environment info on shell entry
-  - `dev` command shows detailed environment status
-  - Displays versions of installed tools
-  - Shows environment variables and paths
-
-- **Development Tools**
-  - direnv integration for project-specific environments
-  - Improved shell history management
-  - UTF-8 locale configuration
-
-- **Utility Commands**
-  - `dev`: Show environment information
-  - `update-dev`: Update Nix flake
-  - `clean-dev`: Run garbage collection
-  - `mkvenv`: Create a new Python virtual environment
-  - `rmvenv`: Remove a Python virtual environment
-  - `hms`: Shortcut for home-manager switch
-
-### Directory Structure
-
+# Additional tools
+pre-commit   # Git hooks framework
 ```
-~/.local/
-├── bin/                    # Local binaries
-└── share/
-    └── devshell/
-        └── venv/          # Python virtual environment
 
-~/.go/                     # Go workspace
-└── bin/                   # Go binaries
+#### Code Quality Tools
+```bash
+# Formatters and Linters
+alejandra    # Nix formatter
+deadnix      # Dead code detector
+statix       # Static analyzer
+ruff         # Python linter
+```
 
-~/.cargo/                  # Rust/Cargo configuration
-└── bin/                   # Rust binaries
+#### Shell Environment
+```bash
+# Core Tools
+zsh          # Modern shell
+fzf          # Fuzzy finder
+bat          # Enhanced cat
+eza          # Modern ls
+direnv       # Env management
 
-~/.npm-global/             # Global NPM packages
-└── bin/                   # NPM binaries
+# Additional Features
+- Syntax highlighting
+- Auto-suggestions
+- History search
+```
 
-~/.node_modules/           # Node.js modules
+#### Build System
+```bash
+# Core Build Tools
+make         # Build automation
+cmake        # Build generator
+ninja        # Build system
+gcc          # Compiler collection
 
-~/.rustup/              # Rust toolchains
-~/.cargo/               # Cargo packages
+# Support Tools
+pkg-config   # Library helper
+autoconf     # Configure scripts
+automake     # Makefile generator
+libtool      # Library tools
+```
+
+#### Productivity Tools
+```bash
+# Search and Navigation
+ripgrep      # Fast search
+fd           # Modern find
+tree         # Directory viewer
+
+# Data Processing
+jq           # JSON processor
+yq           # YAML processor
+```
+
+#### Debugging Tools
+```bash
+# Core Debuggers
+gdb          # GNU Debugger
+lldb         # LLVM Debugger
+
+# Process Management
+htop         # Process viewer
+```
+
+## Installation
+
+### Prerequisites
+- Nix package manager
+- Home Manager
+- Git
+
+### Basic Setup
+Add to your Home Manager configuration:
+```nix
+{
+  programs.devshell = {
+    enable = true;
+    # Optional: Configure specific features
+    features = {
+      python = true;
+      rust = true;
+      go = true;
+      node = true;
+    };
+  };
+}
 ```
 
 ## Usage
 
-### Entering the Development Shell
-
-From your Nix flake directory:
+### Entering the Environment
 ```bash
+# Enter development shell
 nix develop
+
+# With specific features
+nix develop --arg features '{ python = true; }'
 ```
 
-You'll be greeted with a welcome message showing:
-- Current project name
-- Environment paths (Python, Go, Node, Rust)
-- Installed tool versions
-
-### Environment Information
-- Run `dev` to see detailed environment information
-- The welcome message shows key environment paths and tool versions
-
-### Python Virtual Environments
-- `mkvenv`: Create a new virtual environment in the current directory
-- `rmvenv`: Remove the virtual environment in the current directory
-
 ### Pre-commit Hooks
-1. Enable pre-commit hooks in any git repository:
-   ```bash
-   pre-commit install
-   ```
+```bash
+# Install hooks
+pre-commit install
 
-2. The hooks will automatically run on every commit, checking for:
-   - Nix code formatting issues
-   - Shell script problems
-   - Dead Nix code
-   - Static analysis warnings
-
-3. Run hooks manually:
-   ```bash
-   pre-commit run --all-files  # Check all files
-   pre-commit run             # Check staged files only
-   ```
-
-### Development Commands
-- `update-dev`: Update Nix flake
-- `clean-dev`: Run garbage collection
-- `hms`: Shortcut for home-manager switch
-
-### Git Aliases
-- `gaa`: Git add all
-- `gcmsg`: Git commit with message
-- `gst`: Git status
-- `gco`: Git checkout
-- `gcb`: Git checkout new branch
-- `gcm`: Git checkout main
-- `gl`: Git log with graph
-- `gpull`: Git pull with rebase
-- `gpush`: Git push
-- `glast`: Show last commit
+# Run hooks manually
+pre-commit run --all-files
+```
 
 ## Configuration
 
-### Main Components
-
-1. **default.nix**
-   - Main configuration file
-   - Defines development shell options and behavior
-   - Configures programming language environments
-   - Sets up shell utilities and commands
-
-2. **Integration with flake.nix**
-   - Imported as a home-manager module
-   - Provides development shell configuration
-   - Manages package dependencies
-
-## Environment Variables
-
-The following environment variables are automatically configured:
-
-- `PYTHONPATH`: Python package path
-- `PIP_PREFIX`: pip installation prefix
-- `GOPATH`: Go workspace
-- `GOBIN`: Go binaries
-- `NODE_PATH`: Node.js modules
-- `NPM_CONFIG_PREFIX`: NPM global packages
-- `RUSTUP_HOME`: Rust toolchain
-- `CARGO_HOME`: Cargo configuration
-- `EDITOR`/`VISUAL`: Set to "nvim"
-- `LANG`/`LC_ALL`: Set to "en_US.UTF-8"
-
-## Customization
-
-To modify the development environment:
-
-1. **Add New Packages**
-   - Edit the `home.packages` list in `default.nix`
-
-2. **Modify Shell Behavior**
-   - Update the `shellConfig` option in `default.nix`
-
-3. **Add Environment Variables**
-   - Add to `home.sessionVariables` in `default.nix`
-
-4. **Add Path Entries**
-   - Add to `home.sessionPath` in `default.nix`
-
-## Troubleshooting
-
-### Rust Toolchain Issues
-If Rust isn't properly initialized:
-```bash
-rustup default stable
+### Directory Structure
 ```
+devshell/
+├── default.nix    # Main configuration
+└── README.md      # Documentation
+```
+
+### Customization
+Modify `default.nix` to:
+- Enable/disable features
+- Add custom packages
+- Configure tool settings
+- Set environment variables
+
+## Maintenance
+
+### Updates
+```bash
+# Update all tools
+nix flake update
+
+# Update specific inputs
+nix flake lock --update-input nixpkgs
+```
+
+### Monitoring
+- Check tool versions regularly
+- Monitor disk usage
+- Review dependency updates
+- Test environment reproducibility
+
+For issues or suggestions, please open an issue in the repository.
