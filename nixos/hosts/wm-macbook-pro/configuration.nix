@@ -77,8 +77,9 @@
   # Nix configuration
   nix = {
     settings = {
-      experimental-features = ["nix-command" "flakes"];
-      trusted-users = ["root" "wm"];
+      experimental-features = ["nix-command" "flakes" "ca-derivations"];
+      trusted-users = ["root" "@admin" "wm"];
+      warn-dirty = false;
       substituters = [
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
@@ -87,6 +88,24 @@
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       ];
+    };
+    gc = {
+      automatic = true;
+      interval = {
+        Weekday = 0;
+        Hour = 2;
+        Minute = 0;
+      };
+      options = "--delete-older-than 30d";
+      user = "wm";
+    };
+    optimise = {
+      automatic = true;
+      interval = {
+        Weekday = 0;
+        Hour = 3;
+        Minute = 0;
+      };
     };
   };
 
