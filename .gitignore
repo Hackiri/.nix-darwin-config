@@ -1,1 +1,8 @@
 .DS_Store
+
+# Nix build output
+result
+result-*
+
+# Secrets
+secrets/

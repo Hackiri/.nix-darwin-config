@@ -34,18 +34,24 @@
     neovim-nightly = neovimPkgs.neovim;
 
     # Kubernetes and related tools from unstable
-    kubectl = unstablePkgs.kubectl;
-    kubernetes-helm = unstablePkgs.kubernetes-helm;
-    kubernetes-helmPlugins = unstablePkgs.kubernetes-helmPlugins;
-    k9s = unstablePkgs.k9s;
-    cilium-cli = unstablePkgs.cilium-cli;
-    kustomize = unstablePkgs.kustomize;
-    talosctl = unstablePkgs.talosctl;
-    krew = unstablePkgs.krew;
+    inherit
+      (unstablePkgs)
+      kubectl
+      kubernetes-helm
+      kubernetes-helmPlugins
+      k9s
+      cilium-cli
+      kustomize
+      talosctl
+      krew
+      ;
 
     # Development tools from unstable
-    vscode-langservers-extracted = unstablePkgs.vscode-langservers-extracted;
-    terraform = unstablePkgs.terraform;
-    gh = unstablePkgs.gh;
+    inherit
+      (unstablePkgs)
+      vscode-langservers-extracted
+      terraform
+      gh
+      ;
   };
 }
