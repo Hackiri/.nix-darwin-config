@@ -6,7 +6,6 @@
 }: let
   zshDotDir = ".config/zsh";
   shellAliases = import ./aliases.nix;
-  zsh_scripts = import ./scripts.nix;
 in {
   home.sessionVariables = {
     KREW_ROOT = "${config.home.homeDirectory}/.krew";
@@ -62,7 +61,6 @@ in {
         # Basic configurations
         zstyle ':completion:*' matcher-list "" 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
         WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
-        ${zsh_scripts}
 
         # Initialize Starship
         eval "$(starship init zsh)"
