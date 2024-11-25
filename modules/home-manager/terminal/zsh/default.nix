@@ -10,6 +10,8 @@ in {
   home.sessionVariables = {
     KREW_ROOT = "${config.home.homeDirectory}/.krew";
     PATH = "${config.home.homeDirectory}/.krew/bin:${config.home.homeDirectory}/bin:$PATH";
+    GIT_USER_NAME = "hackiri";
+    GIT_USER_EMAIL = "128340174+Hackiri@users.noreply.github.com";
   };
 
   programs = {

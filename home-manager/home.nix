@@ -4,9 +4,7 @@
   pkgs,
   lib,
   ...
-}: let
-  secrets = import ../secrets/secrets.nix;
-in {
+}: {
   # Allow unfree packages
   nixpkgs.config = {
     allowUnfree = true;
@@ -63,7 +61,9 @@ in {
 
   programs = {
     git = {
-      # Add your git configuration here
+      enable = true;
+      userName = builtins.getEnv "GIT_USER_NAME";
+      userEmail = builtins.getEnv "GIT_USER_EMAIL";
     };
     home-manager.enable = true;
 
