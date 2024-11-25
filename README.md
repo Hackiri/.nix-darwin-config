@@ -112,6 +112,40 @@ nix.gc = {
 - Administrative access
 - Internet connection
 
+### Forking and Customization
+
+1. Fork the Repository
+```bash
+# Fork this repository on GitHub first, then:
+git clone https://github.com/YOUR_USERNAME/nix-darwin-config.git ~/.nix-darwin-config
+cd ~/.nix-darwin-config
+```
+
+2. Customize Your Setup
+- **System Configuration**
+  - Update `flake.nix` with your system details
+  - Modify `nixos/hosts/` to match your hostname
+  - Adjust `nixConfig` settings as needed
+
+- **User Environment**
+  - Update `home-manager/home.nix` with your user preferences
+  - Customize `modules/home-manager/` for your tools and apps
+  - Modify `modules/nix-darwin/` for system-wide settings
+
+- **Optional Components**
+  - Remove unused modules from `modules/`
+  - Add your own modules for specific needs
+  - Customize the directory structure to your preference
+
+3. Version Control
+```bash
+# Initialize your own git repository
+git remote set-url origin https://github.com/YOUR_USERNAME/nix-darwin-config.git
+git add .
+git commit -m "Initial customization"
+git push -u origin main
+```
+
 ### Setup Process
 
 1. Install Nix
@@ -127,7 +161,7 @@ echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 
 3. Clone Configuration
 ```bash
-git clone https://github.com/Hackiri/nix-darwin-config.git ~/.nix-darwin-config
+git clone https://github.com/YOUR_USERNAME/nix-darwin-config.git ~/.nix-darwin-config
 ```
 
 4. Customize Configuration
