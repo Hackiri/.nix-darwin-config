@@ -3,7 +3,9 @@
   pkgs,
   lib,
   ...
-}: {
+}: let
+  emacs-enabled = config.programs.emacs.enable;
+in {
   programs.emacs = {
     enable = true;
     package = pkgs.emacs29-macport; # Better macOS integration
@@ -52,37 +54,29 @@
       ];
   };
 
-  home.packages = with pkgs; [
-    emacs-all-the-icons-fonts
-    ripgrep # For better search in projectile
-    fd # For faster file finding
-    shellcheck # For shell script checking
-    nodePackages.prettier # For format-all
-    nodePackages.typescript-language-server # For LSP
-  ];
+  home = lib.mkIf emacs-enabled {
+    packages = with pkgs; [
+      emacs-all-the-icons-fonts
+      ripgrep # For better search in projectile
+      fd # For faster file finding
+      shellcheck # For shell script checking
+      nodePackages.prettier # For format-all
+      nodePackages.typescript-language-server # For LSP
+    ];
 
-  home.file.".emacs.d" = {
-    source = ./.emacs.d;
-    recursive = true;
-  };
+    file.".emacs.d" = {
+      source = ./.emacs.d;
+      recursive = true;
+    };
 
-  # Add macOS specific application symlink
-  home.activation = {
-    copyEmacsMacOSApp = let
-      apps = pkgs.buildEnv {
-        name = "my-apps";
-        paths = [pkgs.emacs29-macport];
-        pathsToLink = "/Applications";
-      };
-    in
-      lib.hm.dag.entryAfter ["writeBoundary"] ''
-        baseDir="$HOME/Applications/Home Manager Apps"
-        mkdir -p "$baseDir"
-        for app in ${apps}/Applications/*; do
-          target="$baseDir/$(basename "$app")"
-          $DRY_RUN_CMD rm -rf "$target"
-          $DRY_RUN_CMD cp -rL "$app" "$target"
-        done
-      '';
+    activation.copyEmacsMacOSApp = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      baseDir="$HOME/Applications/Home Manager Apps"
+      mkdir -p "$baseDir"
+      for app in ${pkgs.emacs29-macport}/Applications/*; do
+        target="$baseDir/$(basename "$app")"
+        $DRY_RUN_CMD rm -rf "$target"
+        $DRY_RUN_CMD cp -rL "$app" "$target"
+      done
+    '';
   };
 }
