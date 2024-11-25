@@ -7,13 +7,6 @@ repos:
       language: system
       types: [nix]
 
-    - id: shellcheck
-      name: shellcheck
-      entry: shellcheck
-      language: system
-      types: [shell]
-      args: ["-s", "zsh", "--external-sources"]
-
     - id: deadnix
       name: deadnix
       entry: deadnix
@@ -22,9 +15,10 @@ repos:
 
     - id: statix
       name: statix
-      entry: bash -c 'for file in "$@"; do statix check "$file"; done' --
+      entry: statix check
       language: system
-      types: [nix]
+      pass_filenames: false
+      always_run: true
 
     - id: ruff
       name: ruff
