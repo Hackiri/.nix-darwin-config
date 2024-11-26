@@ -13,7 +13,7 @@ A modern, feature-rich Zsh configuration managed through Home Manager, providing
 
 ## Overview
 
-This configuration provides a comprehensive Zsh environment optimized for development workflows. It integrates Oh My Zsh, custom plugins, and the Starship prompt system to create a powerful and user-friendly shell experience.
+This configuration provides a comprehensive Zsh environment optimized for development workflows. It integrates Oh My Zsh, custom plugins, and shell functions to create a powerful and user-friendly shell experience.
 
 ## Features
 
@@ -99,18 +99,20 @@ gpush        # Push to current/specified branch
 ### Directory Structure
 ```
 zsh/
-├── default.nix    # Main configuration
-├── aliases.nix    # Command aliases
-├── scripts.nix    # Shell functions
-└── themes/        # Prompt themes
-    └── jetpack.toml
+├── aliases.nix       # Command shortcuts
+├── default.nix       # Shell and plugin settings
+├── lib               # oh-my-zsh Library functions
+├── oh-my-zsh.sh      # oh-my-zsh installer
+├── themes                  # Prompt themes
+│   ├── agnoster.zsh-theme
+│   └── powerlevel10k
+└── tools             # oh-my-zsh Utility scripts
 ```
 
 ### Required Components
 - Nix package manager
 - Home Manager
 - Git
-- Starship prompt
 
 ### Core Packages
 - `direnv`: Environment management
@@ -162,6 +164,6 @@ updatanix    # Update and rebuild system
    - Check for conflicting configurations
 
 3. **Prompt Display Problems**
-   - Verify Starship installation
+   - Verify oh-my-zsh installation
    - Check font compatibility
    - Review theme configuration
