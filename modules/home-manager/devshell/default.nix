@@ -18,17 +18,24 @@
         zsh-history-substring-search
         fzf
         bat
-        eza # Modern replacement for ls
+        eza
         fd
         ripgrep
         jq
-        yq-go # YAML processor
+        yq-go
         tree
         htop
         git
         git-lfs
         direnv
         nix-direnv
+        zoxide
+        bottom
+        du-dust
+        duf
+        procs
+        sd
+        choose
 
         # Development tools
         gh
@@ -42,6 +49,13 @@
         python3
         python3Packages.pip
         python3Packages.pipx
+        lazygit
+        difftastic
+        colordiff
+        helix
+        tokei
+        hyperfine
+        just
 
         # Build tools
         pkg-config
@@ -57,9 +71,14 @@
         curl
         wget
         tmux
+        neofetch
+        glow
+        xh
+        jless
+        fx
       ]
       ++ lib.optionals (!pkgs.stdenv.isDarwin) [
-        valgrind # Only include valgrind on non-Darwin systems
+        valgrind
       ]
       ++ [
         # Version control and code quality
@@ -99,6 +118,12 @@
           echo "🌳 Git: $(git --version 2>&1)"
           echo "🔒 Nix: $(nix --version 2>&1)"
 
+          echo ""
+          echo "💡 Quick Tips:"
+          echo "• Use 'just' for project-specific commands"
+          echo "• 'lazygit' for git TUI"
+          echo "• 'bottom' or 'btm' for system monitoring"
+          echo "• 'zoxide' for smart directory jumping"
         }
 
         # Function to initialize development environment
@@ -114,6 +139,13 @@
           export NODE_PATH="$HOME/.npm-packages/lib/node_modules"
           export CARGO_HOME="$HOME/.cargo"
           export RUSTUP_HOME="$HOME/.rustup"
+          export EDITOR="hx"
+          export VISUAL="hx"
+          export PAGER="less -R"
+          export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+          # Initialize tools
+          eval "$(zoxide init zsh)"
 
           # Show welcome message
           show_welcome
@@ -136,6 +168,14 @@
         cat = "bat";
         find = "fd";
         grep = "rg";
+        ps = "procs";
+        top = "btm";
+        du = "dust";
+        df = "duf";
+        diff = "colordiff";
+        lg = "lazygit";
+        j = "zoxide";
+        md = "glow";
       };
     };
 
