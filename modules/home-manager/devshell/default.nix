@@ -46,9 +46,9 @@
         go
         rustup
         nodejs
-        python311
-        python311Packages.pip
-        python311Packages.pipx
+        python3
+        python3Packages.pip
+        python3Packages.pipx
         lazygit
         difftastic
         colordiff
@@ -111,7 +111,7 @@
 
           echo ""
           echo "🔧 Tool versions:"
-          echo "🔷 Python: $(python311 --version 2>&1)"
+          echo "🔷 Python: $(python3 --version 2>&1)"
           echo "🐹 Go: $(go version 2>&1)"
           echo "⬢ Node: $(node --version 2>&1)"
           echo "🦀 Rust: $(rustc --version 2>&1)"
@@ -133,7 +133,8 @@
           [ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && source "$HOME/.nix-profile/etc/profile.d/nix.sh"
 
           # Set environment variables
-          export PYTHONPATH="$HOME/.local/lib/python3.11/site-packages:$PYTHONPATH"
+          export PYTHONPATH="$HOME/.local/lib/python3.12/site-packages:$PYTHONPATH"
+          export VENV_DIR="$HOME/.local/lib/python3.12/site-packages"
           export GOPATH="$HOME/go"
           export PATH="$GOPATH/bin:$PATH"
           export NODE_PATH="$HOME/.npm-packages/lib/node_modules"
