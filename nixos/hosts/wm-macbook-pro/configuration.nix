@@ -143,17 +143,33 @@
           done
     '';
 
-    # System defaults
-    defaults.dock = {
-      autohide = true;
-      mru-spaces = false;
-      minimize-to-application = true;
-      show-recents = false;
-      static-only = true;
-      showhidden = true;
+    defaults = {
+      finder = {
+        AppleShowAllExtensions = true;
+        FXPreferredViewStyle = "clmv";
+      };
+      loginwindow.GuestEnabled = false;
+      screencapture.location = "~/Pictures/screenshots";
+      screensaver.askForPasswordDelay = 10;
+      dock = {
+        autohide = true;
+        mru-spaces = false;
+        launchanim = false;
+        minimize-to-application = false;
+        show-recents = false;
+        static-only = true;
+        showhidden = true;
+        persistent-apps = [
+          "${pkgs.alacritty}/Applications/Alacritty.app"
+          "/Applications/Firefox.app"
+          "${pkgs.obsidian}/Applications/Obsidian.app"
+          "/System/Applications/Mail.app"
+          "/System/Applications/Calendar.app"
+        ];
+      };
     };
 
-    configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
+    configurationRevision = inputs.self.lastModifiedDate or inputs.self.lastModified or null;
     stateVersion = 4;
   };
 

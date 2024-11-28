@@ -31,7 +31,7 @@ in {
       bat
       jq
       oh-my-zsh
-      python3Packages.pygments  # Required for syntax highlighting
+      python3Packages.pygments # Required for syntax highlighting
     ];
   };
 
@@ -59,7 +59,7 @@ in {
       oh-my-zsh = {
         enable = true;
         package = pkgs.oh-my-zsh;
-        theme = "agnoster";
+        theme = "jonathan";
         plugins = [
           "git"
           "sudo"
