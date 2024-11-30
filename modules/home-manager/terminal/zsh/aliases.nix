@@ -139,6 +139,9 @@
   # AI tools
   ai = "aichat";
 
+  # nix-darwin directory shortcuts
+  dots = "cd ~/.nix-darwin-config";
+
   # Tmux aliases
   ta = "tmux attach -t";
   tad = "tmux attach -d -t";
