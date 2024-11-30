@@ -4,7 +4,6 @@
   pkgs,
   ...
 }: let
-  zshDotDir = ".config/zsh";
   shellAliases = import ./aliases.nix;
 in {
   home = {
@@ -54,7 +53,6 @@ in {
         share = true;
         extended = true;
       };
-      dotDir = zshDotDir;
 
       oh-my-zsh = {
         enable = true;
