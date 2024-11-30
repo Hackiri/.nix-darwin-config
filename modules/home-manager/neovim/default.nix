@@ -134,9 +134,10 @@
 in {
   programs.neovim = {
     enable = true;
+    extraLuaPackages = ps: [ps.magick]; # Add Lua magick package
     extraPackages = with pkgs; [
-      ltex-ls
       # Language Servers
+      ltex-ls
       lua-language-server
       nodePackages.typescript-language-server
       nodePackages.vscode-langservers-extracted # html, css, json, eslint
@@ -199,6 +200,12 @@ in {
       fzf
       universal-ctags
       nodePackages.yarn
+      imagemagick # Required for image.nvim
+
+      # Lua Development
+      luarocks
+      lua5_1
+      pkg-config
     ];
 
     plugins = with pkgs.vimPlugins; [
