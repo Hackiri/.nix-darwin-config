@@ -124,6 +124,7 @@
               app_name=$(basename "$src")
               echo "copying $src" >&2
               ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
+              ${pkgs.mkalias}/bin/mkalias "~/Applications/Home Manager Apps/$app_name"
             done
       '';
 
@@ -149,12 +150,14 @@
       "mas"
     ];
     casks = [
+      "discord"
       "firefox"
       "iina"
       "the-unarchiver"
       "wezterm"
       "wireshark"
       "raycast"
+      "visual-studio-code"
     ];
     masApps = {
     };
