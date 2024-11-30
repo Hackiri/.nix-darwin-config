@@ -13,63 +13,20 @@
 
   environment = {
     variables = {
-      EDITOR = "nvim";
-      VISUAL = "nvim";
-      GIT_EDITOR = "nvim";
       # Ensure proper clipboard support
       TERM = "xterm-256color";
     };
     systemPackages = with pkgs; [
-      # Development tools
-      git
-      neovim
-      tmux
-      zsh
-      wget
-      curl
-      htop
-      tree
-      ripgrep
-      fd
-      jq
-      yq-go
-      fzf
-      bat
-      eza
-      nix-direnv
-      direnv
-      gnumake
-      cmake
-      ninja
-      gcc
-      go
-      rustup
-      nodejs
-      python3
-      python3Packages.pip
-      python3Packages.pipx
-
-      # Build tools
-      pkg-config
-      autoconf
-      automake
-      libtool
-
-      # Debugging and analysis
-      gdb
-      lldb
-
-      # Additional CLI tools
-      git-crypt
-      pre-commit
-      shellcheck
-      nixpkgs-fmt
-      alejandra
-      deadnix
-      statix
+      # System utilities
       mkalias
       pam-reattach
       obsidian
+
+      # System tools
+      git
+      zsh
+      nix-direnv
+      direnv
     ];
     shells = [pkgs.zsh];
   };
@@ -114,62 +71,69 @@
 
   # System configuration
   system = {
-    # Add pam-reattach to enable TouchID for tmux and set up applications
-    activationScripts.postActivation.text = ''
-        # Add pam_reattach to enable TouchID for tmux
-        sudo mkdir -p /usr/local/lib/pam
-        sudo cp ${pkgs.pam-reattach}/lib/pam/pam_reattach.so /usr/local/lib/pam/
+    # Configure defaults
+    defaults = {
+      NSGlobalDomain = {
+        AppleShowAllExtensions = true;
+        AppleShowScrollBars = "Always";
+        NSDocumentSaveNewDocumentsToCloud = false;
+      };
 
-        # Add pam_reattach to sudo config if not already present
-        if ! grep -q "pam_reattach.so" /etc/pam.d/sudo; then
-          sudo sed -i "" '2i\
-      auth       optional     pam_reattach.so
-      ' /etc/pam.d/sudo
-        fi
+      finder = {
+        AppleShowAllExtensions = true;
+        FXEnableExtensionChangeWarning = false;
+      };
 
+      loginwindow = {
+        GuestEnabled = false;
+      };
+
+      screencapture.location = "~/Pictures/Screenshots";
+      screensaver.askForPasswordDelay = 10;
+      dock = {
+        autohide = true;
+      };
+    };
+
+    # Configure activation scripts
+    activationScripts = {
+      postActivation.text = ''
+          # Add pam_reattach to enable TouchID for tmux
+          sudo mkdir -p /usr/local/lib/pam
+          sudo cp ${pkgs.pam-reattach}/lib/pam/pam_reattach.so /usr/local/lib/pam/
+
+          # Add pam_reattach to sudo config if not already present
+          if ! grep -q "pam_reattach.so" /etc/pam.d/sudo; then
+            sudo sed -i "" '2i\
+        auth       optional     pam_reattach.so
+        ' /etc/pam.d/sudo
+          fi
+      '';
+
+      applications.text = ''
         # Set up applications
         echo "setting up /Applications..." >&2
         rm -rf /Applications/Nix\ Apps
         mkdir -p /Applications/Nix\ Apps
         find ${pkgs.buildEnv {
-        name = "system-applications";
-        paths = config.environment.systemPackages;
-        pathsToLink = "/Applications";
-      }}/Applications -maxdepth 1 -type l -exec readlink '{}' + |
-          while read -r src; do
-            app_name=$(basename "$src")
-            echo "copying $src" >&2
-            ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
-          done
-    '';
+          name = "system-applications";
+          paths = config.environment.systemPackages;
+          pathsToLink = "/Applications";
+        }}/Applications -maxdepth 1 -type l -exec readlink '{}' + |
+            while read -r src; do
+              app_name=$(basename "$src")
+              echo "copying $src" >&2
+              ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
+            done
+      '';
 
-    defaults = {
-      finder = {
-        AppleShowAllExtensions = true;
-        FXPreferredViewStyle = "clmv";
-      };
-      loginwindow.GuestEnabled = false;
-      screencapture.location = "~/Pictures/screenshots";
-      screensaver.askForPasswordDelay = 10;
-      dock = {
-        autohide = true;
-        mru-spaces = false;
-        launchanim = false;
-        minimize-to-application = false;
-        show-recents = false;
-        static-only = true;
-        showhidden = true;
-        persistent-apps = [
-          "${pkgs.alacritty}/Applications/Alacritty.app"
-          "/Applications/Firefox.app"
-          "${pkgs.obsidian}/Applications/Obsidian.app"
-          "/System/Applications/Mail.app"
-          "/System/Applications/Calendar.app"
-        ];
-      };
+      postUserActivation.text = ''
+        # Disable spotlight indexing
+        echo "disabling spotlight indexing..." >&2
+        mdutil -i off -d / &>/dev/null || true
+      '';
     };
 
-    configurationRevision = inputs.self.lastModifiedDate or inputs.self.lastModified or null;
     stateVersion = 4;
   };
 
@@ -185,7 +149,6 @@
       "mas"
     ];
     casks = [
-      "hammerspoon"
       "firefox"
       "iina"
       "the-unarchiver"
@@ -208,9 +171,7 @@
 
   fonts = {
     packages = with pkgs; [
-      nerd-fonts.jetbrains-mono
-      nerd-fonts.fira-code
-      nerd-fonts.blex-mono
+      (nerdfonts.override {fonts = ["JetBrainsMono" "FiraCode" "IBMPlexMono"];})
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-emoji

@@ -27,15 +27,22 @@
 
     # Packages to be installed for the user
     packages = with pkgs; [
-      # Development tools
-      gh
-      fd
-      gnused
-      git-crypt
-      ripgrep
-      tree
-      wget
-      eza
+      # Development utilities
+      pre-commit
+      shellcheck
+      alejandra
+      deadnix
+      statix
+      luarocks
+      lua5_1
+      stylua
+      pkg-config
+      imagemagick # for image processing
+      file # for file type detection
+
+      # Debugging and analysis
+      gdb
+      lldb
 
       # Kubernetes and infrastructure tools
       omnictl
