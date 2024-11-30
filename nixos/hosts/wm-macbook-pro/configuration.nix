@@ -124,7 +124,10 @@
               app_name=$(basename "$src")
               echo "copying $src" >&2
               ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
-              ${pkgs.mkalias}/bin/mkalias "~/Applications/Home Manager Apps/$app_name"
+              if [ -e "$HOME/Applications/Home Manager Apps/$app_name" ]; then
+                echo "linking Home Manager app: $app_name" >&2
+                ${pkgs.mkalias}/bin/mkalias "$HOME/Applications/Home Manager Apps/$app_name" "/Applications/Nix Apps/HM_$app_name"
+              fi
             done
       '';
 
