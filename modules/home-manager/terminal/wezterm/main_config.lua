@@ -19,104 +19,104 @@ config.font = wezterm.font_with_fallback({
   "Noto Color Emoji",
 })
 config.font_size = 16
-config.harfbuzz_features = {"calt", "liga", "ss01", "ss02", "ss03", "ss04", "ss05", "ss06", "ss07", "ss08"}
+config.harfbuzz_features = { "calt", "liga", "ss01", "ss02", "ss03", "ss04", "ss05", "ss06", "ss07", "ss08" }
 
 config.enable_tab_bar = true
 config.use_fancy_tab_bar = true
 
 config.window_padding = {
-	top = 0,
-	right = 0,
-	bottom = 0,
-	left = 0,
+  top = 0,
+  right = 0,
+  bottom = 0,
+  left = 0,
 }
 
 -- Start :
 local function is_vim(pane)
-	-- this is set by the plugin, and unset on ExitPre in Neovim
-	return pane:get_user_vars().IS_NVIM == "true"
+  -- this is set by the plugin, and unset on ExitPre in Neovim
+  return pane:get_user_vars().IS_NVIM == "true"
 end
 
 local direction_keys = {
-	Left = "h",
-	Down = "j",
-	Up = "k",
-	Right = "l",
-	-- reverse lookup
-	h = "Left",
-	j = "Down",
-	k = "Up",
-	l = "Right",
+  Left = "h",
+  Down = "j",
+  Up = "k",
+  Right = "l",
+  -- reverse lookup
+  h = "Left",
+  j = "Down",
+  k = "Up",
+  l = "Right",
 }
 
 local function split_nav(resize_or_move, key)
-	return {
-		key = key,
-		mods = resize_or_move == "resize" and "META" or "CTRL",
-		action = wezterm.action_callback(function(win, pane)
-			if is_vim(pane) then
-				-- pass the keys through to vim/nvim
-				win:perform_action({
-					SendKey = { key = key, mods = resize_or_move == "resize" and "META" or "CTRL" },
-				}, pane)
-			else
-				if resize_or_move == "resize" then
-					win:perform_action({ AdjustPaneSize = { direction_keys[key], 3 } }, pane)
-				else
-					win:perform_action({ ActivatePaneDirection = direction_keys[key] }, pane)
-				end
-			end
-		end),
-	}
+  return {
+    key = key,
+    mods = resize_or_move == "resize" and "META" or "CTRL",
+    action = wezterm.action_callback(function(win, pane)
+      if is_vim(pane) then
+        -- pass the keys through to vim/nvim
+        win:perform_action({
+          SendKey = { key = key, mods = resize_or_move == "resize" and "META" or "CTRL" },
+        }, pane)
+      else
+        if resize_or_move == "resize" then
+          win:perform_action({ AdjustPaneSize = { direction_keys[key], 3 } }, pane)
+        else
+          win:perform_action({ ActivatePaneDirection = direction_keys[key] }, pane)
+        end
+      end
+    end),
+  }
 end
 -- End
 
 -- TMUX TO WEZTERM Leader is the same as my old tmux prefix
 config.leader = { key = "t", mods = "CTRL", timeout_milliseconds = 1000 }
 config.keys = {
-	-- splitting
-	{
-		mods = "LEADER",
-		key = "h",
-		action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
-	},
-	{
-		mods = "LEADER",
-		key = "v",
-		action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
-	},
+  -- splitting
+  {
+    mods = "LEADER",
+    key = "h",
+    action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
+  },
+  {
+    mods = "LEADER",
+    key = "v",
+    action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
+  },
 
-	-- Tabs
-	{
-		mods = "LEADER",
-		key = "c",
-		action = wezterm.action.SpawnTab("CurrentPaneDomain"),
-	},
-	{
-		mods = "LEADER",
-		key = "x",
-		action = wezterm.action.CloseCurrentTab({ confirm = true }),
-	},
+  -- Tabs
+  {
+    mods = "LEADER",
+    key = "c",
+    action = wezterm.action.SpawnTab("CurrentPaneDomain"),
+  },
+  {
+    mods = "LEADER",
+    key = "x",
+    action = wezterm.action.CloseCurrentTab({ confirm = true }),
+  },
 
-	-- Zooming a Pane
-	{
-		mods = "LEADER",
-		key = "z",
-		action = wezterm.action.TogglePaneZoomState,
-	},
+  -- Zooming a Pane
+  {
+    mods = "LEADER",
+    key = "z",
+    action = wezterm.action.TogglePaneZoomState,
+  },
 
-	-- activate copy mode or vim mode
-	{
-		key = "Enter",
-		mods = "LEADER",
-		action = wezterm.action.ActivateCopyMode,
-	},
+  -- activate copy mode or vim mode
+  {
+    key = "Enter",
+    mods = "LEADER",
+    action = wezterm.action.ActivateCopyMode,
+  },
 
-	-- move between split panes
-	split_nav("move", "h"),
-	split_nav("move", "j"),
-	split_nav("move", "k"),
-	split_nav("move", "l"),
+  -- move between split panes
+  split_nav("move", "h"),
+  split_nav("move", "j"),
+  split_nav("move", "k"),
+  split_nav("move", "l"),
 }
 
 return config

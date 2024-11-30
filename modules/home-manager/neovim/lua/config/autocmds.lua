@@ -8,8 +8,8 @@ M.setup = function()
 
   -- IndentBlankline augroup and autocommands
   local ibl_group = vim.api.nvim_create_augroup("IndentBlankline", {})
-  local ibl = require "ibl"
-  local highlights = require "ibl.highlights"
+  local ibl = require("ibl")
+  local highlights = require("ibl.highlights")
   local buffer_leftcol = {}
 
   vim.api.nvim_create_autocmd("VimEnter", {

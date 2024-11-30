@@ -6,4 +6,4 @@ require("config.keymaps")
 require("config.autocmds")
 require("config.session")
 require("config.snippets")
-require("config.lazy")    -- This should be last
+require("config.lazy") -- This should be last

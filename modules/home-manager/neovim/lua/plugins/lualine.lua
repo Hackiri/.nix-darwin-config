@@ -1,66 +1,66 @@
 return {
-  'nvim-lualine/lualine.nvim',
+  "nvim-lualine/lualine.nvim",
   config = function()
     -- Color palette
     local colors = {
       -- Base colors
-      blue = '#61afef',
-      green = '#98c379',
-      purple = '#c678dd',
-      cyan = '#56b6c2',
-      red1 = '#e06c75',
-      red2 = '#be5046',
-      yellow = '#e5c07b',
-      orange = '#d19a66',
-      
+      blue = "#61afef",
+      green = "#98c379",
+      purple = "#c678dd",
+      cyan = "#56b6c2",
+      red1 = "#e06c75",
+      red2 = "#be5046",
+      yellow = "#e5c07b",
+      orange = "#d19a66",
+
       -- Monochrome
-      fg = '#abb2bf',
-      bg = '#282c34',
-      gray1 = '#828997',
-      gray2 = '#2c323c',
-      gray3 = '#3e4452',
-      
+      fg = "#abb2bf",
+      bg = "#282c34",
+      gray1 = "#828997",
+      gray2 = "#2c323c",
+      gray3 = "#3e4452",
+
       -- Git colors
-      git_add = '#98c379',
-      git_change = '#61afef',
-      git_delete = '#e06c75',
-      
+      git_add = "#98c379",
+      git_change = "#61afef",
+      git_delete = "#e06c75",
+
       -- Diagnostic colors
-      error = '#e06c75',
-      warn = '#e5c07b',
-      info = '#61afef',
-      hint = '#56b6c2',
+      error = "#e06c75",
+      warn = "#e5c07b",
+      info = "#61afef",
+      hint = "#56b6c2",
     }
 
     -- Icons
     local icons = {
       -- Mode
-      normal = '',
-      insert = '',
-      visual = '',
-      replace = '',
-      command = '',
-      terminal = '',
-      
+      normal = "",
+      insert = "",
+      visual = "",
+      replace = "",
+      command = "",
+      terminal = "",
+
       -- Git
-      git_branch = '',
-      git_added = '',
-      git_modified = '',
-      git_removed = '',
-      
+      git_branch = "",
+      git_added = "",
+      git_modified = "",
+      git_removed = "",
+
       -- Diagnostics
-      diagnostic_error = '',
-      diagnostic_warn = '',
-      diagnostic_info = '',
-      diagnostic_hint = '',
-      
+      diagnostic_error = "",
+      diagnostic_warn = "",
+      diagnostic_info = "",
+      diagnostic_hint = "",
+
       -- Misc
-      line_number = '',
-      connected = '󰌘',
-      disconnected = '󰌙',
-      progress = '󰔟',
-      lock = '',
-      dots = '󰇘',
+      line_number = "",
+      connected = "󰌘",
+      disconnected = "󰌙",
+      progress = "󰔟",
+      lock = "",
+      dots = "󰇘",
     }
 
     -- Utility functions
@@ -74,44 +74,44 @@ return {
 
     -- Component configurations
     local mode = {
-      'mode',
+      "mode",
       fmt = function(str)
         local mode_icons = {
           NORMAL = icons.normal,
           INSERT = icons.insert,
           VISUAL = icons.visual,
-          ['V-LINE'] = icons.visual,
-          ['V-BLOCK'] = icons.visual,
+          ["V-LINE"] = icons.visual,
+          ["V-BLOCK"] = icons.visual,
           REPLACE = icons.replace,
           COMMAND = icons.command,
           TERMINAL = icons.terminal,
         }
-        return ' ' .. (mode_icons[str] or '') .. ' ' .. str
+        return " " .. (mode_icons[str] or "") .. " " .. str
       end,
     }
 
     local filename = {
-      'filename',
+      "filename",
       file_status = true,
       path = 1,
       shorting_target = 40,
       symbols = {
-        modified = '[+]',
-        readonly = '',
-        unnamed = '[No Name]',
-        newfile = '[New]',
+        modified = "[+]",
+        readonly = "",
+        unnamed = "[No Name]",
+        newfile = "[New]",
       },
     }
 
     local diagnostics = {
-      'diagnostics',
-      sources = { 'nvim_diagnostic' },
-      sections = { 'error', 'warn', 'info', 'hint' },
+      "diagnostics",
+      sources = { "nvim_diagnostic" },
+      sections = { "error", "warn", "info", "hint" },
       symbols = {
-        error = icons.diagnostic_error .. ' ',
-        warn = icons.diagnostic_warn .. ' ',
-        info = icons.diagnostic_info .. ' ',
-        hint = icons.diagnostic_hint .. ' ',
+        error = icons.diagnostic_error .. " ",
+        warn = icons.diagnostic_warn .. " ",
+        info = icons.diagnostic_info .. " ",
+        hint = icons.diagnostic_hint .. " ",
       },
       colored = true,
       update_in_insert = false,
@@ -125,12 +125,12 @@ return {
     }
 
     local diff = {
-      'diff',
+      "diff",
       colored = true,
       symbols = {
-        added = icons.git_added .. ' ',
-        modified = icons.git_modified .. ' ',
-        removed = icons.git_removed .. ' ',
+        added = icons.git_added .. " ",
+        modified = icons.git_modified .. " ",
+        removed = icons.git_removed .. " ",
       },
       diff_color = {
         added = { fg = colors.git_add },
@@ -141,37 +141,37 @@ return {
     }
 
     local branch = {
-      'branch',
+      "branch",
       icons_enabled = true,
       icon = icons.git_branch,
       colored = true,
-      color = { fg = colors.purple, gui = 'bold' },
+      color = { fg = colors.purple, gui = "bold" },
     }
 
     local location = {
-      'location',
+      "location",
       padding = 0,
       fmt = function()
-        return icons.line_number .. ' %l:%c'
+        return icons.line_number .. " %l:%c"
       end,
     }
 
     local progress = {
-      'progress',
+      "progress",
       fmt = function(str)
-        return icons.progress .. ' ' .. str
+        return icons.progress .. " " .. str
       end,
     }
 
     -- Setup
-    require('lualine').setup {
+    require("lualine").setup({
       options = {
         icons_enabled = true,
         theme = "tokyonight",
-        component_separators = { left = '', right = '' },
-        section_separators = { left = '', right = '' },
+        component_separators = { left = "", right = "" },
+        section_separators = { left = "", right = "" },
         disabled_filetypes = {
-          statusline = { 'alpha', 'neo-tree', 'Avante' },
+          statusline = { "alpha", "neo-tree", "Avante" },
           winbar = {},
         },
         ignore_focus = {},
@@ -183,40 +183,40 @@ return {
           winbar = 1000,
         },
       },
-      
+
       sections = {
         lualine_a = { mode },
         lualine_b = { branch },
-        lualine_c = { 
+        lualine_c = {
           filename,
           {
             function()
-              return '%='
+              return "%="
             end,
           },
           diagnostics,
         },
-        lualine_x = { 
+        lualine_x = {
           diff,
           {
-            'filetype',
+            "filetype",
             colored = true,
             icon_only = false,
-            icon = { align = 'right' },
+            icon = { align = "right" },
             cond = hide_in_small_window,
           },
           {
-            'encoding',
+            "encoding",
             fmt = string.upper,
             cond = hide_in_width,
           },
           {
-            'fileformat',
+            "fileformat",
             icons_enabled = true,
             symbols = {
-              unix = 'LF',
-              dos = 'CRLF',
-              mac = 'CR',
+              unix = "LF",
+              dos = "CRLF",
+              mac = "CR",
             },
             cond = hide_in_width,
           },
@@ -224,24 +224,24 @@ return {
         lualine_y = { location },
         lualine_z = { progress },
       },
-      
+
       inactive_sections = {
         lualine_a = {},
         lualine_b = {},
-        lualine_c = { { 'filename', path = 1 } },
-        lualine_x = { 'location' },
+        lualine_c = { { "filename", path = 1 } },
+        lualine_x = { "location" },
         lualine_y = {},
         lualine_z = {},
       },
-      
+
       tabline = {},
-      
+
       extensions = {
-        'fugitive',
-        'neo-tree',
-        'quickfix',
-        'toggleterm',
+        "fugitive",
+        "neo-tree",
+        "quickfix",
+        "toggleterm",
       },
-    }
+    })
   end,
 }

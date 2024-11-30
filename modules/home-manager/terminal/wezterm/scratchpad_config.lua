@@ -18,10 +18,10 @@ config.use_fancy_tab_bar = false
 config.enable_tab_bar = false
 
 config.window_padding = {
-	top = 0,
-	right = 0,
-	bottom = 0,
-	left = 0,
+  top = 0,
+  right = 0,
+  bottom = 0,
+  left = 0,
 }
 
 -- and finally, return the configuration to wezterm

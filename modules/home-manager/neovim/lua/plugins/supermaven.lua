@@ -2,9 +2,9 @@
 return {
   {
     -- Supermaven plugin configuration
-    'supermaven-inc/supermaven-nvim',
+    "supermaven-inc/supermaven-nvim",
     config = function()
-      require('supermaven-nvim').setup({
+      require("supermaven-nvim").setup({
         keymaps = {
           -- Changed from <Tab> to avoid conflict with nvim-cmp
           accept_suggestion = "<M-l>",

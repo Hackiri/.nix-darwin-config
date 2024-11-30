@@ -29,7 +29,7 @@ map("n", "<leader>h", "<cmd>nohlsearch<CR>")
 map("v", "p", '"_dP')
 
 -- Keymap to open neoclip via Telescope
-map('n', '<leader>fy', '<cmd>Telescope neoclip<CR>', { desc = 'Clipboard History (neoclip)' })
+map("n", "<leader>fy", "<cmd>Telescope neoclip<CR>", { desc = "Clipboard History (neoclip)" })
 
 -- Visual --
 -- Stay in indent mode

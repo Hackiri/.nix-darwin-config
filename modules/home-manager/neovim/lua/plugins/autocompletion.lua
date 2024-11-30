@@ -2,14 +2,14 @@ return {
   "hrsh7th/nvim-cmp",
   event = "InsertEnter",
   dependencies = {
-    "hrsh7th/cmp-buffer",        -- source for text in buffer
-    "hrsh7th/cmp-path",          -- source for file system paths
-    "hrsh7th/cmp-nvim-lsp",      -- source for LSP
-    "hrsh7th/cmp-cmdline",       -- source for cmdline
-    "L3MON4D3/LuaSnip",         -- snippet engine
+    "hrsh7th/cmp-buffer", -- source for text in buffer
+    "hrsh7th/cmp-path", -- source for file system paths
+    "hrsh7th/cmp-nvim-lsp", -- source for LSP
+    "hrsh7th/cmp-cmdline", -- source for cmdline
+    "L3MON4D3/LuaSnip", -- snippet engine
     "saadparwaiz1/cmp_luasnip", -- for lua autocompletion
     "rafamadriz/friendly-snippets", -- useful snippets library
-    "onsails/lspkind.nvim",     -- vs-code like pictograms
+    "onsails/lspkind.nvim", -- vs-code like pictograms
   },
   config = function()
     local cmp = require("cmp")
@@ -18,7 +18,7 @@ return {
 
     -- Load VSCode-like snippets
     require("luasnip.loaders.from_vscode").lazy_load()
-    luasnip.config.setup {}
+    luasnip.config.setup({})
 
     -- Helper function
     local has_words_before = function()
@@ -43,8 +43,8 @@ return {
 
       window = {
         completion = cmp.config.window.bordered({
-          border = 'rounded',
-          winhighlight = 'Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None',
+          border = "rounded",
+          winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
           scrollbar = true,
           scrolloff = 2,
           col_offset = 0,
@@ -53,8 +53,8 @@ return {
           max_width = 80,
         }),
         documentation = cmp.config.window.bordered({
-          border = 'rounded',
-          winhighlight = 'Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None',
+          border = "rounded",
+          winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
           scrollbar = true,
           scrolloff = 2,
           col_offset = 0,
@@ -211,9 +211,7 @@ return {
         local current = string.sub(line, cursor, cursor)
         local prev_char = cursor > 1 and string.sub(line, cursor - 1, cursor - 1) or ""
 
-        if current:match("%w") or
-           prev_char:match("%s") or
-           prev_char:match("[%.%:%@%/%_]") then
+        if current:match("%w") or prev_char:match("%s") or prev_char:match("[%.%:%@%/%_]") then
           cmp.complete()
         end
       end,

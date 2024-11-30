@@ -2,7 +2,7 @@
 
 -- Function to check if a file exists
 local function file_exists(file)
-  local f = io.open(file, 'r')
+  local f = io.open(file, "r")
   if f then
     f:close()
     return true
@@ -12,7 +12,7 @@ local function file_exists(file)
 end
 
 -- Path to the session file
-local session_file = '.session.vim'
+local session_file = ".session.vim"
 
 -- Create an autocommand group for session management
 local session_group = vim.api.nvim_create_augroup("SessionManagement", { clear = true })
@@ -22,7 +22,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
   group = session_group,
   callback = function()
     if file_exists(session_file) then
-      vim.cmd('source ' .. session_file)
+      vim.cmd("source " .. session_file)
     end
   end,
 })
@@ -31,6 +31,6 @@ vim.api.nvim_create_autocmd("VimEnter", {
 vim.api.nvim_create_autocmd("VimLeave", {
   group = session_group,
   callback = function()
-    vim.cmd('mksession! ' .. session_file)
+    vim.cmd("mksession! " .. session_file)
   end,
 })
