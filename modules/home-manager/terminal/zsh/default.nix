@@ -31,6 +31,7 @@ in {
       jq
       oh-my-zsh
       python3Packages.pygments # Required for syntax highlighting
+      starship
     ];
   };
 
@@ -57,7 +58,7 @@ in {
       oh-my-zsh = {
         enable = true;
         package = pkgs.oh-my-zsh;
-        theme = "jonathan";
+        theme = ""; # Disabled theme to use Starship instead
         plugins = [
           "git"
           "sudo"
@@ -100,6 +101,12 @@ in {
           mkdir -p "$ZSH_CACHE_DIR"
         fi
 
+        # Initialize zoxide
+        eval "$(zoxide init zsh)"
+
+        # Initialize Starship prompt
+        eval "$(starship init zsh)"
+
         # Source oh-my-zsh
         if [ -f "$ZSH/oh-my-zsh.sh" ]; then
           source "$ZSH/oh-my-zsh.sh"
@@ -141,9 +148,6 @@ in {
         alias ...='cd ../..'
         alias ....='cd ../../..'
         alias .....='cd ../../../..'
-
-        # Initialize zoxide
-        eval "$(zoxide init zsh)"
 
         # FZF configuration
         export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'

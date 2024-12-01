@@ -14,7 +14,7 @@
     ./emacs
     ./tmux
     ./terminal
-    # ./starship
+    ./starship
     ./neovim
   ];
 }

@@ -45,6 +45,23 @@ return {
     "RRethy/base16-nvim",
   },
 
+  {
+    "rebelot/kanagawa.nvim",
+    lazy = false,
+    opts = {
+      transparent = true,
+      colors = {
+        theme = {
+          all = {
+            ui = {
+              bg_gutter = "none",
+            },
+          },
+        },
+      },
+    },
+  },
+
   -- TokyoNight
   {
     "folke/tokyonight.nvim",
@@ -285,6 +302,7 @@ return {
       -- colorscheme = "rose-pine-main", -- rose-pine-main rose-pine-moon  rose-pine-dawn
       -- colorscheme = "gruvbox",
       -- colorscheme = "vague",
+      -- colorscheme = "kanagawa",
       colorscheme = "tokyonight",
     },
   },

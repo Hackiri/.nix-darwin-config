@@ -153,6 +153,8 @@
       "mas"
     ];
     casks = [
+      "pika"
+      "slack"
       "discord"
       "firefox"
       "iina"
