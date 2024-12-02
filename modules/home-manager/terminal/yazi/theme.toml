@@ -1,0 +1,50 @@
+# A TOML config for yazi theme
+[manager]
+# Tabs
+tab_normal.bg = { hex = "1a1b26" }
+tab_normal.fg = { hex = "565f89" }
+tab_select.bg = { hex = "1a1b26" }
+tab_select.fg = { hex = "7aa2f7" }
+
+# Borders
+border_symbol = "│"
+border_style.fg = { hex = "3d59a1" }
+
+# Highlighting
+selection.bg = { hex = "3d59a1" }
+selection.fg = { hex = "c0caf5" }
+
+# Status
+status_normal.bg = { hex = "1a1b26" }
+status_normal.fg = { hex = "a9b1d6" }
+status_select.bg = { hex = "3d59a1" }
+status_select.fg = { hex = "c0caf5" }
+
+# Headers
+folder.fg = { hex = "7aa2f7" }
+link.fg = { hex = "73daca" }
+exec.fg = { hex = "9ece6a" }
+
+[preview]
+hovered.bg = { hex = "292e42" }
+hovered.fg = { hex = "c0caf5" }
+
+[input]
+border.fg = { hex = "7aa2f7" }
+title.fg = { hex = "a9b1d6" }
+value.fg = { hex = "c0caf5" }
+selected.bg = { hex = "3d59a1" }
+
+[completion]
+border.fg = { hex = "7aa2f7" }
+selected.bg = { hex = "3d59a1" }
+
+[tasks]
+border.fg = { hex = "7aa2f7" }
+selected.bg = { hex = "3d59a1" }
+
+[which]
+mask.bg = { hex = "1a1b26" }
+desc.fg = { hex = "565f89" }
+selected.bg = { hex = "3d59a1" }
+selected.fg = { hex = "c0caf5" }

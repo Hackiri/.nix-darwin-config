@@ -149,4 +149,10 @@
   tl = "tmux list-sessions";
   tksv = "tmux kill-server";
   tkss = "tmux kill-session -t";
+
+  # Better directory navigation
+  ".." = "cd ..";
+  "..." = "cd ../..";
+  "...." = "cd ../../..";
+  "....." = "cd ../../../..";
 }
