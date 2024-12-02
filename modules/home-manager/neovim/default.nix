@@ -15,7 +15,6 @@
   plugins = with pkgs.vimPlugins; [
     # LazyVim Core
     LazyVim
-    lazy-nvim
     plenary-nvim
     nui-nvim
     nvim-web-devicons
@@ -136,6 +135,7 @@ in {
     enable = true;
     extraLuaPackages = ps: [ps.magick]; # Add Lua magick package
     extraPackages = with pkgs; [
+      git # Required for lazy.nvim bootstrap
       # Language Servers
       ltex-ls
       lua-language-server
@@ -176,7 +176,6 @@ in {
 
       # Git and Tools
       lazygit
-      git
       gh # GitHub CLI
 
       # Search and Find
@@ -209,7 +208,6 @@ in {
     ];
 
     plugins = with pkgs.vimPlugins; [
-      lazy-nvim
     ];
 
     extraLuaConfig = ''

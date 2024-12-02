@@ -14,6 +14,7 @@ vim.opt.grepprg = "rg --vimgrep"
 
 -- UI
 vim.opt.termguicolors = true -- True color support
+vim.opt.background = "dark" -- Set background to dark
 vim.opt.number = true -- Print line number
 vim.opt.relativenumber = true -- Relative line numbers
 vim.opt.showmode = false -- Don't show mode since we have a statusline
@@ -77,3 +78,6 @@ vim.opt.foldlevel = 99
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 2
+
+-- backspace
+vim.opt.backspace = "indent,eol,start"

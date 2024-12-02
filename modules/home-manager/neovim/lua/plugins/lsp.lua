@@ -142,6 +142,7 @@ return {
       "cssls",
       "ltex", -- Will be configured separately below
       "texlab",
+      "nixd", -- Added nixd LSP
     }
 
     -- Setup basic servers
