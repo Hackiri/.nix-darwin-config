@@ -39,6 +39,9 @@
       gdb
       lldb
 
+      # Network utilities
+      bind # Provides dig command
+
       # Kubernetes and infrastructure tools
       omnictl
       talosctl
@@ -57,93 +60,8 @@
       "/run/current-system/sw/bin"
       "$HOME/.nix-profile/bin"
     ];
-
-    file.".tokyoNightTheme".text = builtins.readFile "${inputs.tokyonight}/extras/sublime/tokyonight_night.tmTheme";
   };
 
   programs = {
-    git = {
-      enable = true;
-      userName = builtins.getEnv "GIT_USER_NAME";
-      userEmail = builtins.getEnv "GIT_USER_EMAIL";
-    };
-    home-manager.enable = true;
-
-    ssh = {
-      enable = true;
-      extraConfig = ''
-        Host *
-          UseKeychain yes
-          AddKeysToAgent yes
-      '';
-      matchBlocks = {
-        "*" = {
-          identityFile = "~/.ssh/id_ed25519";
-        };
-      };
-    };
-
-    lazygit = {
-      enable = true;
-      package = pkgs.lazygit;
-      settings = {
-        gui = {
-          theme = {
-            lightTheme = false;
-            activeBorderColor = ["green" "bold"];
-            inactiveBorderColor = ["white"];
-            selectedLineBgColor = ["default"];
-          };
-          showIcons = true;
-          expandFocusedSidePanel = true;
-        };
-        git = {
-          paging = {
-            colorArg = "always";
-            useConfig = true;
-          };
-          branchLogCmd = "git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium {{branchName}} --";
-        };
-        os = {
-          edit = "nvim {{filename}}";
-        };
-        keybinding = {
-          universal = {
-            quit = "q";
-            return = "<esc>";
-          };
-        };
-      };
-    };
-
-    yazi = {
-      enable = true;
-      enableZshIntegration = true;
-      settings = {
-        manager = {
-          show_hidden = true;
-          ratio = [1 2 5];
-        };
-        flavor = "tokyo-night";
-      };
-    };
-
-    bat = {
-      enable = true;
-      themes = {
-        tokyo-night = {
-          src = inputs.tokyonight;
-          file = "extras/sublime/tokyonight_night.tmTheme";
-        };
-      };
-      config = {
-        theme = "tokyo-night";
-      };
-    };
-
-    fzf = {
-      enable = true;
-      enableZshIntegration = true;
-    };
   };
 }
