@@ -4,6 +4,37 @@
   ...
 }: let
   tmux_rose_pine = builtins.readFile ./tmux.conf;
+
+  truncate_path = pkgs.writeScriptBin "truncate_path" ''
+    #!/bin/sh
+
+    path="$1"
+    max_length="''${2:-50}"  # Default to 50 if not specified
+    user_home="/Users/wm"
+
+    # Exit if no path is provided
+    if [ -z "$path" ]; then
+        echo "Usage: $0 <path> [max_length]"
+        exit 1
+    fi
+
+    # Replace $user_home with ~ in the path
+    path="''${path/#$user_home/\~}"
+
+    # Truncate path if it's longer than max_length
+    if [ "''${#path}" -gt "$max_length" ]; then
+        # Keep the last $max_length characters
+        path="...''${path:$(( ''${#path} - $max_length + 3 ))}"
+
+        # Ensure we don't break directory separators
+        if ! echo "$path" | grep -q "^/\|^\.\.\./" ; then
+            path="''${path#*/}"
+            path=".../$path"
+        fi
+    fi
+
+    echo "$path"
+  '';
 in {
   imports = [];
 
@@ -47,7 +78,7 @@ in {
       set -g mouse on
 
       # Set zsh as default shell
-      set-option -g default-shell ${pkgs.zsh}/bin/zsh
+      set-option -g default-shell "${pkgs.zsh}/bin/zsh"
 
       # Better window splitting
       bind-key "|" split-window -h -c "#{pane_current_path}"
@@ -72,7 +103,6 @@ in {
   home.packages = with pkgs; [
     tmux-sessionizer
     tmuxinator # For managing complex tmux sessions
+    truncate_path
   ];
-
-  xdg.configFile."tmux/scripts".source = ./scripts;
 }
