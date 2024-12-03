@@ -1,6 +1,7 @@
 -- Store which buffers should use LSP folding
 local M = {}
 local lsp_fold_buffers = {}
+local current_method = {}
 
 -- Check if treesitter is available for the current buffer
 function M.has_treesitter()
@@ -24,6 +25,13 @@ function M.enable_lsp_folding(bufnr)
   lsp_fold_buffers[bufnr] = true
   vim.opt_local.foldmethod = "expr"
   vim.opt_local.foldexpr = "v:lua.vim.lsp.foldexpr()"
+  current_method[bufnr] = "lsp"
+end
+
+-- Function to get current folding method for statusline
+function M.get_fold_method()
+  local bufnr = vim.api.nvim_get_current_buf()
+  return current_method[bufnr] or "none"
 end
 
 -- Function to setup folding for a buffer
@@ -34,6 +42,7 @@ function M.setup_folding(bufnr)
   if lsp_fold_buffers[bufnr] then
     vim.opt_local.foldmethod = "expr"
     vim.opt_local.foldexpr = "v:lua.vim.lsp.foldexpr()"
+    current_method[bufnr] = "lsp"
     return
   end
 
@@ -41,11 +50,13 @@ function M.setup_folding(bufnr)
   if M.has_treesitter() then
     vim.opt_local.foldmethod = "expr"
     vim.opt_local.foldexpr = "nvim_treesitter#foldexpr()"
+    current_method[bufnr] = "treesitter"
     return
   end
 
   -- Default to indent folding
   vim.opt_local.foldmethod = "indent"
+  current_method[bufnr] = "indent"
 end
 
 -- Setup autocommand for folding

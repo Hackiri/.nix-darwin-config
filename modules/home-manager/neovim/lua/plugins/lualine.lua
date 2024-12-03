@@ -57,6 +57,12 @@ return {
       diagnostic_info = "",
       diagnostic_hint = "",
 
+      -- Folding
+      fold_lsp = "󰆘",
+      fold_treesitter = "󰙅",
+      fold_indent = "",
+      fold_none = "",
+
       -- Misc
       line_number = "",
       connected = "󰌘",
@@ -166,15 +172,34 @@ return {
       end,
     }
 
+    local fold_method = {
+      function()
+        local ok, folding = pcall(require, "config.folding")
+        if not ok then
+          return ""
+        end
+        local method = folding.get_fold_method()
+        local method_icons = {
+          lsp = icons.fold_lsp,
+          treesitter = icons.fold_treesitter,
+          indent = icons.fold_indent,
+          none = icons.fold_none,
+        }
+        return method_icons[method] .. " " .. method:upper()
+      end,
+      cond = hide_in_small_window,
+      color = { fg = colors.purple },
+    }
+
     -- Setup
     require("lualine").setup({
       options = {
         icons_enabled = true,
         theme = "tokyonight",
-        component_separators = { left = "", right = "" },
-        section_separators = { left = "", right = "" },
+        component_separators = { left = "", right = "" },
+        section_separators = { left = "", right = "" },
         disabled_filetypes = {
-          statusline = { "alpha", "neo-tree", "Avante" },
+          statusline = {},
           winbar = {},
         },
         ignore_focus = {},
@@ -201,6 +226,7 @@ return {
         },
         lualine_x = {
           diff,
+          fold_method,
           {
             "filetype",
             colored = true,
