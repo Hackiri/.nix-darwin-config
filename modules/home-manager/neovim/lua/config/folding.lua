@@ -25,6 +25,22 @@ function M.enable_lsp_folding(bufnr)
   lsp_fold_buffers[bufnr] = true
   vim.opt_local.foldmethod = "expr"
   vim.opt_local.foldexpr = "v:lua.vim.lsp.foldexpr()"
+
+  -- Use LSP foldtext if available (Neovim 0.10+)
+  if vim.lsp.foldtext then
+    vim.opt_local.foldtext = "v:lua.vim.lsp.foldtext()"
+  end
+
+  -- Auto-fold imports if supported (Neovim 0.10+)
+  if vim.lsp.foldclose then
+    local client = vim.lsp.get_client_by_id(vim.lsp.get_clients({ bufnr = bufnr })[1].id)
+    if client and client.server_capabilities.foldingRangeProvider then
+      vim.schedule(function()
+        vim.lsp.foldclose("imports", 0)
+      end)
+    end
+  end
+
   current_method[bufnr] = "lsp"
 end
 
@@ -42,6 +58,9 @@ function M.setup_folding(bufnr)
   if lsp_fold_buffers[bufnr] then
     vim.opt_local.foldmethod = "expr"
     vim.opt_local.foldexpr = "v:lua.vim.lsp.foldexpr()"
+    if vim.lsp.foldtext then
+      vim.opt_local.foldtext = "v:lua.vim.lsp.foldtext()"
+    end
     current_method[bufnr] = "lsp"
     return
   end
