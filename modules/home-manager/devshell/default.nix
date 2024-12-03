@@ -1,0 +1,188 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
+  options.programs.devshell = with lib; {
+    enable = mkEnableOption "devshell configuration";
+  };
+
+  config = lib.mkIf config.programs.devshell.enable {
+    home.packages = with pkgs;
+      [
+        # Shell and terminal utilities
+        zsh
+        zsh-autosuggestions
+        zsh-syntax-highlighting
+        zsh-history-substring-search
+        fzf
+        bat
+        eza
+        fd
+        ripgrep
+        jq
+        yq-go
+        tree
+        htop
+        git
+        git-lfs
+        direnv
+        nix-direnv
+        zoxide
+        bottom
+        du-dust
+        duf
+        procs
+        sd
+        choose
+
+        # Development tools
+        gh
+        gnumake
+        cmake
+        ninja
+        gcc
+        go
+        rustup
+        nodejs
+        python3
+        python3Packages.pip
+        python3Packages.pipx
+        lazygit
+        difftastic
+        colordiff
+        helix
+        tokei
+        hyperfine
+        just
+
+        # Build tools
+        pkg-config
+        autoconf
+        automake
+        libtool
+
+        # Debugging and analysis
+        gdb
+        lldb
+
+        # Additional CLI tools
+        curl
+        wget
+        tmux
+        neofetch
+        glow
+        xh
+        jless
+        fx
+      ]
+      ++ lib.optionals (!pkgs.stdenv.isDarwin) [
+        valgrind
+      ]
+      ++ [
+        # Version control and code quality
+        git-crypt
+        pre-commit
+        shellcheck
+        nixpkgs-fmt
+        alejandra
+        deadnix
+        statix
+      ];
+
+    programs.zsh = {
+      enable = true;
+      autosuggestion.enable = true;
+      syntaxHighlighting.enable = true;
+      history.size = 10000;
+      history.path = "${config.home.homeDirectory}/.zsh_history";
+
+      initExtra = ''
+        # Function to show welcome message
+        show_welcome() {
+          echo "🚀 Entering development environment"
+          echo ""
+          echo "📂 Project: $(basename $(pwd))"
+          echo "🐍 Python environment: $VENV_DIR"
+          echo "🐹 Go environment: $GOPATH"
+          echo "📦 Node environment: $NODE_PATH"
+          echo "⚙️  Rust environment: $CARGO_HOME"
+
+          echo ""
+          echo "🔧 Tool versions:"
+          echo "🔷 Python: $(python3 --version 2>&1)"
+          echo "🐹 Go: $(go version 2>&1)"
+          echo "⬢ Node: $(node --version 2>&1)"
+          echo "🦀 Rust: $(rustc --version 2>&1)"
+          echo "🌳 Git: $(git --version 2>&1)"
+          echo "🔒 Nix: $(nix --version 2>&1)"
+
+          echo ""
+          echo "💡 Quick Tips:"
+          echo "• Use 'just' for project-specific commands"
+          echo "• 'lazygit' for git TUI"
+          echo "• 'bottom' or 'btm' for system monitoring"
+          echo "• 'zoxide' for smart directory jumping"
+        }
+
+        # Function to initialize development environment
+        devshellInit() {
+          # Source environment files
+          [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+          [ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && source "$HOME/.nix-profile/etc/profile.d/nix.sh"
+
+          # Set environment variables
+          export PYTHONPATH="$HOME/.local/lib/python3.12/site-packages:$PYTHONPATH"
+          export VENV_DIR="$HOME/.local/lib/python3.12/site-packages"
+          export GOPATH="$HOME/go"
+          export PATH="$GOPATH/bin:$PATH"
+          export NODE_PATH="$HOME/.npm-packages/lib/node_modules"
+          export CARGO_HOME="$HOME/.cargo"
+          export RUSTUP_HOME="$HOME/.rustup"
+          export EDITOR="hx"
+          export VISUAL="hx"
+          export PAGER="less -R"
+          export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+
+          # Initialize tools
+          eval "$(zoxide init zsh)"
+
+          # Show welcome message
+          show_welcome
+        }
+
+        # Alias to manually enter development environment
+        alias devshell='devshellInit'
+
+        # Auto-run devshellInit when shell starts in nix develop
+        if [ -n "$IN_NIX_SHELL" ]; then
+          devshellInit
+        fi
+      '';
+
+      shellAliases = {
+        ls = "eza --icons -l -T -L=1";
+        l = "ls -l";
+        ll = "ls -alh";
+        lsa = "ls -a";
+        cat = "bat";
+        find = "fd";
+        grep = "rg";
+        ps = "procs";
+        top = "btm";
+        du = "dust";
+        df = "duf";
+        diff = "colordiff";
+        lg = "lazygit";
+        j = "zoxide";
+        md = "glow";
+      };
+    };
+
+    programs.direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
+  };
+}
