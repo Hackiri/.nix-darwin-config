@@ -107,7 +107,7 @@
   ecx = "emacsclient -n -c";
   eterm = "emacsclient -nw -e '(vterm)'";
   sgrep = "rg -M 200 --hidden";
-  
+
   # FZF combinations
   vif = "nvim $(fzf -m --preview=\"bat --color=always {}\")";
   fcd = "cd $(find . -type d | fzf --preview='eza --tree --level=1 --color=always {}')";
