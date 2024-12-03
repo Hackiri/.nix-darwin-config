@@ -6,4 +6,10 @@ require("config.keymaps")
 require("config.autocmds")
 require("config.session")
 require("config.snippets")
+
+-- Load folding (with error handling)
+pcall(function()
+  require("config.folding")
+end)
+
 require("config.lazy") -- This should be last

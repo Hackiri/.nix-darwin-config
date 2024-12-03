@@ -20,10 +20,22 @@ return {
     },
   },
   config = function()
+    -- Load folding module
+    local folding = nil
+    pcall(function()
+      folding = require("config.folding")
+    end)
+
     -- LSP Attach Keybindings
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
       callback = function(event)
+        -- Enable LSP folding for specific servers that should override treesitter
+        local client = vim.lsp.get_client_by_id(event.data.client_id)
+        if folding and client and client.name == "lua_ls" then -- Add more servers as needed
+          folding.enable_lsp_folding(event.buf)
+        end
+
         local map = function(keys, func, desc)
           vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
         end

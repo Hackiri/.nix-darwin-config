@@ -71,10 +71,17 @@ vim.opt.wildignore = {
 }
 
 -- Fold settings
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-vim.opt.foldenable = false
+vim.opt.fillchars:append({
+  eob = " ",
+  fold = " ",
+  foldopen = "▾",
+  foldsep = " ",
+  foldclose = "▸",
+})
+vim.opt.foldcolumn = "1"
+vim.opt.foldenable = true
 vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 2
