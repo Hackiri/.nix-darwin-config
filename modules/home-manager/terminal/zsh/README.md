@@ -22,6 +22,8 @@ This configuration provides a comprehensive Zsh environment optimized for develo
 - Extended globbing and case-insensitive completion
 - Custom environment variables for development tools
 - Optimized history management
+- Modern theme configuration with Tokyo Night color scheme
+- Yazi file manager integration
 
 ### Plugin Integration
 
@@ -47,6 +49,8 @@ This configuration provides a comprehensive Zsh environment optimized for develo
 # Nix Operations
 swnix        # Rebuild and switch configuration (verbose)
 drynix       # Dry-build configuration
+bootnix      # Rebuild and set for next boot
+rbnix        # Rollback to previous build
 updatanix    # Update and rebuild configuration
 cleanix      # Clean Nix store
 nix-store-du # Print dead store entries
@@ -58,19 +62,27 @@ nixdev       # Enter Nix development shell
 #### Container Operations
 ```bash
 # Podman Management
-pps          # List containers (formatted)
+pps          # List containers (formatted table)
 pclean       # Clean stopped containers
 piclean      # Remove dangling images
 pcomp        # Podman compose shorthand
+prestart     # Restart compose services
+pi           # List images
 ```
 
 #### Kubernetes Operations
 ```bash
 # Cluster Management
 k            # kubectl shorthand
+kg           # Get resources
+kd           # Describe resources
+kap          # Apply resources
 kgaa         # Get all resources
 kgpsn        # Get pods in namespace
 krestartpo   # Restart deployment
+ktop         # Show pod resource usage
+ktopnodes    # Show node resource usage
+kdebug       # Start debug container
 ```
 
 #### Version Control
@@ -78,8 +90,14 @@ krestartpo   # Restart deployment
 # Git Operations
 gaa          # Git add all
 gcmsg        # Git commit with message
+gst          # Show status
 gitsave      # Quick save changes
-gpush        # Push to current/specified branch
+gco          # Checkout
+gcb          # Create and checkout new branch
+gcm          # Checkout main branch
+gl           # Show log graph
+gpull        # Pull with rebase
+gpush        # Push to current branch
 ```
 
 ### Shell Functions
@@ -117,6 +135,10 @@ zsh/
 ### Core Packages
 - `direnv`: Environment management
 - `fzf`: Fuzzy finding
+- `zoxide`: Smart directory jumping
+- `bat`: Modern cat replacement
+- `jq`: JSON processor
+- `starship`: Modern shell prompt
 - Essential Unix utilities
 
 ## Usage
@@ -140,7 +162,7 @@ updatanix    # Update and rebuild system
 ## Maintenance
 
 ### Configuration Files
-- `default.nix`: Shell and plugin settings
+- `default.nix`: Shell configuration and theme settings
 - `aliases.nix`: Command shortcuts
 - `scripts.nix`: Shell functions
 - `themes/jetpack.toml`: Prompt configuration

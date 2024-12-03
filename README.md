@@ -8,7 +8,6 @@ Nix system configuration for macOS using nix-darwin and Home Manager, providing 
 - [Features](#features)
 - [System Architecture](#system-architecture)
 - [Installation](#installation)
-- [Configuration](#configuration)
 - [Customization Guide](#customization-guide)
 - [Maintenance](#maintenance)
 
@@ -19,19 +18,19 @@ This repository contains a complete nix-darwin configuration that manages both s
 ## Features
 
 ### Core Components
-- 🚀 **Declarative macOS Configuration**
+- **Declarative macOS Configuration**
   - System-wide settings management
   - Automated system updates
   - Homebrew integration via `nix-homebrew`
   - Content-addressed derivations support
   
-- 🏠 **User Environment Management**
+- **User Environment Management**
   - Complete home directory configuration
   - XDG base directory support
   - Dotfiles management
   - Application settings synchronization
 
-- 📦 **Package Management**
+- **Package Management**
   - Nix Flakes for reproducible builds
   - Automatic garbage collection (weekly)
   - Storage optimization
@@ -50,26 +49,30 @@ This repository contains a complete nix-darwin configuration that manages both s
   - Tree-sitter syntax highlighting
 
 - **Terminal Environment**
-  - WezTerm with GPU acceleration and multiplexing
   - Custom font configuration
   - Zsh with extensive customization
   - Tmux integration
-  - Starship prompt
+  - oh-my-zsh with Starship prompt
   - Directory jumping with zoxide
   - Modern CLI tools (bat, eza, ripgrep)
 
-- **Programming Support**
-  - Multiple language environments
-    - Python with pip and virtualenv
-    - Node.js and npm
-    - Rust with cargo
-    - Go development environment
-  - Build tools and debuggers
-    - GCC and LLDB
-    - CMake and Ninja
-    - pkg-config and autotools
-  - Container management
-  - Development shells with direnv
+- **Development Tools**
+  - Code Quality
+    - Pre-commit hooks for automated checks
+    - Shellcheck for shell script analysis
+    - Alejandra for Nix code formatting
+    - Deadnix for dead code detection
+    - Statix for static analysis
+    - Stylua for Lua formatting
+  - Debugging
+    - GDB for general debugging
+    - LLDB for LLVM-based debugging
+  - Infrastructure
+    - Terraform for infrastructure as code
+    - K9s for Kubernetes cluster management
+    - Cilium CLI for network policies
+    - Kustomize for Kubernetes manifests
+    - Omnictl and Talosctl for cluster operations
 
 ### System Features
 - **Security**
@@ -83,6 +86,10 @@ This repository contains a complete nix-darwin configuration that manages both s
   - Weekly storage optimization
   - Parallel builds configuration
   - Binary caches setup
+  - Content-addressed derivations
+  - Trusted binary caches:
+    - cache.nixos.org
+    - nix-community.cachix.org
 
 - **Maintenance**
   - Automated cleanup tasks
@@ -108,56 +115,45 @@ This repository contains a complete nix-darwin configuration that manages both s
 ### Directory Structure
 ```bash
 .nix-darwin-config/
-├── flake.nix                # System entry point
 ├── home-manager/           # User configuration
 ├── modules/                # Configuration modules
 │   ├── home-manager/      # User-specific settings
+│   │   ├── btop/         # System monitor configuration
+│   │   │   └── themes/   # Custom themes
+│   │   ├── cli/          # Command-line tools
+│   │   │   └── zoxide/   # Directory jumper
 │   │   ├── devshell/     # Development environment
-│   │   ├── neovim/       # Editor configuration
-│   │   └── terminal/     # Terminal setup
+│   │   ├── emacs/        # Emacs configuration
+│   │   ├── neovim/       # Neovim setup
+│   │   │   └── lua/      # Lua configurations
+│   │   │       ├── config/
+│   │   │       └── plugins/
+│   │   ├── starship/     # Shell prompt
+│   │   ├── terminal/     # Terminal emulators
+│   │   │   ├── alacritty/
+│   │   │   ├── wezterm/
+│   │   │   ├── zellij/   # Terminal multiplexer
+│   │   │   └── zsh/      # Shell configuration
+│   │   │       ├── lib/
+│   │   │       ├── themes/
+│   │   │       └── tools/
+│   │   └── tmux/         # Terminal multiplexer
 │   └── nix-darwin/       # System-wide settings
-├── nixos/                 # Host configurations
-└── overlays/             # Package modifications
+│       └── nixd/         # Nix language server
+├── nixos/                # Host configurations
+│   └── hosts/
+│       └── wm-macbook-pro/
+├── overlays/            # Package modifications
+└── pkgs/                # Custom packages
 ```
 
 ### Key Components
-
-#### System Configuration
-```nix
-# System-wide settings in configuration.nix
-{
-  system = {
-    defaults = {
-      dock = {
-        autohide = true;
-        static-only = true;
-      };
-      finder.AppleShowAllExtensions = true;
-    };
-  };
-}
-```
-
-#### Package Management
-```nix
-# Flake-based configuration
-{
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    home-manager.url = "github:nix-community/home-manager";
-  };
-}
-```
-
-#### Maintenance
-```nix
-# Automated garbage collection
-nix.gc = {
-  automatic = true;
-  interval = { Weekday = 0; Hour = 2; Minute = 0; };
-  options = "--delete-older-than 30d";
-};
-```
+- `home-manager`: User-specific configuration
+- `nix-darwin`: System-wide settings
+- `nixpkgs`: Package collection for nix-darwin
+- `home.nix`: User configuration
+- `flake.nix`: Nix flake for system configuration and user environment
+- `configuration.nix`: Host-specific configuration
 
 ## Installation
 
@@ -165,46 +161,13 @@ nix.gc = {
 - macOS 10.15 or later
 - Administrative access
 - Internet connection
+- Basic knowledge of Nix/Nix Flakes
 
-### Forking and Customization
-
-1. Fork the Repository
-```bash
-# Fork this repository on GitHub first, then:
-git clone https://github.com/YOUR_USERNAME/nix-darwin-config.git ~/.nix-darwin-config
-cd ~/.nix-darwin-config
-```
-
-2. Customize Your Setup
-- **System Configuration**
-  - Update `flake.nix` with your system details
-  - Modify `nixos/hosts/` to match your hostname
-  - Adjust `nixConfig` settings as needed
-
-- **User Environment**
-  - Update `home-manager/home.nix` with your user preferences
-  - Customize `modules/home-manager/` for your tools and apps
-  - Modify `modules/nix-darwin/` for system-wide settings
-
-- **Optional Components**
-  - Remove unused modules from `modules/`
-  - Add your own modules for specific needs
-  - Customize the directory structure to your preference
-
-3. Version Control
-```bash
-# Initialize your own git repository
-git remote set-url origin https://github.com/YOUR_USERNAME/nix-darwin-config.git
-git add .
-git commit -m "Initial customization"
-git push -u origin main
-```
-
-### Setup Process
+### Quick Start
 
 1. Install Nix
 ```bash
-curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+sh <(curl -L https://nixos.org/nix/install)
 ```
 
 2. Enable Flakes
@@ -216,42 +179,38 @@ echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 3. Clone Configuration
 ```bash
 git clone https://github.com/YOUR_USERNAME/nix-darwin-config.git ~/.nix-darwin-config
+cd ~/.nix-darwin-config
 ```
 
-4. Customize Configuration
-- Update hostname in `flake.nix`
-- Modify user settings in `configuration.nix`
-- Adjust feature flags as needed
-
-5. Apply Configuration
+4. Initial Setup
 ```bash
-cd ~/.nix-darwin-config
+# Build and apply the configuration
 darwin-rebuild switch --flake .
 ```
 
-## Configuration
+### Customization Steps
 
-### System Settings
-- **Security**
-  - Touch ID authentication
-  - SSH with keychain
-  - Secure defaults
+1. Update Personal Information
+- Set your username in `flake.nix`
+- Configure git settings in `home-manager/home.nix`
+- Adjust system settings in `nixos/hosts/wm-macbook-pro/configuration.nix`
 
-- **UI/UX**
-  - Dock configuration
-  - Finder preferences
-  - Screenshot settings
+2. Choose Your Tools
+- Enable/disable modules in `modules/home-manager/default.nix`
+- Configure development tools in `modules/home-manager/devshell/`
+- Set up editor preferences in `modules/home-manager/neovim/`
 
-- **Development**
-  - Programming languages
-  - Build tools
-  - Container support
+3. Apply Changes
+```bash
+# Test configuration
+darwin-rebuild check --flake .
 
-### User Environment
-- **Shell**: Customized Zsh environment
-- **Editor**: Neovim with LSP
-- **Terminal**: GPU-accelerated WezTerm
-- **Tools**: Development utilities
+# Apply changes
+darwin-rebuild switch --flake .
+
+# Verify with pre-commit hooks
+pre-commit run --all-files
+```
 
 ## Customization Guide
 
@@ -341,97 +300,6 @@ Remember to rebuild your system after making these changes:
 darwin-rebuild switch --flake .
 ```
 
-### Module Customization
-
-1. **Terminal Setup**
-   ```bash
-   modules/home-manager/terminal/
-   ├── wezterm/              # Terminal emulator config
-   │   ├── default.nix
-   │   └── main_config.lua   # WezTerm specific settings
-   └── zsh/                  # Shell configuration
-       ├── default.nix
-       └── aliases.nix       # Custom aliases
-   ```
-   - Customize terminal appearance and behavior
-   - Add personal aliases and functions
-   - Configure key bindings and plugins
-
-2. **Development Environment**
-   ```bash
-   modules/home-manager/
-   ├── devshell/            # Development environment settings
-   └── neovim/              # Editor configuration
-       ├── default.nix
-       └── lua/             # Neovim lua configurations
-   ```
-   - Set up language-specific development environments
-   - Configure editor plugins and keymaps
-   - Add custom development tools
-
-3. **System Modules**
-   ```bash
-   modules/nix-darwin/      # macOS specific settings
-   └── default.nix
-   ```
-   - Configure macOS system preferences
-   - Set up system-wide services
-   - Add custom system modifications
-
-### Adding New Features
-
-1. **Creating Custom Modules**
-   ```bash
-   modules/home-manager/
-   └── your-module/
-       ├── default.nix      # Module configuration
-       └── config/          # Additional config files
-   ```
-   - Create new modules for specific tools or workflows
-   - Follow the existing module structure
-   - Import your module in `home.nix`
-
-2. **Secret Management**
-   ```bash
-   secrets/
-   └── secrets.nix         # Encrypted secrets (using git-crypt)
-   ```
-   - Initialize git-crypt for sensitive data
-   - Add secrets using the provided structure
-   - Never commit unencrypted secrets
-
-### Common Customizations
-
-1. **Adding Packages**
-   ```nix
-   # home.nix
-   home.packages = with pkgs; [
-     your-package
-     another-package
-   ];
-   ```
-
-2. **Modifying System Settings**
-   ```nix
-   # configuration.nix
-   system.defaults = {
-     dock = {
-       autohide = true;
-       orientation = "left";
-     };
-   };
-   ```
-
-3. **Creating Development Shells**
-   ```nix
-   # modules/home-manager/devshell/default.nix
-   devShells.${system}.your-project = pkgs.mkShell {
-     buildInputs = with pkgs; [
-       # Add project-specific packages
-     ];
-   };
-   ```
-
 ### Testing Changes
 
 1. Build without applying:
@@ -448,32 +316,57 @@ darwin-rebuild switch --flake .
    ```bash
    darwin-rebuild switch --flake .
    ```
+4. pre-commit
+   ```bash
+   pre-commit run --all-files
+   ```
 
 ## Maintenance
 
-### Regular Updates
-```bash
-# Update and rebuild
-darwin-rebuild switch --flake .
+### System Updates
 
-# Update specific inputs
-nix flake lock --update-input nixpkgs
+1. Update Flake Inputs
+```bash
+nix flake update  # Update all inputs
+nix flake lock --update-input nixpkgs  # Update specific input
+```
+
+2. Rebuild System
+```bash
+darwin-rebuild switch --flake .
 ```
 
 ### System Cleanup
+
+1. Garbage Collection
 ```bash
-# Manual garbage collection
+# Automatic weekly cleanup
 nix-collect-garbage -d
 
-# Store optimization
+# Manual optimization
 nix store optimise
 ```
 
-### Monitoring
-- Check system status
-- Review logs
-- Monitor disk usage
-- Verify service health
+2. Cache Management
+```bash
+# Clear old generations
+sudo nix-collect-garbage -d
+
+# Remove unused packages
+nix store gc
+```
+
+### Troubleshooting
+
+1. Common Issues
+- Check system logs: `darwin-rebuild switch --show-trace`
+- Verify flake inputs: `nix flake metadata`
+- Test configuration: `darwin-rebuild check`
+
+2. Recovery Steps
+- Rollback to previous generation: `darwin-rebuild switch --rollback`
+- Boot to previous generation: `darwin-rebuild boot --rollback`
+- Clean build: `darwin-rebuild switch --flake . --recreate-lock-file`
 
 For detailed documentation of specific components, see:
 - [DevShell Configuration](modules/home-manager/devshell/README.md)

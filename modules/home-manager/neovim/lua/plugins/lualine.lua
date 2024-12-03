@@ -38,37 +38,38 @@ return {
     -- Icons
     local icons = {
       -- Mode
-      normal = "",
-      insert = "",
-      visual = "",
-      replace = "",
-      command = "",
-      terminal = "",
+      normal = "",
+      insert = "",
+      visual = "",
+      replace = "󰛔",
+      command = "",
+      terminal = "",
 
       -- Git
-      git_branch = "",
-      git_added = "",
-      git_modified = "",
-      git_removed = "",
+      git_branch = "",
+      git_added = "",
+      git_modified = "",
+      git_removed = "",
 
       -- Diagnostics
-      diagnostic_error = "",
-      diagnostic_warn = "",
-      diagnostic_info = "",
-      diagnostic_hint = "",
+      diagnostic_error = "",
+      diagnostic_warn = "",
+      diagnostic_info = "",
+      diagnostic_hint = "",
+      diagnostic_ok = "",
 
       -- Folding
-      fold_lsp = "󰆘",
+      fold_lsp = "󱧊",
       fold_treesitter = "󰙅",
-      fold_indent = "",
-      fold_none = "",
+      fold_indent = "",
+      fold_none = "󰝾",
 
       -- Misc
-      line_number = "",
+      line_number = " 󰏽",
       connected = "󰌘",
       disconnected = "󰌙",
       progress = "󰔟",
-      lock = "",
+      lock = "",
       dots = "󰇘",
     }
 
@@ -161,7 +162,7 @@ return {
       "location",
       padding = 0,
       fmt = function()
-        return icons.line_number .. " %l:%c"
+        return icons.line_number .. " %l:%c "
       end,
     }
 

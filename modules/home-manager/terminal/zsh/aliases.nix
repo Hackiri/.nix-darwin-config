@@ -107,6 +107,14 @@
   ecx = "emacsclient -n -c";
   eterm = "emacsclient -nw -e '(vterm)'";
   sgrep = "rg -M 200 --hidden";
+
+  # FZF combinations
+  vif = "nvim $(fzf -m --preview=\"bat --color=always {}\")";
+  fcd = "cd $(find . -type d | fzf --preview='eza --tree --level=1 --color=always {}')";
+  fh = "history 0 | fzf --tac --tiebreak=index";
+  fkill = "ps aux | fzf --multi | awk '{print $2}' | xargs kill -9";
+  fenv = "env | fzf";
+  frg = "rg --color=always --line-number --no-heading --smart-case \"\" | fzf --ansi --preview=\"bat --color=always {1} --highlight-line {2}\"";
   cat = "bat";
   ls = "eza --icons -l -T -L=1";
   l = "ls -l";
@@ -116,6 +124,15 @@
   clr = "clear";
   hist = "history | grep";
   diff = "colordiff";
+  find = "fd";
+  grep = "rg";
+  ps = "procs";
+  top = "btm";
+  du = "dust";
+  df = "duf";
+  lg = "lazygit";
+  j = "zoxide";
+  md = "glow";
 
   # Networking and system monitoring
   psg = "ps aux | grep";

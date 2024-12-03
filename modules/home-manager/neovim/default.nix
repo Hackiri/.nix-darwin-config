@@ -18,6 +18,7 @@
     plenary-nvim
     nui-nvim
     nvim-web-devicons
+    snacks-nvim
 
     # Navigation and Fuzzy Finding
     telescope-nvim
