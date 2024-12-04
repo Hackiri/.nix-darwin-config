@@ -149,16 +149,13 @@ This repository contains a complete nix-darwin configuration that manages both s
 curl -sSf -L https://install.lix.systems/lix | sh -s -- install
 ```
 
-2. Enable Flakes
-```bash
-mkdir -p ~/.config/nix
-echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
-```
-
-3. Clone Repository
+2. Clone Repository
 ```bash
 git clone https://github.com/Hackiri/nix-darwin-config.git ~/.nix-darwin-config
 ```
+
+3. Flakes Support
+Flakes support is already enabled in the system configuration (`nixos/hosts/wm-macbook-pro/configuration.nix`).
 
 4. Configure Your System
 
@@ -272,7 +269,7 @@ After the initial installation, you can customize various aspects of your system
 2. **Development Tools**
    - Configure editors: `modules/home-manager/neovim/` or `modules/home-manager/emacs/`
    - Set up dev environments: `modules/home-manager/devshell/`
-   - Add language servers: `modules/nix-darwin/nixd/`
+   - Add Programs to import from configuration.nix: `modules/nix-darwin/default.nix`
 
 3. **System Preferences**
    - Modify system settings in your host's `configuration.nix`
