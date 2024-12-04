@@ -57,8 +57,8 @@ in {
     sessionVariables = {
       KREW_ROOT = "${config.home.homeDirectory}/.krew";
       PATH = "${config.home.homeDirectory}/.krew/bin:${config.home.homeDirectory}/bin:$PATH";
-      EDITOR = "vim";
-      VISUAL = "vim";
+      EDITOR = "nvim";
+      VISUAL = "nvim";
       LANG = "en_US.UTF-8";
       LC_ALL = "en_US.UTF-8";
       TERM = "xterm-256color";
