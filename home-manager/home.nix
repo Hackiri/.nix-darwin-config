@@ -50,6 +50,7 @@
       kustomize
       k9s
       kubectl
+      kubecolor
       krew
       kubernetes-helm
       kubernetes-helmPlugins.helm-diff

@@ -137,6 +137,16 @@ in {
       };
     };
 
+    git = {
+      enable = true;
+      userName = "${config.home.sessionVariables.GIT_USER_NAME}";
+      userEmail = "${config.home.sessionVariables.GIT_USER_EMAIL}";
+      signing = {
+        key = "${config.home.homeDirectory}/.ssh/id_ed25519";
+        signByDefault = true;
+      };
+    };
+
     lazygit = {
       enable = true;
       settings = {
