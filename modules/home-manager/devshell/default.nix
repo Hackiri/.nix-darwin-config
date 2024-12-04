@@ -45,6 +45,7 @@
         gcc
         go
         rustup
+        taplo
         nodejs
         python3
         python3Packages.pip
@@ -161,23 +162,7 @@
         fi
       '';
 
-      shellAliases = {
-        ls = "eza --icons -l -T -L=1";
-        l = "ls -l";
-        ll = "ls -alh";
-        lsa = "ls -a";
-        cat = "bat";
-        find = "fd";
-        grep = "rg";
-        ps = "procs";
-        top = "btm";
-        du = "dust";
-        df = "duf";
-        diff = "colordiff";
-        lg = "lazygit";
-        j = "zoxide";
-        md = "glow";
-      };
+      shellAliases = { };
     };
 
     programs.direnv = {

@@ -1,12 +1,11 @@
-{...}:
-# let
-#  confFileContent = builtins.readFile (./. + "/kitty.conf");
-# in
-{
+{ config, lib, pkgs, ... }: {
   imports = [];
 
-  programs.zellij.enable = true;
+  programs.zellij = {
+    enable = true;
+    enableZshIntegration = true;
+  };
 
-  # Copy the theme folder
-  # xdg.configFile."kitty/themes".source = ./themes;
+  # Link zellij configuration
+  # xdg.configFile."zellij/config.kdl".source = ./config.kdl;
 }

@@ -128,6 +128,7 @@ return {
     -- Rust
     lspconfig.rust_analyzer.setup({
       capabilities = capabilities,
+      cmd = { "rustup", "run", "stable", "rust-analyzer" },
       settings = {
         ["rust-analyzer"] = {
           cargo = {
@@ -136,6 +137,9 @@ return {
           checkOnSave = true,
           check = {
             command = "clippy",
+          },
+          procMacro = {
+            enable = true
           },
         },
       },
@@ -149,6 +153,7 @@ return {
       "docker_compose_language_service",
       "ruff",
       "tailwindcss",
+      "taplo",  -- TOML language server
       "jsonls",
       "sqlls",
       "terraformls",

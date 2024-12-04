@@ -60,7 +60,7 @@ return {
 
       -- Folding
       fold_lsp = "󱧊",
-      fold_treesitter = "󰙅",
+      fold_treesitter = "",
       fold_indent = "",
       fold_none = "󰝾",
 
