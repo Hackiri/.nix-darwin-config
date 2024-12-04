@@ -222,13 +222,28 @@ home = {
 e. Configure Git (Optional)
 Edit `~/.nix-darwin-config/modules/home-manager/terminal/zsh/default.nix`:
 ```nix
-home = {
-  sessionVariables = {
-    GIT_USER_NAME = "YOUR GIT USERNAME";
-    GIT_USER_EMAIL = "YOUR GIT EMAIL";
-  };
-};
+    git = {
+      enable = true;
+      userName = "YOUR-USERNAME";  # Your GitHub username
+      userEmail = "YOUR-GITHUB-NOREPLY-EMAIL";  # Your GitHub no-reply email
+      
+      # GPG signing configuration (optional)
+      signing = {
+        signByDefault = true;
+        key = "YOUR-GPG-KEY-ID";  # Your GPG key ID from step 2 below
+      };
+      extraConfig = {
+        commit.gpgsign = true;
+        tag.gpgsign = true;
+      };
+    };
 ```
+
+For GPG signing setup, follow these steps:
+1. Generate a GPG key: `gpg --full-generate-key`
+2. List your keys: `gpg --list-secret-keys --keyid-format=long`
+3. Copy your key ID (the long string after "sec   rsa4096/") and paste it into the signing.key field above
+4. Add your GPG public key to GitHub: Settings > SSH and GPG keys
 
 5. Initialize and Build System
 ```bash

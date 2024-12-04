@@ -1,16 +1,15 @@
 {
-  # NixOS and Nix-related commands
-  swnix = "darwin-rebuild switch --verbose --show-trace --flake .";
-  drynix = "darwin-rebuild dry-build --verbose --show-trace --flake .";
-  bootnix = "darwin-rebuild boot --verbose --show-trace --flake .";
-  rbnix = "darwin-rebuild build --rollback --flake .";
-  schnix = "nix search nixpkgs";
-  replnix = "nix repl '<nixpkgs>'";
-  updatanix = "darwin-rebuild switch --upgrade --flake .";
-  nupdate = "nix-channel --update && nix-env -u '*'";
-  cleanix = "nix-collect-garbage -d";
-  nix-store-du = "nix-store --gc --print-dead";
-  nixdev = "nix develop /Users/wm/.nix-darwin-config";
+  # Darwin rebuild commands
+  swnix = "darwin-rebuild switch --flake /Users/wm/.nix-darwin-config --show-trace"; # Most common rebuild
+  drynix = "darwin-rebuild dry-build --flake /Users/wm/.nix-darwin-config --show-trace"; # Test build
+  bootnix = "darwin-rebuild boot --flake /Users/wm/.nix-darwin-config --show-trace"; # Build but don't activate
+  rbnix = "darwin-rebuild build --rollback --flake /Users/wm/.nix-darwin-config --show-trace"; # Rollback to previous generation
+
+  # Nix utilities
+  schnix = "nix search nixpkgs"; # Search packages
+  replnix = "nix repl '<nixpkgs>'"; # Interactive nix REPL
+  cleanix = "nix-collect-garbage -d"; # Clean old generations
+  nixdev = "nix develop /Users/wm/.nix-darwin-config"; # Enter dev shell
 
   # Kubernetes-related commands
   k = "kubectl";
