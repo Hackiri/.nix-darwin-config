@@ -158,6 +158,9 @@
   # nix-darwin directory shortcuts
   dots = "cd ~/.nix-darwin-config";
 
+  # Pre-commit
+  pcmit = "pre-commit run --all-files";
+
   # Tmux aliases
   ta = "tmux attach -t";
   tad = "tmux attach -d -t";
