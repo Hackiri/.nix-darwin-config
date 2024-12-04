@@ -57,8 +57,6 @@ in {
     sessionVariables = {
       KREW_ROOT = "${config.home.homeDirectory}/.krew";
       PATH = "${config.home.homeDirectory}/.krew/bin:${config.home.homeDirectory}/bin:$PATH";
-      GIT_USER_NAME = "hackiri";
-      GIT_USER_EMAIL = "128340174+Hackiri@users.noreply.github.com";
       EDITOR = "vim";
       VISUAL = "vim";
       LANG = "en_US.UTF-8";
@@ -137,13 +135,24 @@ in {
       };
     };
 
+    gpg = {
+      enable = true;
+      settings = {
+        trust-model = "tofu+pgp";
+      };
+    };
+
     git = {
       enable = true;
-      userName = "${config.home.sessionVariables.GIT_USER_NAME}";
-      userEmail = "${config.home.sessionVariables.GIT_USER_EMAIL}";
+      userName = "hackiri";
+      userEmail = "128340174+Hackiri@users.noreply.github.com";
       signing = {
-        key = "${config.home.homeDirectory}/.ssh/id_ed25519";
         signByDefault = true;
+        key = "6CE5860014793E29"; # Your GPG key ID
+      };
+      extraConfig = {
+        commit.gpgsign = true;
+        tag.gpgsign = true;
       };
     };
 
