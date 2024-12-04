@@ -139,7 +139,7 @@ return {
             command = "clippy",
           },
           procMacro = {
-            enable = true
+            enable = true,
           },
         },
       },
@@ -153,7 +153,7 @@ return {
       "docker_compose_language_service",
       "ruff",
       "tailwindcss",
-      "taplo",  -- TOML language server
+      "taplo", -- TOML language server
       "jsonls",
       "sqlls",
       "terraformls",

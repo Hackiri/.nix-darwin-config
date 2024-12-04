@@ -71,7 +71,7 @@ return {
         end
         return true
       end,
-    }
+    },
   },
   -- Key mappings for quick actions
   keys = {

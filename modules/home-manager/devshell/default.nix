@@ -162,7 +162,7 @@
         fi
       '';
 
-      shellAliases = { };
+      shellAliases = {};
     };
 
     programs.direnv = {
