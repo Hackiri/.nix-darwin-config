@@ -7,6 +7,9 @@ format = """($nix_shell$container$fill$git_metrics\n)$cmd_duration\
 $hostname\
 $localip\
 $shlvl\
+$os\
+$shell\
+$env_var\
 $jobs\
 $sudo\
 $username\
@@ -80,10 +83,8 @@ $azure\
 $crystal\
 $custom\
 $status\
-$nix_shell\
 $battery\
-$time\
-$os"""
+$time"""
 
 [os]
 format = "[$symbol](bold fg:#7aa2f7)"
@@ -91,25 +92,36 @@ style = "bold fg:#7aa2f7"
 disabled = false
 
 [os.symbols]
-Macos = "  "
+Macos = " "
 
 [fill]
 symbol = ' '
 
 [character]
 format = "$symbol "
-success_symbol = " [◎](bold italic bright-yellow)"
-error_symbol = " [○](italic purple)"
-vimcmd_symbol = " [■](italic dimmed green)"
+success_symbol = "[◎](bold italic bright-yellow)"
+error_symbol = "[○](italic purple)"
+vimcmd_symbol = "[■](italic dimmed green)"
 # not supported in zsh
 vimcmd_replace_one_symbol = "◌"
 vimcmd_replace_symbol = "□"
 vimcmd_visual_symbol = "▼"
 
+[shell]
+disabled = false
+bash_indicator = ""
+zsh_indicator = ""
+unknown_indicator = "mystery shell"
+style = "bold italic blue"
+
+[env_var.VIMSHELL]
+format = "[$env_value]($style)"
+style = 'green italic'
+
 [sudo]
 format = "[$symbol]($style)"
 style = "bold italic bright-purple"
-symbol = " ⋈┈"
+symbol = "⋈┈"
 disabled = false
 
 [username]
@@ -122,7 +134,7 @@ show_always = false
 [directory]
 home_symbol = ""
 truncation_length = 2
-truncation_symbol = "□ "
+truncation_symbol = " "
 read_only = " ◈"
 use_os_path_sep = true
 style = "italic blue"
@@ -315,7 +327,7 @@ format = " nim [$symbol($version )]($style)"
 
 [nix_shell]
 style = 'bold italic dimmed blue'
-symbol = '✶'
+symbol = '󱄅'
 format = '[$symbol nix⎪$state⎪]($style) [$name](italic dimmed white)'
 impure_msg = '[⌽](bold dimmed red)'
 pure_msg = '[⌾](bold dimmed green)'
