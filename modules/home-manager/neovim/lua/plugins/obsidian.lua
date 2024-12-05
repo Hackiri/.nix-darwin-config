@@ -5,6 +5,9 @@ return {
   },
   config = function()
     require("obsidian").setup({
+      ui = {
+        enable = false, -- Disable UI to prevent conflicts with render-markdown
+      },
       workspaces = {
         {
           name = "personal",
@@ -26,7 +29,6 @@ return {
         end
       end,
       mappings = {
-        -- Overrides the 'gf' mapping to work on markdown/wiki links
         ["gf"] = {
           action = function()
             return require("obsidian").util.gf_passthrough()
