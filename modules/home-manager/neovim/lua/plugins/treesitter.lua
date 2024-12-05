@@ -126,10 +126,10 @@ return {
       incremental_selection = {
         enable = true,
         keymaps = {
-          init_selection = "<c-space>",
-          node_incremental = "<c-space>",
-          scope_incremental = "<c-s>",
-          node_decremental = "<M-space>",
+          init_selection = "<Leader>ts", -- treesitter start selection
+          node_incremental = "<Leader>ti", -- treesitter increment
+          node_decremental = "<Leader>td", -- treesitter decrement
+          scope_incremental = "<Leader>tc", -- treesitter container/scope
         },
       },
 

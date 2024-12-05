@@ -83,6 +83,10 @@ map("n", "<leader>ca", vim.lsp.buf.code_action)
 map("n", "gr", vim.lsp.buf.references)
 map("n", "<leader>f", vim.lsp.buf.format)
 
+-- Treesitter
+map("n", "<leader>tt", "<cmd>InspectTree<cr>", { desc = "Inspect Treesitter Tree" }) -- Show treesitter tree
+map("n", "<leader>th", "<cmd>TSHighlightCapturesUnderCursor<cr>", { desc = "Show TS Highlight Group" }) -- Show highlight group
+
 -- Diagnostic
 map("n", "[d", vim.diagnostic.goto_prev)
 map("n", "]d", vim.diagnostic.goto_next)
