@@ -146,25 +146,28 @@ After the initial installation, you can customize various aspects of your system
 
 1. **Shell Environment**
    - Edit aliases: `modules/home-manager/terminal/zsh/aliases.nix`
-   - Configure terminal: `modules/home-manager/terminal/wezterm/main_config.lua`
-   - Customize prompt: `modules/home-manager/starship/default.nix`
+   - Configure terminal: `modules/home-manager/terminal/wezterm/main_config.lua` or `modules/home-manager/terminal/alacritty/alacritty.toml`
+   - Customize prompt: `modules/home-manager/starship/starship.toml`
 
 2. **Development Tools**
-   - Configure editors: `modules/home-manager/neovim/` or `modules/home-manager/emacs/`
-   - Set up dev environments: `modules/home-manager/devshell/`
-   - Add Programs to import from configuration.nix: `modules/nix-darwin/default.nix`
+   - Configure editors: `modules/home-manager/neovim/default.nix` or `modules/home-manager/emacs/default.nix`
+   - Set up dev environments: `modules/home-manager/devshell/default.nix`
 
-3. **System Preferences**
-   - Modify system settings in your host's `configuration.nix`
-   - Add/remove packages in `home-manager/home.nix`
-   - Configure security settings in `configuration.nix`
+3. **Package Management**
+   - Add programs to import from home.nix: `modules/home-manager/default.nix`
+   - Add programs to import from configuration.nix: `modules/nix-darwin/default.nix`
+   - Add custom packages: `pkgs/default.nix`
+   - Add custom overlays: `overlays/default.nix`
 
-4. **Secret Management** (Optional)
+4. **System Preferences**
+   - Modify system settings (dock, menu, fingerprint sudo, etc.): `configuration.nix`
+
+5. **Secret Management** (Optional)
    - Initialize git-crypt for sensitive data
    - Store secrets in `secrets/secrets.nix`
    - Never commit unencrypted secrets
 
-5. **Git Configuration** (Optional)
+6. **Git Configuration** 
    - Configure git in `modules/home-manager/terminal/zsh/default.nix`
    - Use pre-commit hooks for code linting and formatting
 
