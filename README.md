@@ -197,6 +197,9 @@ mkdir -p ~/.nix-darwin-config
 cd ~/.nix-darwin-config
 nix flake init -t nix-darwin
 sed -i '' "s/simple/$(scutil --get LocalHostName)/" flake.nix
+
+# Rebuild System Configuration
+darwin-rebuild switch --flake . # Rebuild the system configuration will take some time
 ```
 
 4. Clone Repository
