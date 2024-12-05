@@ -55,17 +55,22 @@
     ...
   }: let
     system = "x86_64-darwin";
+    overlays = [
+      (final: prev: {
+        unstable = import nixpkgs-unstable {
+          inherit system;
+          config.allowUnfree = true;
+        };
+      })
+      (import ./overlays {inherit inputs;})
+      (final: prev: {
+        customPkgs = import ./pkgs {pkgs = prev;};
+      })
+    ];
     pkgs = import nixpkgs-unstable {
       inherit system;
       config.allowUnfree = true;
-      overlays = [
-        (final: prev: {
-          unstable = import nixpkgs-unstable {
-            inherit system;
-            config.allowUnfree = true;
-          };
-        })
-      ];
+      inherit overlays;
     };
   in {
     darwinConfigurations = {

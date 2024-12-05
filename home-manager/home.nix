@@ -4,7 +4,9 @@
   pkgs,
   lib,
   ...
-}: {
+}: let
+  customPkgs = import ../pkgs {inherit pkgs;};
+in {
   # Allow unfree packages
   nixpkgs.config = {
     allowUnfree = true;
@@ -34,6 +36,7 @@
       deadnix
       statix
       stylua
+      customPkgs.dev-tools # Custom development helper scripts
 
       # Debugging and analysis
       gdb

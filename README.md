@@ -167,11 +167,25 @@ After the initial installation, you can customize various aspects of your system
    - Store secrets in `secrets/secrets.nix`
    - Never commit unencrypted secrets
 
-For GPG signing setup, follow these steps:
-1. Generate a GPG key: `gpg --full-generate-key`
-2. List your keys: `gpg --list-secret-keys --keyid-format=long`
-3. Copy your key ID (the long string after "sec   rsa4096/") and paste it into the signing.key field above
-4. Add your GPG public key to GitHub: Settings > SSH and GPG keys
+5. **Development Helper Scripts**
+   The configuration includes a custom `dev-tools` command that helps with common development tasks:
+   `pkgs/default.nix`.
+
+   The script will automatically detect and use the appropriate tools based on the file types in your directory. For example:
+
+   ```bash
+   # Show available commands
+   dev-tools help
+
+   # Clean development artifacts
+   dev-tools clean
+
+   # Format code in current directory
+   dev-tools format
+
+   # Lint code in current directory
+   dev-tools lint
+   ```
 
 5. Initialize and Build System
 ```bash
