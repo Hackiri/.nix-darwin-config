@@ -146,9 +146,6 @@
           export PAGER="less -R"
           export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 
-          # Initialize tools
-          eval "$(zoxide init zsh)"
-
           # Show welcome message
           show_welcome
         }
