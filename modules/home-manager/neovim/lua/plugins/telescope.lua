@@ -24,34 +24,79 @@ return {
     local actions = require("telescope.actions")
     local builtin = require("telescope.builtin")
 
-    require("telescope").setup({
+    telescope.setup({
       defaults = {
         mappings = {
           i = {
-            ["<C-k>"] = actions.move_selection_previous, -- move to prev result
-            ["<C-j>"] = actions.move_selection_next, -- move to next result
-            ["<C-l>"] = actions.select_default, -- open file
+            ["<C-j>"] = actions.move_selection_next,
+            ["<C-k>"] = actions.move_selection_previous,
+            ["<C-n>"] = actions.cycle_history_next,
+            ["<C-p>"] = actions.cycle_history_prev,
+            ["<C-c>"] = actions.close,
+            ["<C-u>"] = false,
+            ["<C-d>"] = false,
           },
-          n = {
-            ["q"] = actions.close,
+        },
+        sorting_strategy = "ascending",
+        layout_config = {
+          horizontal = {
+            prompt_position = "top",
+            preview_width = 0.55,
           },
+          vertical = {
+            mirror = false,
+          },
+          width = 0.87,
+          height = 0.80,
+          preview_cutoff = 120,
+        },
+      },
+      extensions = {
+        ["ui-select"] = {
+          require("telescope.themes").get_dropdown({
+            -- even more opts
+            initial_mode = "normal",
+            sorting_strategy = "ascending",
+            layout_strategy = "center",
+            layout_config = {
+              width = function(_, max_columns, _)
+                return math.min(max_columns - 20, 120)
+              end,
+              height = function(_, _, max_lines)
+                return math.min(max_lines - 10, 20)
+              end,
+            },
+            border = true,
+            borderchars = {
+              prompt = { "─", "│", " ", "│", "╭", "╮", "│", "│" },
+              results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
+              preview = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
+            },
+          }),
         },
       },
       pickers = {
         find_files = {
-          file_ignore_patterns = { "node_modules", ".git", ".venv" },
+          theme = "dropdown",
+          previewer = false,
           hidden = true,
         },
+        live_grep = {
+          theme = "dropdown",
+          previewer = true,
+        },
         buffers = {
-          initial_mode = "normal",
-          sort_lastused = true,
-          -- sort_mru = true,
-          mappings = {
-            n = {
-              ["d"] = actions.delete_buffer,
-              ["l"] = actions.select_default,
-            },
-          },
+          theme = "dropdown",
+          previewer = false,
+        },
+      },
+      file_ignore_patterns = { "node_modules", ".git", ".venv" },
+      git_files = {
+        previewer = false,
+      },
+      path_display = {
+        filename_first = {
+          reverse_directories = true,
         },
       },
       live_grep = {
@@ -59,19 +104,6 @@ return {
         additional_args = function(_)
           return { "--hidden" }
         end,
-      },
-      path_display = {
-        filename_first = {
-          reverse_directories = true,
-        },
-      },
-      extensions = {
-        ["ui-select"] = {
-          require("telescope.themes").get_dropdown(),
-        },
-      },
-      git_files = {
-        previewer = false,
       },
     })
 
