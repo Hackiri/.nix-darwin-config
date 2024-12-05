@@ -253,7 +253,11 @@ darwin-rebuild switch --flake ~/.nix-darwin-config
 # Test configuration
 darwin-rebuild check --flake .
 
-# Verify with pre-commit hooks (if using)
+# Verify with pre-commit hooks
+# Note: pre-commit is installed automatically via home-manager configuration
+# Pre-commit hooks are configured in .pre-commit-config.yaml
+# Lua formatting settings are in stylua.toml
+pre-commit install  # Only needed once to set up the git hooks
 pre-commit run --all-files
 ```
 
