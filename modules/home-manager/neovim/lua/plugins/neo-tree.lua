@@ -1,6 +1,7 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
-  event = "VeryLazy",
+  lazy = false,
+  cmd = "Neotree",
   branch = "v3.x",
   dependencies = {
     "nvim-lua/plenary.nvim",
@@ -57,13 +58,12 @@ return {
       --   end , -- this sorts files and directories descendantly
       default_component_configs = {
         container = {
-          enable_character_fade = true,
+          enable_character_fade = false,
         },
         indent = {
           indent_size = 2,
-          padding = 1, -- extra padding on left hand side
-          -- indent guides
-          with_markers = true,
+          padding = 0,
+          with_markers = false,
           indent_marker = "│",
           last_indent_marker = "└",
           highlight = "NeoTreeIndentMarker",
@@ -193,40 +193,19 @@ return {
       },
       nesting_rules = {},
       filesystem = {
+        use_libuv_file_watcher = true,
         filtered_items = {
-          visible = false, -- when true, they will just be displayed differently than normal items
+          visible = false,
           hide_dotfiles = false,
           hide_gitignored = false,
-          hide_hidden = false, -- only works on Windows for hidden files/directories
-          hide_by_name = {
+          never_show = {
             ".DS_Store",
             "thumbs.db",
-            "node_modules",
-            "__pycache__",
-            ".virtual_documents",
-            ".git",
-            ".python-version",
-            ".venv",
-          },
-          hide_by_pattern = { -- uses glob style patterns
-            --"*.meta",
-            --"*/src/*/tsconfig.json",
-          },
-          always_show = { -- remains visible even if other settings would normally hide it
-            --".gitignored",
-          },
-          never_show = { -- remains hidden even if visible is toggled to true, this overrides always_show
-            --".DS_Store",
-            --"thumbs.db"
-          },
-          never_show_by_pattern = { -- uses glob style patterns
-            --".null-ls_*",
           },
         },
         follow_current_file = {
-          enabled = false, -- This will find and focus the file in the active buffer every time
-          --               -- the current file is changed while the tree is open.
-          leave_dirs_open = false, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
+          enabled = true,
+          leave_dirs_open = false,
         },
         group_empty_dirs = false, -- when true, empty folders will be grouped together
         hijack_netrw_behavior = "open_default", -- netrw disabled, opening a directory opens neo-tree
@@ -234,8 +213,6 @@ return {
         -- "open_current",  -- netrw disabled, opening a directory opens within the
         -- window like netrw would, regardless of window.position
         -- "disabled",    -- netrw left alone, neo-tree does not handle opening dirs
-        use_libuv_file_watcher = false, -- This will use the OS level file watchers to detect changes
-        -- instead of relying on nvim autocmd events.
         window = {
           mappings = {
             ["<bs>"] = "navigate_up",
@@ -294,22 +271,37 @@ return {
       git_status = {
         window = {
           position = "float",
-          mappings = {
-            ["A"] = "git_add_all",
-            ["gu"] = "git_unstage_file",
-            ["ga"] = "git_add_file",
-            ["gr"] = "git_revert_file",
-            ["gc"] = "git_commit",
-            ["gp"] = "git_push",
-            ["gg"] = "git_commit_and_push",
-            ["o"] = { "show_help", nowait = false, config = { title = "Order by", prefix_key = "o" } },
-            ["oc"] = { "order_by_created", nowait = false },
-            ["od"] = { "order_by_diagnostics", nowait = false },
-            ["om"] = { "order_by_modified", nowait = false },
-            ["on"] = { "order_by_name", nowait = false },
-            ["os"] = { "order_by_size", nowait = false },
-            ["ot"] = { "order_by_type", nowait = false },
-          },
+        },
+        async_events = { "BufWritePost" },
+        timeout = 200,
+        symbols = {
+          -- Change type
+          added = "", -- or "✚", but this is redundant info if you use git_status_colors on the name
+          modified = "", -- or "", but this is redundant info if you use git_status_colors on the name
+          deleted = "✖", -- this can only be used in the git_status source
+          renamed = "󰁕", -- this can only be used in the git_status source
+          -- Status type
+          untracked = "",
+          ignored = "",
+          unstaged = "󰄱",
+          staged = "",
+          conflict = "",
+        },
+        mappings = {
+          ["A"] = "git_add_all",
+          ["gu"] = "git_unstage_file",
+          ["ga"] = "git_add_file",
+          ["gr"] = "git_revert_file",
+          ["gc"] = "git_commit",
+          ["gp"] = "git_push",
+          ["gg"] = "git_commit_and_push",
+          ["o"] = { "show_help", nowait = false, config = { title = "Order by", prefix_key = "o" } },
+          ["oc"] = { "order_by_created", nowait = false },
+          ["od"] = { "order_by_diagnostics", nowait = false },
+          ["om"] = { "order_by_modified", nowait = false },
+          ["on"] = { "order_by_name", nowait = false },
+          ["os"] = { "order_by_size", nowait = false },
+          ["ot"] = { "order_by_type", nowait = false },
         },
       },
     })
