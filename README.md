@@ -142,6 +142,69 @@ This repository contains a complete nix-darwin configuration that manages both s
 - Internet connection
 - Basic knowledge of Nix/Nix Flakes
 
+
+### Customizing Your Setup
+
+After the initial installation, you can customize various aspects of your system:
+
+1. **Shell Environment**
+   - Edit aliases: `modules/home-manager/terminal/zsh/aliases.nix`
+   - Configure terminal: `modules/home-manager/terminal/wezterm/main_config.lua`
+   - Customize prompt: `modules/home-manager/starship/default.nix`
+
+2. **Development Tools**
+   - Configure editors: `modules/home-manager/neovim/` or `modules/home-manager/emacs/`
+   - Set up dev environments: `modules/home-manager/devshell/`
+   - Add Programs to import from configuration.nix: `modules/nix-darwin/default.nix`
+
+3. **System Preferences**
+   - Modify system settings in your host's `configuration.nix`
+   - Add/remove packages in `home-manager/home.nix`
+   - Configure security settings in `configuration.nix`
+
+4. **Secret Management** (Optional)
+   - Initialize git-crypt for sensitive data
+   - Store secrets in `secrets/secrets.nix`
+   - Never commit unencrypted secrets
+
+For GPG signing setup, follow these steps:
+1. Generate a GPG key: `gpg --full-generate-key`
+2. List your keys: `gpg --list-secret-keys --keyid-format=long`
+3. Copy your key ID (the long string after "sec   rsa4096/") and paste it into the signing.key field above
+4. Add your GPG public key to GitHub: Settings > SSH and GPG keys
+
+5. Initialize and Build System
+```bash
+# Initialize nix-darwin
+darwin-rebuild init --flake ~/.nix-darwin-config
+
+# Build and switch to new configuration
+darwin-rebuild switch --flake ~/.nix-darwin-config
+
+# Test configuration
+darwin-rebuild check --flake .
+
+# Git Initialization
+git init
+
+# Add remote repository
+git remote add origin https://github.com/your-username/nix-darwin-config.git
+
+# Push initial commit
+git add .
+git commit -m "Initial commit"
+git push -u origin main
+
+# Set up pre-commit hooks
+# Verify with pre-commit hooks
+# Note: pre-commit is installed automatically via home-manager configuration
+# Pre-commit hooks are configured in .pre-commit-config.yaml
+# Lua formatting settings are in stylua.toml
+pre-commit install  # Only needed once to set up the git hooks
+pre-commit run --all-files
+```
+
+
 ### Quick Start
 
 1. Install Nix
@@ -234,60 +297,6 @@ Edit `~/.nix-darwin-config/modules/home-manager/terminal/zsh/default.nix`:
         tag.gpgsign = true;
       };
     };
-```
-
-For GPG signing setup, follow these steps:
-1. Generate a GPG key: `gpg --full-generate-key`
-2. List your keys: `gpg --list-secret-keys --keyid-format=long`
-3. Copy your key ID (the long string after "sec   rsa4096/") and paste it into the signing.key field above
-4. Add your GPG public key to GitHub: Settings > SSH and GPG keys
-
-5. Initialize and Build System
-```bash
-# Initialize nix-darwin
-darwin-rebuild init --flake ~/.nix-darwin-config
-
-# Build and switch to new configuration
-darwin-rebuild switch --flake ~/.nix-darwin-config
-
-# Test configuration
-darwin-rebuild check --flake .
-
-# Verify with pre-commit hooks
-# Note: pre-commit is installed automatically via home-manager configuration
-# Pre-commit hooks are configured in .pre-commit-config.yaml
-# Lua formatting settings are in stylua.toml
-pre-commit install  # Only needed once to set up the git hooks
-pre-commit run --all-files
-```
-
-### Customizing Your Setup
-
-After the initial installation, you can customize various aspects of your system:
-
-1. **Shell Environment**
-   - Edit aliases: `modules/home-manager/terminal/zsh/aliases.nix`
-   - Configure terminal: `modules/home-manager/terminal/wezterm/main_config.lua`
-   - Customize prompt: `modules/home-manager/starship/default.nix`
-
-2. **Development Tools**
-   - Configure editors: `modules/home-manager/neovim/` or `modules/home-manager/emacs/`
-   - Set up dev environments: `modules/home-manager/devshell/`
-   - Add Programs to import from configuration.nix: `modules/nix-darwin/default.nix`
-
-3. **System Preferences**
-   - Modify system settings in your host's `configuration.nix`
-   - Add/remove packages in `home-manager/home.nix`
-   - Configure security settings in `configuration.nix`
-
-4. **Secret Management** (Optional)
-   - Initialize git-crypt for sensitive data
-   - Store secrets in `secrets/secrets.nix`
-   - Never commit unencrypted secrets
-
-Remember to rebuild your system after making changes:
-```bash
-darwin-rebuild switch --flake .
 ```
 
 ## Maintenance
