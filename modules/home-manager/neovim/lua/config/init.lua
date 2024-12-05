@@ -6,6 +6,7 @@ require("config.keymaps")
 require("config.autocmds")
 require("config.session")
 require("config.snippets")
+require("config.luasnip_config")
 
 -- Load folding (with error handling)
 pcall(function()

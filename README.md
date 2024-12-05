@@ -2,6 +2,7 @@
 
 Nix system configuration for macOS using nix-darwin and Home Manager, providing a declarative and reproducible user environment.
 
+
 ## Table of Contents
 
 - [Overview](#overview)
@@ -133,15 +134,11 @@ This repository contains a complete nix-darwin configuration that manages both s
 - `home.nix`: User configuration
 - `flake.nix`: Nix flake for system configuration and user environment
 - `configuration.nix`: Host-specific configuration
+- `overlays/`: Package modifications
+- `pkgs/`: Custom packages
 
-## Installation and Setup Guide
 
-### Prerequisites
-- macOS 10.15 or later
-- Administrative access
-- Internet connection
-- Basic knowledge of Nix/Nix Flakes
-
+Note: Make sure to review the configuration files and adjust them according to your needs before building. The system configuration is primarily managed through the modules in the repository.
 
 ### Customizing Your Setup
 
@@ -167,72 +164,54 @@ After the initial installation, you can customize various aspects of your system
    - Store secrets in `secrets/secrets.nix`
    - Never commit unencrypted secrets
 
-5. **Development Helper Scripts**
-   The configuration includes a custom `dev-tools` command that helps with common development tasks:
-   `pkgs/default.nix`.
+5. **Git Configuration** (Optional)
+   - Configure git in `modules/home-manager/terminal/zsh/default.nix`
+   - Use pre-commit hooks for code linting and formatting
 
-   The script will automatically detect and use the appropriate tools based on the file types in your directory. For example:
+## Installation and Setup Guide
 
-   ```bash
-   # Show available commands
-   dev-tools help
+### Prerequisites
+- macOS 10.15 or later
+- Administrative access
+- Internet connection
+- Basic knowledge of Nix/Nix Flakes
 
-   # Clean development artifacts
-   dev-tools clean
-
-   # Format code in current directory
-   dev-tools format
-
-   # Lint code in current directory
-   dev-tools lint
-   ```
-
-5. Initialize and Build System
-```bash
-# Initialize nix-darwin
-darwin-rebuild init --flake ~/.nix-darwin-config
-
-# Build and switch to new configuration
-darwin-rebuild switch --flake ~/.nix-darwin-config
-
-# Test configuration
-darwin-rebuild check --flake .
-
-# Git Initialization
-git init
-
-# Add remote repository
-git remote add origin https://github.com/your-username/nix-darwin-config.git
-
-# Push initial commit
-git add .
-git commit -m "Initial commit"
-git push -u origin main
-
-# Set up pre-commit hooks
-# Verify with pre-commit hooks
-# Note: pre-commit is installed automatically via home-manager configuration
-# Pre-commit hooks are configured in .pre-commit-config.yaml
-# Lua formatting settings are in stylua.toml
-pre-commit install  # Only needed once to set up the git hooks
-pre-commit run --all-files
-```
-
-
-### Quick Start
+### Installation Steps
 
 1. Install Nix
 ```bash
 curl -sSf -L https://install.lix.systems/lix | sh -s -- install
 ```
 
-2. Clone Repository
+2. Install Nix Flakes
 ```bash
+# Enable flakes and nix-command in your Nix configuration
+mkdir -p ~/.config/nix
+echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
+```
+
+3. Initialize nix-darwin Configuration
+```bash
+# Create a basic nix-darwin configuration
+mkdir -p ~/.nix-darwin-config
+cd ~/.nix-darwin-config
+nix flake init -t nix-darwin
+sed -i '' "s/simple/$(scutil --get LocalHostName)/" flake.nix
+```
+
+4. Clone Repository
+```bash
+# Backup your initial configuration (optional)
+mv ~/.nix-darwin-config ~/.nix-darwin-config.bak
+
+# Clone the repository
 git clone https://github.com/Hackiri/nix-darwin-config.git ~/.nix-darwin-config
 ```
 
-3. Flakes Support
-Flakes support is already enabled in the system configuration (`nixos/hosts/wm-macbook-pro/configuration.nix`).
+5. Customize Configuration
+- Review and modify the configuration files according to your needs
+- The main configuration is in `flake.nix` and the modules directory
+- Update hostname and user-specific settings
 
 4. Configure Your System
 
@@ -311,6 +290,12 @@ Edit `~/.nix-darwin-config/modules/home-manager/terminal/zsh/default.nix`:
         tag.gpgsign = true;
       };
     };
+```
+
+6. Build and Apply Configuration
+```bash
+cd ~/.nix-darwin-config
+darwin-rebuild switch --flake .
 ```
 
 ## Maintenance

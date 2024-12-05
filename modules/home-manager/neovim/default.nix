@@ -125,8 +125,8 @@
     }
 
     # Optional Plugins
+    headlines-nvim
     obsidian-nvim
-
     markdown-preview-nvim
   ];
 
@@ -209,6 +209,7 @@ in {
     ];
 
     plugins = with pkgs.vimPlugins; [
+      luasnip
     ];
 
     extraLuaConfig = ''
