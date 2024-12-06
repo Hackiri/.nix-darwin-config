@@ -73,6 +73,38 @@ return {
       dots = "󰇘",
     }
 
+    -- Cache system for improved performance
+    local cache = {
+      branch = "",
+      branch_color = nil,
+      file_permissions = { perms = "", color = colors.green },
+    }
+
+    -- Set up autocmds for cache updates
+    vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained" }, {
+      callback = function()
+        -- Update git branch
+        cache.branch = vim.fn.system("git rev-parse --abbrev-ref HEAD"):gsub("\n", "")
+        cache.branch_color = (cache.branch == "live") and { fg = colors.red1, gui = "bold" } or nil
+      end,
+    })
+
+    vim.api.nvim_create_autocmd({ "BufWritePost", "BufEnter" }, {
+      callback = function()
+        if vim.bo.filetype ~= "sh" then
+          cache.file_permissions = { perms = "", color = colors.gray1 }
+          return
+        end
+        local file_path = vim.fn.expand("%:p")
+        local permissions = file_path and vim.fn.getfperm(file_path) or "No File"
+        local owner_permissions = permissions:sub(1, 3)
+        cache.file_permissions = {
+          perms = permissions,
+          color = (owner_permissions == "rwx") and colors.green or colors.gray1,
+        }
+      end,
+    })
+
     -- Utility functions
     local function hide_in_width()
       return vim.fn.winwidth(0) > 100
@@ -80,6 +112,34 @@ return {
 
     local function hide_in_small_window()
       return vim.fn.winwidth(0) > 70
+    end
+
+    local function get_venv_name()
+      local venv = os.getenv("VIRTUAL_ENV")
+      return venv and venv:match("([^/]+)$") or ""
+    end
+
+    local function should_show_permissions()
+      return vim.bo.filetype == "sh" and vim.fn.expand("%:p") ~= ""
+    end
+
+    local function should_show_spell_status()
+      return vim.bo.filetype == "markdown" and vim.wo.spell
+    end
+
+    local function get_spell_status()
+      local lang_map = { en = "English", es = "Spanish" }
+      return "Spell: " .. (lang_map[vim.bo.spelllang] or vim.bo.spelllang)
+    end
+
+    local function get_file_permissions()
+      if vim.bo.filetype ~= "sh" then
+        return "", colors.gray1
+      end
+      local file_path = vim.fn.expand("%:p")
+      local permissions = file_path and vim.fn.getfperm(file_path) or "No File"
+      local owner_permissions = permissions:sub(1, 3)
+      return permissions, (owner_permissions == "rwx") and colors.green or colors.gray1
     end
 
     -- Component configurations
@@ -155,7 +215,9 @@ return {
       icons_enabled = true,
       icon = icons.git_branch,
       colored = true,
-      color = { fg = colors.purple, gui = "bold" },
+      color = function()
+        return cache.branch_color
+      end,
     }
 
     local location = {
@@ -200,7 +262,7 @@ return {
         component_separators = { left = "", right = "" },
         section_separators = { left = "", right = "" },
         disabled_filetypes = {
-          statusline = {},
+          statusline = { "dashboard", "alpha" },
           winbar = {},
         },
         ignore_focus = {},
@@ -212,66 +274,71 @@ return {
           winbar = 1000,
         },
       },
-
       sections = {
         lualine_a = { mode },
-        lualine_b = { branch },
-        lualine_c = {
-          filename,
+        lualine_b = {
+          branch,
           {
-            function()
-              return "%="
+            get_venv_name,
+            color = { fg = colors.cyan, gui = "bold" },
+            cond = function()
+              return get_venv_name() ~= ""
             end,
           },
+          diff,
+        },
+        lualine_c = {
+          filename,
           diagnostics,
         },
         lualine_x = {
-          diff,
+          {
+            get_spell_status,
+            cond = should_show_spell_status,
+            color = { fg = colors.purple, gui = "bold" },
+          },
+          {
+            get_file_permissions,
+            cond = should_show_permissions,
+            color = function()
+              local _, color = get_file_permissions()
+              return { fg = color, gui = "bold" }
+            end,
+          },
           fold_method,
-          {
-            "filetype",
-            colored = true,
-            icon_only = false,
-            icon = { align = "right" },
-            cond = hide_in_small_window,
-          },
-          {
-            "encoding",
-            fmt = string.upper,
-            cond = hide_in_width,
-          },
+          "encoding",
           {
             "fileformat",
-            icons_enabled = true,
             symbols = {
               unix = "LF",
               dos = "CRLF",
               mac = "CR",
             },
-            cond = hide_in_width,
           },
+          "filetype",
         },
-        lualine_y = { location },
-        lualine_z = { progress },
+        lualine_y = {
+          location,
+          progress,
+        },
+        lualine_z = {
+          function()
+            return " " .. os.date("%R")
+          end,
+        },
       },
-
       inactive_sections = {
         lualine_a = {},
         lualine_b = {},
-        lualine_c = { { "filename", path = 1 } },
+        lualine_c = { "filename" },
         lualine_x = { "location" },
         lualine_y = {},
         lualine_z = {},
       },
-
       tabline = {},
-
-      extensions = {
-        "fugitive",
-        "neo-tree",
-        "quickfix",
-        "toggleterm",
-      },
+      winbar = {},
+      inactive_winbar = {},
+      extensions = { "neo-tree", "lazy" },
     })
   end,
 }

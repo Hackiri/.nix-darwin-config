@@ -112,6 +112,10 @@
       path = mini-nvim;
     }
     {
+      name = "mini.files";
+      path = mini-nvim;
+    }
+    {
       name = "mini.indentscope";
       path = mini-nvim;
     }

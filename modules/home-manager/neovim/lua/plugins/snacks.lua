@@ -5,75 +5,89 @@ return {
     notify = {
       enabled = true,
       timeout = 3000,
-      -- Maximum width of the notification
       max_width = 80,
-      -- Maximum height of the notification
       max_height = nil,
-      -- Minimum width of the notification
       min_width = 10,
-      -- Whether to show the notification title
       show_title = true,
-      -- Whether to show the notification icon
       show_icon = true,
-      -- Position of the notification
       position = "top-right",
-      -- Gap between notifications
       gap = 5,
-      -- Custom highlight groups for different notification types
       highlights = {
         info = {
-          title = { fg = "#61afef" },
-          icon = { fg = "#61afef" },
-          border = { fg = "#61afef" },
+          title = { fg = "#7aa2f7" }, -- Tokyo Night blue
+          icon = { fg = "#7aa2f7" },
+          border = { fg = "#7aa2f7" },
         },
         warn = {
-          title = { fg = "#e5c07b" },
-          icon = { fg = "#e5c07b" },
-          border = { fg = "#e5c07b" },
+          title = { fg = "#e0af68" }, -- Tokyo Night yellow
+          icon = { fg = "#e0af68" },
+          border = { fg = "#e0af68" },
         },
         error = {
-          title = { fg = "#e06c75" },
-          icon = { fg = "#e06c75" },
-          border = { fg = "#e06c75" },
+          title = { fg = "#f7768e" }, -- Tokyo Night red
+          icon = { fg = "#f7768e" },
+          border = { fg = "#f7768e" },
         },
         success = {
-          title = { fg = "#98c379" },
-          icon = { fg = "#98c379" },
-          border = { fg = "#98c379" },
+          title = { fg = "#9ece6a" }, -- Tokyo Night green
+          icon = { fg = "#9ece6a" },
+          border = { fg = "#9ece6a" },
         },
       },
-      -- Custom icons for different notification types
       icons = {
-        info = "",
-        warn = "",
-        error = "",
-        success = "",
+        info = "",
+        warn = "",
+        error = "",
+        success = "",
       },
-      -- Border style for notifications
       border = {
         style = "rounded",
         padding = { 0, 1 },
       },
-      -- Animation settings
       animation = {
-        -- Animation duration in milliseconds
         duration = 150,
-        -- Animation fps
         fps = 60,
-        -- Animation easing function
         easing = "in-out-sine",
       },
-      -- Custom filter function for notifications
       filter = function(notification)
-        -- Example: Filter out debug notifications in production
         if vim.env.PRODUCTION and notification.level == "debug" then
           return false
         end
         return true
       end,
     },
+    dashboard = {
+      sections = {
+        { section = "header" },
+        { section = "keys", gap = 1, padding = 1 },
+        {
+          pane = 2,
+          section = "terminal",
+          title = "Git Status",
+          icon = " ",
+          enabled = function()
+            return Snacks.git.get_root() ~= nil
+          end,
+          cmd = "git status -sb",
+          height = 8,
+          padding = 1,
+          ttl = 5 * 60,
+          indent = 2,
+        },
+        { pane = 2, icon = " ", title = "Projects", section = "projects", indent = 2, padding = 1 },
+        { pane = 2, icon = " ", title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
+        { section = "startup" },
+      },
+      highlights = {
+        header = { fg = "#7aa2f7" }, -- Tokyo Night blue
+        icon = { fg = "#bb9af7" }, -- Tokyo Night purple
+        title = { fg = "#7dcfff" }, -- Tokyo Night cyan
+        key = { fg = "#e0af68" }, -- Tokyo Night yellow
+        dir = { fg = "#9ece6a" }, -- Tokyo Night green
+        file = { fg = "#c0caf5" }, -- Tokyo Night foreground
+      },
+    },
   },
-  -- Key mappings for quick actions
   keys = {
     {
       "<leader>sn",

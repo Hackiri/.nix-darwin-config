@@ -7,6 +7,7 @@ require("config.autocmds")
 require("config.session")
 require("config.snippets")
 require("config.luasnip_config")
+require("config.highlights") -- Load custom highlights
 
 -- Load folding (with error handling)
 pcall(function()

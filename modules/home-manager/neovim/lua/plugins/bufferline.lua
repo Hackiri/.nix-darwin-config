@@ -33,41 +33,197 @@ return {
       },
     }
 
-    -- Colors
+    -- Colors from Tokyo Night theme
     local colors = {
-      fg = "#abb2bf",
-      bg = "#282c34",
-      gray = "#3e4452",
-      blue = "#61afef",
-      green = "#98c379",
-      purple = "#c678dd",
-      red = "#e06c75",
-      yellow = "#e5c07b",
-      cyan = "#56b6c2",
-      orange = "#d19a66",
-    }
-
-    -- Diagnostic highlights
-    local diagnostics_highlights = {
-      error = {
-        fg = colors.red,
-        bg = colors.bg,
-      },
-      warning = {
-        fg = colors.yellow,
-        bg = colors.bg,
-      },
-      info = {
-        fg = colors.blue,
-        bg = colors.bg,
-      },
-      hint = {
-        fg = colors.cyan,
-        bg = colors.bg,
-      },
+      bg = "#0a0a0d", -- Terminal background
+      fg = "#787c99", -- Terminal foreground
+      selected = "#7aa2f7", -- Blue
+      visible = "#363b54", -- Bright black
+      filled = "#1a1b26", -- Slightly lighter than bg
+      error = "#f7768e", -- Red
+      warning = "#e0af68", -- Yellow
+      info = "#7aa2f7", -- Blue
+      hint = "#7dcfff", -- Cyan
+      modified = "#e0af68", -- Yellow
+      added = "#41a6b5", -- Green
+      removed = "#f7768e", -- Red
     }
 
     require("bufferline").setup({
+      highlights = {
+        -- Regular buffer
+        background = {
+          fg = colors.fg,
+          bg = colors.bg,
+        },
+        buffer_visible = {
+          fg = colors.fg,
+          bg = colors.visible,
+        },
+        buffer_selected = {
+          fg = colors.selected,
+          bg = colors.filled,
+          bold = true,
+          italic = true,
+        },
+
+        -- Close button
+        close_button = {
+          fg = colors.fg,
+          bg = colors.bg,
+        },
+        close_button_visible = {
+          fg = colors.fg,
+          bg = colors.visible,
+        },
+        close_button_selected = {
+          fg = colors.selected,
+          bg = colors.filled,
+        },
+
+        -- Modified
+        modified = {
+          fg = colors.modified,
+          bg = colors.bg,
+        },
+        modified_visible = {
+          fg = colors.modified,
+          bg = colors.visible,
+        },
+        modified_selected = {
+          fg = colors.modified,
+          bg = colors.filled,
+        },
+
+        -- Separators
+        separator = {
+          fg = colors.bg,
+          bg = colors.bg,
+        },
+        separator_visible = {
+          fg = colors.visible,
+          bg = colors.visible,
+        },
+        separator_selected = {
+          fg = colors.filled,
+          bg = colors.filled,
+        },
+
+        -- Indicators
+        indicator_selected = {
+          fg = colors.selected,
+          bg = colors.filled,
+        },
+
+        -- Diagnostics
+        error = {
+          fg = colors.error,
+          bg = colors.bg,
+        },
+        error_visible = {
+          fg = colors.error,
+          bg = colors.visible,
+        },
+        error_selected = {
+          fg = colors.error,
+          bg = colors.filled,
+          bold = true,
+          italic = true,
+        },
+        error_diagnostic = {
+          fg = colors.error,
+          bg = colors.bg,
+        },
+        error_diagnostic_visible = {
+          fg = colors.error,
+          bg = colors.visible,
+        },
+        error_diagnostic_selected = {
+          fg = colors.error,
+          bg = colors.filled,
+        },
+
+        warning = {
+          fg = colors.warning,
+          bg = colors.bg,
+        },
+        warning_visible = {
+          fg = colors.warning,
+          bg = colors.visible,
+        },
+        warning_selected = {
+          fg = colors.warning,
+          bg = colors.filled,
+          bold = true,
+          italic = true,
+        },
+        warning_diagnostic = {
+          fg = colors.warning,
+          bg = colors.bg,
+        },
+        warning_diagnostic_visible = {
+          fg = colors.warning,
+          bg = colors.visible,
+        },
+        warning_diagnostic_selected = {
+          fg = colors.warning,
+          bg = colors.filled,
+        },
+
+        info = {
+          fg = colors.info,
+          bg = colors.bg,
+        },
+        info_visible = {
+          fg = colors.info,
+          bg = colors.visible,
+        },
+        info_selected = {
+          fg = colors.info,
+          bg = colors.filled,
+          bold = true,
+          italic = true,
+        },
+        info_diagnostic = {
+          fg = colors.info,
+          bg = colors.bg,
+        },
+        info_diagnostic_visible = {
+          fg = colors.info,
+          bg = colors.visible,
+        },
+        info_diagnostic_selected = {
+          fg = colors.info,
+          bg = colors.filled,
+        },
+
+        hint = {
+          fg = colors.hint,
+          bg = colors.bg,
+        },
+        hint_visible = {
+          fg = colors.hint,
+          bg = colors.visible,
+        },
+        hint_selected = {
+          fg = colors.hint,
+          bg = colors.filled,
+          bold = true,
+          italic = true,
+        },
+        hint_diagnostic = {
+          fg = colors.hint,
+          bg = colors.bg,
+        },
+        hint_diagnostic_visible = {
+          fg = colors.hint,
+          bg = colors.visible,
+        },
+        hint_diagnostic_selected = {
+          fg = colors.hint,
+          bg = colors.filled,
+        },
+      },
       options = {
         -- Basic settings
         mode = "buffers",
@@ -99,137 +255,44 @@ return {
           return " " .. buf.name
         end,
 
-        -- Sizing
-        max_name_length = 30,
-        max_prefix_length = 30,
-        tab_size = 21,
-        padding = 1,
+        -- Tab size
+        max_name_length = 18,
+        max_prefix_length = 15,
+        tab_size = 18,
 
-        -- Features
+        -- Diagnostics
         diagnostics = "nvim_lsp",
         diagnostics_update_in_insert = false,
         diagnostics_indicator = function(count, level)
-          local icon = diagnostics_highlights[level] and icons.diagnostics[level] or ""
+          local icon = icons.diagnostics[level:lower()]
           return " " .. icon .. count
         end,
 
-        -- Icons and colors
+        -- Behavior
         color_icons = true,
         show_buffer_icons = true,
         show_buffer_close_icons = true,
         show_close_icon = true,
         show_tab_indicators = true,
-
-        -- Behavior
         persist_buffer_sort = true,
         enforce_regular_tabs = true,
         always_show_bufferline = true,
-        sort_by = "insert_at_end",
+        sort_by = "id",
+        hover = {
+          enabled = true,
+          delay = 0,
+          reveal = { "close" },
+        },
 
-        -- Custom filtering
-        custom_filter = function(buf_number, buf_numbers)
-          -- filter out filetypes you don't want to see
-          local exclude_ft = { "qf", "fugitive", "git" }
-          local cur_ft = vim.bo[buf_number].filetype
-          local should_filter = vim.tbl_contains(exclude_ft, cur_ft)
-
-          if should_filter then
-            return false
-          end
-
-          return true
-        end,
-
-        -- Groups
-        groups = {
-          options = {
-            toggle_hidden_on_enter = true,
+        -- Offsets
+        offsets = {
+          {
+            filetype = "neo-tree",
+            text = "File Explorer",
+            highlight = "Directory",
+            text_align = "center",
+            separator = true,
           },
-          items = {
-            {
-              name = "Tests",
-              highlight = { fg = colors.green },
-              icon = icons.filetype.default,
-              matcher = function(buf)
-                return buf.name:match("_test") or buf.name:match("test_")
-              end,
-            },
-            {
-              name = "Docs",
-              highlight = { fg = colors.yellow },
-              matcher = function(buf)
-                local ft = vim.bo[buf.id].filetype
-                return ft == "markdown" or ft == "txt" or ft == "help"
-              end,
-            },
-          },
-        },
-      },
-
-      highlights = {
-        -- Buffer highlights
-        buffer_selected = {
-          fg = colors.fg,
-          bg = colors.bg,
-          bold = true,
-          italic = false,
-        },
-        buffer_visible = {
-          fg = colors.gray,
-          bg = colors.bg,
-        },
-
-        -- Close button
-        close_button = {
-          fg = colors.gray,
-          bg = colors.bg,
-        },
-        close_button_selected = {
-          fg = colors.red,
-          bg = colors.bg,
-        },
-
-        -- Modified
-        modified = {
-          fg = colors.yellow,
-          bg = colors.bg,
-        },
-        modified_selected = {
-          fg = colors.green,
-          bg = colors.bg,
-        },
-
-        -- Separators
-        separator = {
-          fg = colors.gray,
-          bg = colors.bg,
-        },
-        separator_selected = {
-          fg = colors.gray,
-          bg = colors.bg,
-        },
-
-        -- Indicators
-        indicator_selected = {
-          fg = colors.blue,
-          bg = colors.bg,
-        },
-
-        -- Diagnostics
-        error = diagnostics_highlights.error,
-        warning = diagnostics_highlights.warning,
-        info = diagnostics_highlights.info,
-        hint = diagnostics_highlights.hint,
-
-        -- Tabs
-        tab = {
-          fg = colors.gray,
-          bg = colors.bg,
-        },
-        tab_selected = {
-          fg = colors.fg,
-          bg = colors.bg,
-          bold = true,
         },
       },
     })
@@ -238,28 +301,32 @@ return {
     local map = vim.keymap.set
     local opts = { noremap = true, silent = true }
 
-    -- Buffer navigation
-    map("n", "<Tab>", "<cmd>BufferLineCycleNext<cr>", opts)
-    map("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", opts)
+    -- Navigate buffers
+    map("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", opts)
+    map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", opts)
+    map("n", "]b", "<cmd>BufferLineCycleNext<cr>", opts)
+    map("n", "[b", "<cmd>BufferLineCyclePrev<cr>", opts)
 
-    -- Buffer operations
-    map("n", "<leader>bc", "<cmd>Bdelete<cr>", { desc = "Close buffer" })
-    map("n", "<leader>bC", "<cmd>Bdelete!<cr>", { desc = "Force close buffer" })
-    map("n", "<leader>bp", "<cmd>BufferLineTogglePin<cr>", { desc = "Toggle pin" })
-    map("n", "<leader>bP", "<cmd>BufferLinePick<cr>", { desc = "Pick buffer" })
+    -- Move buffers
+    map("n", "<leader>bl", "<cmd>BufferLineMoveNext<cr>", opts)
+    map("n", "<leader>bh", "<cmd>BufferLineMovePrev<cr>", opts)
 
-    -- Quick buffer switching
+    -- Pin/unpin buffer
+    map("n", "<leader>bp", "<cmd>BufferLineTogglePin<cr>", opts)
+
+    -- Close buffers
+    map("n", "<leader>bc", "<cmd>Bdelete!<cr>", opts) -- Close current buffer
+    map("n", "<leader>bC", "<cmd>BufferLineCloseOthers<cr>", opts) -- Close other buffers
+
+    -- Magic buffer-picking mode
+    map("n", "<leader>bp", "<cmd>BufferLinePick<cr>", opts)
+
+    -- Sort by tabs or buffers
+    map("n", "<leader>bb", "<cmd>BufferLineToggleMode<cr>", opts)
+
+    -- Jump to buffer number
     for i = 1, 9 do
-      map(
-        "n",
-        string.format("<leader>%d", i),
-        string.format("<cmd>BufferLineGoToBuffer %d<cr>", i),
-        { desc = "Go to buffer " .. i }
-      )
+      map("n", string.format("<leader>%d", i), string.format("<cmd>BufferLineGoToBuffer %d<cr>", i), opts)
     end
-
-    -- Buffer sorting
-    map("n", "<leader>bl", "<cmd>BufferLineSortByDirectory<cr>", { desc = "Sort by directory" })
-    map("n", "<leader>bL", "<cmd>BufferLineSortByExtension<cr>", { desc = "Sort by extension" })
   end,
 }

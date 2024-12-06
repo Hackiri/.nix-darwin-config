@@ -6,6 +6,7 @@ return {
     "windwp/nvim-ts-autotag",
     "JoosepAlviste/nvim-ts-context-commentstring",
     "nvim-treesitter/nvim-treesitter-context",
+    "nvim-treesitter/playground",
   },
   config = function()
     -- Define language groups for better organization
