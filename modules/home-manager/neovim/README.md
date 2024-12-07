@@ -383,245 +383,95 @@ Seamlessly navigate between Neovim splits and Tmux panes using the same shortcut
 2. The navigation is context-aware - it will move to a Tmux pane if there are no more Neovim splits in that direction
 3. Use these shortcuts instead of the traditional Vim split navigation commands for better consistency
 
-## Supermaven
+## Mini.files
 
-AI-powered inline code suggestions with customized keybindings and appearance.
+Mini Files is a lightweight file explorer that complements Neo-tree with quick file browsing and preview capabilities.
 
 ### Keybindings
 | Shortcut | Description |
 |----------|-------------|
-| `<M-l>` | Accept suggestion (Alt/Option + L) |
-| `<M-]>` | Clear suggestion (Alt/Option + ]) |
-| `<M-j>` | Accept word (Alt/Option + J) |
+| `<leader>m` | Open Mini Files at current directory |
+| `<leader>M` | Open Mini Files at current file |
 
 ### Features
-- Inline code completion suggestions
-- Integration with nvim-cmp
-- Custom suggestion highlighting using Catppuccin theme colors
-- Configurable debounce and suggestion limits
-- File type-specific exclusions (e.g., disabled for C++)
+- Quick file browsing with preview
+- Git status integration
+- Trash support for safe deletions
+- Complementary to Neo-tree
 
-### Configuration Details
-- **Suggestion Color**: `#89B4FA` (Catppuccin theme)
-- **Minimum Word Length**: 2 characters
-- **Maximum Suggestions**: 3 at a time
-- **Debounce Time**: 100ms
-- **Priority**: 90 (between LSP and buffer completions)
-
-### Tips
-1. Suggestions appear inline as you type
-2. Use Alt/Option key combinations for quick suggestion management
-3. Suggestions are automatically filtered for the current context
-4. Works alongside other completion sources like LSP
-
-## Oil.nvim
-
-A file explorer that lets you edit your filesystem like a buffer.
-
-### Keybindings
+### Within Mini Files Window
 | Shortcut | Description |
 |----------|-------------|
-| `<CR>` | Select/Open file or directory |
-| `<C-s>` | Open in vertical split |
-| `<C-h>` | Open in horizontal split |
-| `<C-t>` | Open in new tab |
-| `<C-p>` | Preview file |
-| `<C-l>` | Refresh the view |
-| `q` | Close Oil |
-| `-` | Go to parent directory |
-| `_` | Open current working directory |
-| `` ` `` | Change directory (cd) |
-| `~` | Change directory for current tab (tcd) |
+| `<CR>` | Open file/directory |
 | `g?` | Show help |
-| `gs` | Change sort order |
-| `gx` | Open file with external program |
-| `g.` | Toggle hidden files |
-| `g\` | Toggle trash |
-
-### Features
-- Edit filesystem like a buffer
-- Integration with mini.icons for file icons
-- Floating window support with rounded borders
-- Hidden files support (enabled by default)
-- Multiple view options for files/directories
-- Preview functionality
-- External program integration
-
-### Tips
-1. Use `-` to quickly navigate up directories
-2. Toggle hidden files with `g.` for better visibility
-3. Use `g?` to see all available commands
-4. Preview files without opening them using `<C-p>`
-5. Use `gx` to open files in their default application
-
-## Obsidian.nvim
-
-Neovim plugin for Obsidian note-taking and knowledge management.
-
-### Configuration
-- **Workspace**: Personal vault at `~/Documents/Obsidian Vault`
-- **UI**: Disabled to prevent conflicts with render-markdown
-- **New Notes**: Created in current directory by default
-
-### Features
-- Completion support with nvim-cmp
-  - Minimum 2 characters for completion
-- Smart wiki-link formatting
-  - Basic link: `[[note]]`
-  - Link with label: `[[note|label]]`
-- File navigation with `gf` (go to file)
-- Seamless integration with Obsidian vault structure
-
-### Keybindings
-| Shortcut | Description |
-|----------|-------------|
-| `gf` | Go to file under cursor (works with wiki-links) |
-
-### Tips
-1. Use `[[` to trigger completion for existing notes
-2. Navigate between notes using `gf` on wiki-links
-3. Links are automatically formatted based on context
-4. Completion suggestions appear after typing 2 characters
-5. Works seamlessly with your existing Obsidian vault
-
-## Render-markdown
-
-Enhanced Markdown rendering with beautiful headings, checkboxes, and bullet points.
-
-### Features
-- **Heading Styles**
-  - Six levels of headings with distinct background colors
-  - Custom icons for each heading level: 󰎤 , 󰎧 , 󰎪 , 󰎭 , 󰎱 , 󰎳 
-  - Full-line background highlighting
-  - Bold heading text
-
-- **Checkbox Rendering**
-  - Unchecked boxes: 󰄱
-  - Checked boxes: 󰱒
-  - Inline positioning for clean alignment
-
-- **List Formatting**
-  - Enhanced bullet point rendering
-  - Clean, consistent spacing
-
-### Color Scheme
-- Headings use a graduated blue color scheme:
-  - H1: Light blue (#E3F2FD)
-  - H2: Slightly darker (#BBDEFB)
-  - H3: Medium blue (#90CAF9)
-  - H4: Blue (#64B5F6)
-  - H5: Deeper blue (#42A5F5)
-  - H6: Dark blue (#2196F3)
-- Text color: Dark blue (#1A237E)
-
-### Additional Features
-- LaTeX rendering disabled by default
-- Sign column icons disabled for cleaner look
-- Automatic bullet and checkbox rendering
-- Compatible with Obsidian.nvim
-
-### Tips
-1. Use standard Markdown syntax for headings (#, ##, etc.)
-2. Checkboxes use standard Markdown syntax: `- [ ]` and `- [x]`
-3. Lists work with both `-` and `*` markers
-4. Colors are customizable through the `config/colors.lua` file
+| `<C-s>` | Split horizontally |
+| `<C-v>` | Split vertically |
+| `.` | Show hidden files |
+| `y` | Copy entry path |
+| `x` | Delete entry to trash |
+| `R` | Rename entry |
+| `H` | Show history |
 
 ## Neo-tree
 
-A modern file explorer with git integration and floating window support.
+Neo-tree is the primary file explorer with rich features and Git integration.
 
 ### Keybindings
-#### Opening Neo-tree
 | Shortcut | Description |
 |----------|-------------|
-| `<leader>e` | Toggle left sidebar file explorer |
-| `<leader>w` | Toggle floating file explorer |
-| `<leader>ngs` | Open git status in floating window |
-| `<leader>r` | Toggle current file in tree |
-| `<leader>R` | Explorer Neo-tree (cwd) |
-| `\` | Reveal current file in tree |
+| `<leader>e` | Toggle Neo-tree |
+| `\` | Toggle Neo-tree with current file |
+| `<leader>ngs` | Open Neo-tree Git status |
 
-#### Inside Neo-tree Window
+### Features
+- File system browser
+- Git status integration
+- Buffer list view
+- Document symbols
+- Multiple view modes (side panel, float)
+- File operations with notifications
+
+### Within Neo-tree Window
 | Shortcut | Description |
 |----------|-------------|
-| `<space>` or `<cr>` | Open file/directory |
-| `l` | Open file/directory |
-| `P` | Toggle preview |
-| `z` | Close all folders |
-| `a` | Add new file |
-| `A` | Add new directory |
-| `d` | Delete |
-| `r` | Rename |
-| `y` | Copy to clipboard |
+| `<CR>` | Open file/directory |
+| `o` | Open file |
+| `O` | Open with window picker |
+| `a` | Add file/directory |
+| `d` | Delete file/directory |
+| `r` | Rename file/directory |
+| `y` | Copy entry path |
+| `Y` | Copy relative path |
 | `x` | Cut to clipboard |
 | `p` | Paste from clipboard |
-| `c` | Copy |
-| `m` | Move |
-| `s` | Open in vertical split |
-| `S` | Open in horizontal split |
-| `t` | Open in new tab |
-| `w` | Open with window picker |
-| `q` | Close window |
+| `c` | Copy file/directory |
+| `m` | Move file/directory |
 | `R` | Refresh |
 | `?` | Show help |
+| `<C-x>` | Open split horizontal |
+| `<C-v>` | Open split vertical |
+| `<C-t>` | Open in new tab |
+| `<BS>` | Close node |
+| `z` | Close all nodes |
+| `Z` | Close all nodes recursively |
+| `E` | Toggle auto-expand mode |
 
-### Git Status Icons
-| Icon | Description |
-|------|-------------|
-| `` | Added |
-| `` | Modified |
-| `✖` | Deleted |
-| `󰁕` | Renamed |
-| `` | Untracked |
-| `` | Ignored |
-| `󰄱` | Unstaged |
-| `` | Staged |
-| `` | Conflict |
+## Mini.surround
 
-### Features
-- Git status integration
-- Diagnostics integration
-- File operations (create, delete, move)
-- Multiple view modes (sidebar/floating)
-- File size and modification time display
-- Custom icons for files and folders
-- Window picker integration
-- Preview mode
+## Mini.comment
 
-## Mini.files
+## Mini.pairs
 
-### Opening Mini.files
-| Shortcut | Description |
-|----------|-------------|
-| `<leader>m` | Open mini.files (Directory of Current File) |
-| `<leader>M` | Open mini.files (cwd) |
+## Mini.ai
 
-### Inside Mini.files Window
-| Shortcut | Description |
-|----------|-------------|
-| `<esc>` | Close |
-| `l` | Go in |
-| `<CR>` | Go in plus |
-| `H` | Go out |
-| `h` | Go out plus |
-| `<BS>` | Reset |
-| `.` | Reveal cwd |
-| `g?` | Show help |
-| `s` | Synchronize |
-| `<` | Trim left |
-| `>` | Trim right |
+## Mini.move
 
-### Features
-- Integrated git status highlighting
-- Preview window for files
-- Permanent delete protection (moves to trash by default)
-- Customizable width for focus and preview windows
+## Mini.bufremove
 
-## Mini.icons
+## Mini.indentscope
 
-### Features
-- Customizable icon sizes
-- Customizable icon colors
-- Support for various file types
-- Support for various folder types
-- Support for git status icons
+## Mini.starter
+
+## Mini.hipatterns
+
+## Mini.animate
