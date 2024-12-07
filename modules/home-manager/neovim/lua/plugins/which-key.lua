@@ -23,58 +23,12 @@ return {
         g = true,
       },
     },
-    operators = { gc = "Comments" },
-    key_labels = {
-      ["<space>"] = "SPC",
-      ["<cr>"] = "RET",
-      ["<tab>"] = "TAB",
-    },
     icons = {
       breadcrumb = "»",
       separator = "➜",
       group = "+",
     },
-    popup_mappings = {
-      scroll_down = "<c-d>",
-      scroll_up = "<c-u>",
-    },
-    window = {
-      border = "single",
-      position = "bottom",
-      margin = { 1, 0, 1, 0 },
-      padding = { 1, 2, 1, 2 },
-      winblend = 0,
-    },
-    layout = {
-      height = { min = 4, max = 25 },
-      width = { min = 20, max = 50 },
-      spacing = 3,
-      align = "left",
-    },
-    ignore_missing = false,
-    hidden = { "<silent>", "<cmd>", "<Cmd>", "<CR>", "^:", "^ ", "^call ", "^lua " },
-    show_help = true,
-    show_keys = true,
-    triggers = "auto",
-    triggers_nowait = {
-      -- marks
-      "`",
-      "'",
-      "g`",
-      "g'",
-      -- registers
-      '"',
-      "<c-r>",
-      -- spelling
-      "z=",
-    },
-  },
-  config = function(_, opts)
-    local wk = require("which-key")
-    wk.setup(opts)
-
-    -- Register all keymaps here to avoid duplicates
-    wk.register({
+    defaults = {
       mode = { "n", "v" },
       ["<leader>b"] = { name = "+buffer" },
       ["<leader>f"] = { name = "+file/find" },
@@ -104,6 +58,66 @@ return {
       ["]"] = { name = "+next" },
       ["["] = { name = "+prev" },
       ["<leader>l"] = { name = "+lazy/mason" },
-    })
+    },
+    -- Window appearance
+    win = {
+      border = "single",
+      position = "bottom",
+      margin = { 1, 0, 1, 0 },
+      padding = { 1, 2, 1, 2 },
+      winblend = 0,
+    },
+    layout = {
+      height = { min = 4, max = 25 },
+      width = { min = 20, max = 50 },
+      spacing = 3,
+      align = "left",
+    },
+    -- Behavior
+    show_help = true,
+    show_keys = true,
+    -- Key handling
+    triggers = {
+      "<leader>",
+      "g",
+      "]",
+      "[",
+      "z",
+      '"',
+      "`",
+      "'",
+      "z=",
+    },
+    -- Replace key labels in the hint window
+    replace = {
+      ["<leader>"] = "SPC",
+      ["<cr>"] = "RET",
+      ["<tab>"] = "TAB",
+    },
+    -- Don't show these patterns in the hint window
+    filter = "^:",
+    -- Delay in milliseconds before showing the hint window
+    delay = {
+      -- Delay for marks, registers, etc.
+      nowait = {
+        "`",
+        "'",
+        "g`",
+        "g'",
+        '"',
+        "<c-r>",
+        "z=",
+      },
+    },
+    -- Keys for scrolling the hint window
+    keys = {
+      scroll_down = "<c-d>",
+      scroll_up = "<c-u>",
+    },
+  },
+  config = function(_, opts)
+    local wk = require("which-key")
+    wk.setup(opts)
+    wk.register(opts.defaults)
   end,
 }
