@@ -68,7 +68,13 @@ return {
       -- spelling
       "z=",
     },
-    defaults = {
+  },
+  config = function(_, opts)
+    local wk = require("which-key")
+    wk.setup(opts)
+
+    -- Register all keymaps here to avoid duplicates
+    wk.register({
       mode = { "n", "v" },
       ["<leader>b"] = { name = "+buffer" },
       ["<leader>f"] = { name = "+file/find" },
@@ -98,11 +104,6 @@ return {
       ["]"] = { name = "+next" },
       ["["] = { name = "+prev" },
       ["<leader>l"] = { name = "+lazy/mason" },
-    },
-  },
-  config = function(_, opts)
-    local wk = require("which-key")
-    wk.setup(opts)
-    wk.register(opts.defaults)
+    })
   end,
 }
