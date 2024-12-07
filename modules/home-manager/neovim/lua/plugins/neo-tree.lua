@@ -26,40 +26,22 @@ return {
     },
   },
   keys = {
-    { "<leader>w", ":Neotree toggle float<CR>", silent = true, desc = "Float File Explorer" },
-    { "<leader>e", ":Neotree toggle position=left<CR>", silent = true, desc = "Left File Explorer" },
-    { "<leader>ngs", ":Neotree float git_status<CR>", silent = true, desc = "Neotree Open Git Status Window" },
     {
-      "<leader>r",
+      "<leader>e",
       function()
-        local buf_name = vim.api.nvim_buf_get_name(0)
-        local function is_neo_tree_open()
-          for _, win in ipairs(vim.api.nvim_list_wins()) do
-            local buf = vim.api.nvim_win_get_buf(win)
-            if vim.bo[buf].filetype == "neo-tree" then
-              return true
-            end
-          end
-          return false
-        end
-        if vim.fn.filereadable(buf_name) == 1 or vim.fn.isdirectory(vim.fn.fnamemodify(buf_name, ":p:h")) == 1 then
-          if is_neo_tree_open() then
-            vim.cmd("Neotree close")
-          else
-            vim.cmd("Neotree reveal")
-          end
-        else
-          require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
-        end
+        require("neo-tree.command").execute({ action = "focus", position = "left" })
       end,
-      desc = "Toggle current file in NeoTree",
+      desc = "Explorer (root dir)",
     },
+    { "\\", "<cmd>Neotree reveal<cr>", desc = "Explorer (current file)" },
+    { "<leader>E", "<cmd>Neotree toggle<cr>", desc = "Explorer (toggle)" },
     {
-      "<leader>R",
-      function()
-        require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
-      end,
-      desc = "Explorer NeoTree (cwd)",
+      "<leader>n",
+      name = "+neotree",
+      g = {
+        name = "+git",
+        s = { "<cmd>Neotree float git_status<cr>", "Git Status" },
+      },
     },
   },
   config = function()
@@ -68,21 +50,131 @@ return {
     vim.fn.sign_define("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticSignInfo" })
     vim.fn.sign_define("DiagnosticSignHint", { text = "󰌵", texthl = "DiagnosticSignHint" })
 
-    require("neo-tree").setup({
+    local neotree = require("neo-tree")
+
+    local function reveal_in_neotree()
+      local path = vim.fn.expand("%:p")
+      if path == "" then
+        return
+      end
+
+      local state = require("neo-tree.sources.manager").get_state("filesystem")
+      if state.window.is_visible then
+        require("neo-tree.command").execute({
+          action = "show",
+          source = "filesystem",
+          reveal_file = path,
+          reveal_force_cwd = true,
+        })
+      else
+        require("neo-tree.command").execute({
+          action = "show",
+          source = "filesystem",
+          toggle = false,
+          reveal_file = path,
+          reveal_force_cwd = true,
+          position = "left",
+        })
+      end
+    end
+
+    neotree.setup({
       close_if_last_window = false,
       popup_border_style = "rounded",
       enable_git_status = true,
       enable_diagnostics = true,
       open_files_do_not_replace_types = { "terminal", "trouble", "qf" },
       sort_case_insensitive = false,
+      use_default_mappings = false,
+      retain_hidden_root_indent = true,
+      source_selector = {
+        winbar = false,
+        statusline = false,
+        sources = {
+          { source = "filesystem" },
+          { source = "buffers" },
+          { source = "git_status" },
+        },
+      },
+      event_handlers = {
+        {
+          event = "neo_tree_popup_input_ready",
+          ---@param args { bufnr: integer, winid: integer }
+          handler = function(args)
+            vim.cmd("stopinsert")
+            vim.keymap.set("i", "<esc>", vim.cmd.stopinsert, { noremap = true, buffer = args.bufnr })
+          end,
+        },
+        {
+          event = "neo_tree_window_after_open",
+          handler = function(args)
+            if args.position == "left" or args.position == "right" then
+              vim.cmd("wincmd =")
+            end
+          end,
+        },
+        {
+          event = "neo_tree_window_after_close",
+          handler = function(args)
+            if args.position == "left" or args.position == "right" then
+              vim.cmd("wincmd =")
+            end
+          end,
+        },
+      },
+      window = {
+        position = "left",
+        width = 40,
+        mapping_options = {
+          noremap = true,
+          nowait = true,
+        },
+        mappings = {
+          ["<space>"] = {
+            "toggle_node",
+            nowait = false,
+          },
+          ["<2-LeftMouse>"] = "open",
+          ["<cr>"] = "open",
+          ["<esc>"] = "cancel",
+          ["P"] = {
+            "toggle_preview",
+            config = { use_float = true },
+          },
+          ["l"] = "open",
+          ["S"] = "open_split",
+          ["s"] = "open_vsplit",
+          ["t"] = "open_tabnew",
+          ["w"] = "open_with_window_picker",
+          ["C"] = "close_node",
+          ["z"] = "close_all_nodes",
+          ["a"] = {
+            "add",
+            config = { show_path = "none" },
+          },
+          ["A"] = "add_directory",
+          ["d"] = "delete",
+          ["r"] = "rename",
+          ["y"] = "copy_to_clipboard",
+          ["x"] = "cut_to_clipboard",
+          ["p"] = "paste_from_clipboard",
+          ["c"] = "copy",
+          ["m"] = "move",
+          ["q"] = "close_window",
+          ["R"] = "refresh",
+          ["?"] = "show_help",
+          ["<"] = "prev_source",
+          [">"] = "next_source",
+        },
+      },
       default_component_configs = {
         container = {
-          enable_character_fade = false,
+          enable_character_fade = true,
         },
         indent = {
           indent_size = 2,
-          padding = 0,
-          with_markers = false,
+          padding = 1,
+          with_markers = true,
           indent_marker = "│",
           last_indent_marker = "└",
           highlight = "NeoTreeIndentMarker",
@@ -120,129 +212,154 @@ return {
             conflict = "",
           },
         },
-        file_size = {
-          enabled = true,
-          required_width = 64,
-        },
-        type = {
-          enabled = true,
-          required_width = 122,
-        },
-        last_modified = {
-          enabled = true,
-          required_width = 88,
-        },
-        created = {
-          enabled = true,
-          required_width = 110,
-        },
-        symlink_target = {
-          enabled = false,
-        },
       },
-      commands = {},
-      window = {
-        position = "left",
-        width = 40,
-        mapping_options = {
-          noremap = true,
-          nowait = true,
-        },
-        mappings = {
-          ["<space>"] = { "toggle_node", nowait = false },
-          ["<2-LeftMouse>"] = "open",
-          ["<cr>"] = "open",
-          ["<esc>"] = "cancel",
-          ["P"] = { "toggle_preview", config = { use_float = true } },
-          ["l"] = "open",
-          ["S"] = "open_split",
-          ["s"] = "open_vsplit",
-          ["t"] = "open_tabnew",
-          ["w"] = "open_with_window_picker",
-          ["C"] = "close_node",
-          ["z"] = "close_all_nodes",
-          ["a"] = {
-            "add",
-            config = {
-              show_path = "none",
-            },
-          },
-          ["A"] = "add_directory",
-          ["d"] = "delete",
-          ["r"] = "rename",
-          ["y"] = "copy_to_clipboard",
-          ["x"] = "cut_to_clipboard",
-          ["p"] = "paste_from_clipboard",
-          ["c"] = "copy",
-          ["m"] = "move",
-          ["q"] = "close_window",
-          ["R"] = "refresh",
-          ["?"] = "show_help",
-          ["<"] = "prev_source",
-          [">"] = "next_source",
-          ["i"] = "show_file_details",
-        },
-      },
-      nesting_rules = {},
       filesystem = {
-        use_libuv_file_watcher = true,
         filtered_items = {
           visible = false,
           hide_dotfiles = false,
           hide_gitignored = false,
+          hide_hidden = false,
+          hide_by_name = {
+            ".DS_Store",
+            "thumbs.db",
+          },
           never_show = {},
         },
         follow_current_file = {
           enabled = false,
         },
+        group_empty_dirs = false,
+        hijack_netrw_behavior = "open_current",
+        use_libuv_file_watcher = true,
+        window = {
+          mappings = {
+            ["<bs>"] = "navigate_up",
+            ["."] = "set_root",
+            ["H"] = "toggle_hidden",
+            ["/"] = "fuzzy_finder",
+            ["D"] = "fuzzy_finder_directory",
+            ["f"] = "filter_on_submit",
+            ["<c-x>"] = "clear_filter",
+            ["[g"] = "prev_git_modified",
+            ["]g"] = "next_git_modified",
+          },
+        },
         commands = {
-          delete = function(state)
-            if vim.fn.executable("trash") == 0 then
-              vim.api.nvim_echo({
-                { "- Trash utility not installed. Make sure to install it first\n", nil },
-                { "- In macOS run `brew install trash`\n", nil },
-                { "- Or delete the `custom delete command` section in neo-tree", nil },
-              }, false, {})
+          rename = function(state)
+            local node = state.tree:get_node()
+            if not node then
               return
             end
-            local inputs = require("neo-tree.ui.inputs")
-            local path = state.tree:get_node().path
-            local msg = "Are you sure you want to trash " .. path
-            inputs.confirm(msg, function(confirmed)
-              if not confirmed then
+
+            local path = node:get_id()
+            local old_name = vim.fn.fnamemodify(path, ":t")
+
+            vim.ui.input({
+              prompt = "Rename " .. old_name .. " to: ",
+              default = old_name,
+              completion = "file",
+            }, function(new_name)
+              if not new_name or new_name == "" or new_name == old_name then
                 return
               end
-              vim.fn.system({ "trash", vim.fn.fnameescape(path) })
-              require("neo-tree.sources.manager").refresh(state.name)
+
+              local new_path = vim.fn.fnamemodify(path, ":h") .. "/" .. new_name
+
+              -- Ensure parent directory exists
+              local parent_path = vim.fn.fnamemodify(new_path, ":h")
+              if vim.fn.isdirectory(parent_path) == 0 then
+                vim.fn.mkdir(parent_path, "p")
+              end
+
+              -- Perform the rename
+              local success = vim.loop.fs_rename(path, new_path)
+              if success then
+                vim.schedule(function()
+                  require("neo-tree.sources.manager").refresh(state.name)
+                  vim.api.nvim_echo({ { string.format("Renamed %s to %s", old_name, new_name), "Normal" } }, false, {})
+                end)
+              else
+                vim.schedule(function()
+                  vim.api.nvim_echo(
+                    { { string.format("Failed to rename %s to %s", old_name, new_name), "ErrorMsg" } },
+                    false,
+                    {}
+                  )
+                end)
+              end
             end)
           end,
-          delete_visual = function(state, selected_nodes)
-            if vim.fn.executable("trash") == 0 then
-              vim.api.nvim_echo({
-                { "- Trash utility not installed. Make sure to install it first\n", nil },
-                { "- In macOS run `brew install trash`\n", nil },
-                { "- Or delete the `custom delete command` section in neo-tree", nil },
-              }, false, {})
+
+          delete = function(state)
+            local node = state.tree:get_node()
+            if not node then
               return
             end
-            local inputs = require("neo-tree.ui.inputs")
-            local function GetTableLen(tbl)
-              local len = 0
-              for _ in pairs(tbl) do
-                len = len + 1
-              end
-              return len
-            end
-            local count = GetTableLen(selected_nodes)
-            local msg = "Are you sure you want to trash " .. count .. " files?"
-            inputs.confirm(msg, function(confirmed)
-              if not confirmed then
+
+            local path = node:get_id()
+            local name = vim.fn.fnamemodify(path, ":t")
+
+            vim.ui.select({ "Yes", "No" }, {
+              prompt = string.format("Delete %s?", name),
+            }, function(choice)
+              if choice ~= "Yes" then
                 return
               end
-              for _, node in ipairs(selected_nodes) do
-                vim.fn.system({ "trash", vim.fn.fnameescape(node.path) })
+
+              local success
+              if vim.fn.executable("trash") == 1 then
+                success = os.execute("trash " .. vim.fn.shellescape(path)) == 0
+              else
+                success = vim.fn.delete(path, "rf") == 0
               end
-              require("neo-tree.sources.manager").refresh(state.name)
+
+              vim.schedule(function()
+                if success then
+                  require("neo-tree.sources.manager").refresh(state.name)
+                  vim.api.nvim_echo({ { string.format("Deleted %s", name), "Normal" } }, false, {})
+                else
+                  vim.api.nvim_echo({ { string.format("Failed to delete %s", name), "ErrorMsg" } }, false, {})
+                end
+              end)
+            end)
+          end,
+
+          delete_visual = function(state, selected_nodes)
+            if not selected_nodes or #selected_nodes == 0 then
+              return
+            end
+
+            local paths = {}
+            for _, node in ipairs(selected_nodes) do
+              table.insert(paths, node:get_id())
+            end
+
+            vim.ui.select({ "Yes", "No" }, {
+              prompt = string.format("Delete %d items?", #paths),
+            }, function(choice)
+              if choice ~= "Yes" then
+                return
+              end
+
+              local success = true
+              for _, path in ipairs(paths) do
+                local current_success
+                if vim.fn.executable("trash") == 1 then
+                  current_success = os.execute("trash " .. vim.fn.shellescape(path)) == 0
+                else
+                  current_success = vim.fn.delete(path, "rf") == 0
+                end
+                success = success and current_success
+              end
+
+              vim.schedule(function()
+                if success then
+                  require("neo-tree.sources.manager").refresh(state.name)
+                  vim.api.nvim_echo({ { string.format("Deleted %d items", #paths), "Normal" } }, false, {})
+                else
+                  vim.api.nvim_echo({ { string.format("Failed to delete some items"), "ErrorMsg" } }, false, {})
+                end
+              end)
             end)
           end,
         },
@@ -252,9 +369,32 @@ return {
           enabled = true,
           leave_dirs_open = false,
         },
+        group_empty_dirs = true,
+        show_unloaded = true,
       },
     })
 
-    vim.cmd([[nnoremap \ :Neotree reveal<cr>]])
+    vim.keymap.set("n", "<leader>e", function()
+      require("neo-tree.command").execute({
+        action = "show",
+        source = "filesystem",
+        toggle = true,
+        position = "left",
+      })
+    end, { noremap = true, silent = true, desc = "Toggle Neo-tree" })
+
+    vim.keymap.set("n", "\\", function()
+      local reveal_file = vim.fn.expand("%:p")
+      if reveal_file == "" then
+        reveal_file = nil
+      end
+
+      require("neo-tree.command").execute({
+        action = "show",
+        source = "filesystem",
+        toggle = true,
+        reveal_file = reveal_file,
+      })
+    end, { noremap = true, silent = true, desc = "Toggle Neo-tree with current file" })
   end,
 }

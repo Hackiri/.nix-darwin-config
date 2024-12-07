@@ -95,7 +95,16 @@ return {
       ["<tab>"] = "TAB",
     },
     -- Don't show these patterns in the hint window
-    filter = "^:",
+    filter = {
+      "^:",
+      "^ ",
+      "^call ",
+      "^lua ",
+      "<silent>",
+      "<cmd>",
+      "<Cmd>",
+      "<CR>",
+    },
     -- Delay in milliseconds before showing the hint window
     delay = {
       -- Delay for marks, registers, etc.

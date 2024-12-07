@@ -9,8 +9,8 @@ return {
       width_preview = 50,
     },
     options = {
-      -- Whether to use for editing directories
-      use_as_default_explorer = true,
+      -- Don't use as default explorer to avoid conflicts with Neo-tree
+      use_as_default_explorer = false,
       -- If false, files are moved to trash: ~/.local/share/nvim/mini.files/trash
       permanent_delete = false,
     },
@@ -32,28 +32,30 @@ return {
   keys = {
     {
       "<leader>m",
-      function()
-        local buf_name = vim.api.nvim_buf_get_name(0)
-        local dir_name = vim.fn.fnamemodify(buf_name, ":p:h")
-        if vim.fn.filereadable(buf_name) == 1 then
-          -- Pass the full file path to highlight the file
-          require("mini.files").open(buf_name, true)
-        elseif vim.fn.isdirectory(dir_name) == 1 then
-          -- If the directory exists but the file doesn't, open the directory
-          require("mini.files").open(dir_name, true)
-        else
-          -- If neither exists, fallback to the current working directory
+      name = "+mini.files",
+      f = {
+        function()
+          local buf_name = vim.api.nvim_buf_get_name(0)
+          local dir_name = vim.fn.fnamemodify(buf_name, ":p:h")
+          if vim.fn.filereadable(buf_name) == 1 then
+            -- Pass the full file path to highlight the file
+            require("mini.files").open(buf_name, true)
+          elseif vim.fn.isdirectory(dir_name) == 1 then
+            -- If the directory exists but the file doesn't, open the directory
+            require("mini.files").open(dir_name, true)
+          else
+            -- If neither exists, fallback to the current working directory
+            require("mini.files").open(vim.uv.cwd(), true)
+          end
+        end,
+        desc = "Open at current file",
+      },
+      d = {
+        function()
           require("mini.files").open(vim.uv.cwd(), true)
-        end
-      end,
-      desc = "Open mini.files (Directory of Current File)",
-    },
-    {
-      "<leader>M",
-      function()
-        require("mini.files").open(vim.uv.cwd(), true)
-      end,
-      desc = "Open mini.files (cwd)",
+        end,
+        desc = "Open at directory",
+      },
     },
   },
   config = function(_, opts)
@@ -121,22 +123,54 @@ return {
     vim.api.nvim_create_autocmd("User", {
       pattern = "MiniFilesWindowUpdate",
       callback = function(args)
-        local win_id = args.data.win_id
-        if not win_id then
+        local state = files.get_explorer_state()
+        if not state then
           return
         end
-        local cursor = vim.api.nvim_win_get_cursor(win_id)
-        local current_item = files.get_fs_entry()
-        if not current_item or current_item.fs_type ~= "file" then
+
+        local win_id = state.target_window
+        if not win_id or not vim.api.nvim_win_is_valid(win_id) then
           return
         end
-        local buf_id = vim.fn.bufadd(current_item.path)
-        vim.fn.bufload(buf_id)
-        local preview_win = files.get_window_number("preview")
-        if preview_win then
-          vim.api.nvim_win_set_buf(preview_win, buf_id)
+
+        local cur_entry = files.get_fs_entry()
+        if not (cur_entry and cur_entry.fs_type == "file") then
+          return
         end
-        vim.api.nvim_win_set_cursor(win_id, cursor)
+
+        -- Get preview window if it exists
+        local preview_buf, preview_win
+        for _, win in ipairs(vim.api.nvim_list_wins()) do
+          if vim.api.nvim_win_is_valid(win) then
+            local win_buf = vim.api.nvim_win_get_buf(win)
+            local win_config = vim.api.nvim_win_get_config(win)
+            if win_config.relative ~= "" then -- Is floating window
+              preview_buf = win_buf
+              preview_win = win
+              break
+            end
+          end
+        end
+
+        if preview_buf and preview_win then
+          -- Load file into preview buffer
+          local path = cur_entry.path
+          local buf_id = vim.fn.bufadd(path)
+          vim.fn.bufload(buf_id)
+
+          -- Set preview buffer
+          pcall(vim.api.nvim_win_set_buf, preview_win, buf_id)
+
+          -- Try to maintain cursor position safely
+          pcall(function()
+            local cursor = vim.api.nvim_win_get_cursor(win_id)
+            local line_count = vim.api.nvim_buf_line_count(buf_id)
+            if cursor[1] > line_count then
+              cursor[1] = line_count
+            end
+            vim.api.nvim_win_set_cursor(preview_win, cursor)
+          end)
+        end
       end,
     })
   end,
