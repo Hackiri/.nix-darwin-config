@@ -27,21 +27,26 @@ return {
   },
   keys = {
     {
-      "<leader>e",
+      "<leader>ee",
       function()
         require("neo-tree.command").execute({ action = "focus", position = "left" })
       end,
-      desc = "Explorer (root dir)",
+      desc = "Explorer (Open)",
     },
-    { "\\", "<cmd>Neotree reveal<cr>", desc = "Explorer (current file)" },
-    { "<leader>E", "<cmd>Neotree toggle<cr>", desc = "Explorer (toggle)" },
     {
-      "<leader>n",
-      name = "+neotree",
-      g = {
-        name = "+git",
-        s = { "<cmd>Neotree float git_status<cr>", "Git Status" },
-      },
+      "<leader>ef",
+      "<cmd>Neotree reveal<cr>",
+      desc = "Explorer (Find File)",
+    },
+    {
+      "<leader>et",
+      "<cmd>Neotree toggle<cr>",
+      desc = "Explorer (Toggle)",
+    },
+    {
+      "<leader>eg",
+      "<cmd>Neotree float git_status<cr>",
+      desc = "Explorer (Git Status)",
     },
   },
   config = function()
@@ -374,7 +379,7 @@ return {
       },
     })
 
-    vim.keymap.set("n", "<leader>e", function()
+    vim.keymap.set("n", "<leader>ee", function()
       require("neo-tree.command").execute({
         action = "show",
         source = "filesystem",

@@ -57,6 +57,17 @@ return {
           print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
         end, "[W]orkspace [L]ist Folders")
 
+        -- Format on save if the client supports it
+        if client.supports_method("textDocument/formatting") then
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            group = vim.api.nvim_create_augroup("format_on_save" .. event.buf, { clear = true }),
+            buffer = event.buf,
+            callback = function()
+              vim.lsp.buf.format({ async = false })
+            end,
+          })
+        end
+
         -- Document highlight
         local client = vim.lsp.get_client_by_id(event.data.client_id)
         if client and client.server_capabilities.documentHighlightProvider then
@@ -145,15 +156,24 @@ return {
       },
     })
 
+    -- TypeScript/JavaScript
+    lspconfig.ts_ls.setup({
+      capabilities = capabilities,
+      init_options = {
+        preferences = {
+          disableSuggestions = true,
+        },
+      },
+    })
+
     -- Other servers with basic setup
     local servers = {
       "html",
-      "tsserver",
       "dockerls",
       "docker_compose_language_service",
       "ruff",
       "tailwindcss",
-      "taplo", -- TOML language server
+      "taplo",
       "jsonls",
       "sqlls",
       "terraformls",
@@ -161,9 +181,8 @@ return {
       "bashls",
       "graphql",
       "cssls",
-      "ltex", -- Will be configured separately below
       "texlab",
-      "nixd", -- Added nixd LSP
+      "nixd",
     }
 
     -- Setup basic servers
@@ -178,7 +197,7 @@ return {
     -- LTeX specific configuration
     lspconfig.ltex.setup({
       capabilities = capabilities,
-      cmd = { "ltex-ls" }, -- This should be available through Nix
+      cmd = { "ltex-ls" },
       filetypes = { "text", "markdown", "tex", "latex" },
       flags = { debounce_text_changes = 300 },
       settings = {
@@ -209,6 +228,7 @@ return {
       signs = true,
       underline = true,
       update_in_insert = false,
+      severity_sort = true,
     })
   end,
 }

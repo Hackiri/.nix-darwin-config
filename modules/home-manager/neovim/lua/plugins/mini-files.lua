@@ -2,6 +2,30 @@ return {
   "echasnovski/mini.files",
   version = false,
   event = "VeryLazy",
+  keys = {
+    {
+      "<leader>mf",
+      function()
+        local buf_name = vim.api.nvim_buf_get_name(0)
+        local dir_name = vim.fn.fnamemodify(buf_name, ":p:h")
+        if vim.fn.filereadable(buf_name) == 1 then
+          require("mini.files").open(buf_name, true)
+        elseif vim.fn.isdirectory(dir_name) == 1 then
+          require("mini.files").open(dir_name, true)
+        else
+          require("mini.files").open(vim.uv.cwd(), true)
+        end
+      end,
+      desc = "Mini Files (Current File)",
+    },
+    {
+      "<leader>md",
+      function()
+        require("mini.files").open(vim.uv.cwd(), true)
+      end,
+      desc = "Mini Files (Directory)",
+    },
+  },
   opts = {
     windows = {
       preview = true,
@@ -9,12 +33,9 @@ return {
       width_preview = 50,
     },
     options = {
-      -- Don't use as default explorer to avoid conflicts with Neo-tree
       use_as_default_explorer = false,
-      -- If false, files are moved to trash: ~/.local/share/nvim/mini.files/trash
       permanent_delete = false,
     },
-    -- Customize mappings for better usability
     mappings = {
       close = "<esc>",
       go_in = "l",
@@ -27,35 +48,6 @@ return {
       synchronize = "s",
       trim_left = "<",
       trim_right = ">",
-    },
-  },
-  keys = {
-    {
-      "<leader>m",
-      name = "+mini.files",
-      f = {
-        function()
-          local buf_name = vim.api.nvim_buf_get_name(0)
-          local dir_name = vim.fn.fnamemodify(buf_name, ":p:h")
-          if vim.fn.filereadable(buf_name) == 1 then
-            -- Pass the full file path to highlight the file
-            require("mini.files").open(buf_name, true)
-          elseif vim.fn.isdirectory(dir_name) == 1 then
-            -- If the directory exists but the file doesn't, open the directory
-            require("mini.files").open(dir_name, true)
-          else
-            -- If neither exists, fallback to the current working directory
-            require("mini.files").open(vim.uv.cwd(), true)
-          end
-        end,
-        desc = "Open at current file",
-      },
-      d = {
-        function()
-          require("mini.files").open(vim.uv.cwd(), true)
-        end,
-        desc = "Open at directory",
-      },
     },
   },
   config = function(_, opts)

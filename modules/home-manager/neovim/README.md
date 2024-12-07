@@ -22,7 +22,7 @@
   - [Text Objects](#text-objects-1)
   - [Supported Languages](#supported-language-groups)
 - [Buffer Management](#buffer-management)
-  - [Quick Navigation](#quick-buffer-navigation)
+  - [Quick Buffer Navigation](#quick-buffer-navigation)
   - [Snipe Menu](#inside-snipe-buffer-menu)
   - [Telescope Browser](#inside-telescope-buffer-browser)
 - [Snipe.nvim](#snipenvim)
@@ -86,6 +86,28 @@
 | `<leader>ft` | Terminal (root dir) |
 | `<leader>fT` | Terminal (cwd) |
 | `<leader>fy` | Clipboard history |
+
+### File Explorers
+| Shortcut | Description |
+|----------|-------------|
+| `<leader>ee` | Open Neo-tree Explorer |
+| `<leader>ef` | Find Current File in Neo-tree |
+| `<leader>et` | Toggle Neo-tree Explorer |
+| `<leader>eg` | Neo-tree Git Status |
+| `<leader>mf` | Mini Files (Current File) |
+| `<leader>md` | Mini Files (Directory) |
+
+### File Marks (Harpoon)
+| Shortcut | Description |
+|----------|-------------|
+| `<leader>m` | Add Current File |
+| `<leader>M` | Toggle Harpoon Menu |
+| `<leader>1` | Jump to Harpoon File 1 |
+| `<leader>2` | Jump to Harpoon File 2 |
+| `<leader>3` | Jump to Harpoon File 3 |
+| `<leader>4` | Jump to Harpoon File 4 |
+| `<C-p>` | Previous Harpoon File |
+| `<C-n>` | Next Harpoon File |
 
 ### Git Commands
 | Shortcut | Description |
@@ -390,27 +412,27 @@ Mini Files is a lightweight file explorer that complements Neo-tree with quick f
 ### Keybindings
 | Shortcut | Description |
 |----------|-------------|
-| `<leader>m` | Open Mini Files at current directory |
-| `<leader>M` | Open Mini Files at current file |
+| `<leader>mf` | Open at Current File |
+| `<leader>md` | Open at Directory |
+
+### Navigation (When Open)
+| Shortcut | Description |
+|----------|-------------|
+| `l` or `<CR>` | Go into directory/open file |
+| `h` or `H` | Go up one directory |
+| `<esc>` | Close Mini Files |
+| `s` | Synchronize (apply changes) |
+| `.` | Show current working directory |
+| `g?` | Show help with all mappings |
+| `<` / `>` | Trim window width |
 
 ### Features
 - Quick file browsing with preview
 - Git status integration
-- Trash support for safe deletions
-- Complementary to Neo-tree
-
-### Within Mini Files Window
-| Shortcut | Description |
-|----------|-------------|
-| `<CR>` | Open file/directory |
-| `g?` | Show help |
-| `<C-s>` | Split horizontally |
-| `<C-v>` | Split vertically |
-| `.` | Show hidden files |
-| `y` | Copy entry path |
-| `x` | Delete entry to trash |
-| `R` | Rename entry |
-| `H` | Show history |
+- Trash support (files are moved to `~/.local/share/nvim/mini.files/trash`)
+- Visual file selection
+- File operations (copy, move, delete)
+- Split window preview
 
 ## Neo-tree
 
@@ -419,42 +441,42 @@ Neo-tree is the primary file explorer with rich features and Git integration.
 ### Keybindings
 | Shortcut | Description |
 |----------|-------------|
-| `<leader>e` | Toggle Neo-tree |
-| `\` | Toggle Neo-tree with current file |
-| `<leader>ngs` | Open Neo-tree Git status |
+| `<leader>ee` | Open Explorer |
+| `<leader>ef` | Find Current File |
+| `<leader>et` | Toggle Explorer |
+| `<leader>eg` | Git Status |
+
+### Navigation (When Open)
+| Shortcut | Description |
+|----------|-------------|
+| `o` or `<CR>` | Open file/directory |
+| `w` | Open file in split |
+| `W` | Open file in vertical split |
+| `t` | Open in new tab |
+| `C` | Close node |
+| `z` | Close all nodes |
+| `a` | Add file/directory |
+| `A` | Add directory |
+| `d` | Delete |
+| `r` | Rename |
+| `y` | Copy to clipboard |
+| `x` | Cut to clipboard |
+| `p` | Paste from clipboard |
+| `c` | Copy |
+| `m` | Move |
+| `q` | Close window |
+| `R` | Refresh |
+| `?` | Show help |
 
 ### Features
 - File system browser
 - Git status integration
-- Buffer list view
-- Document symbols
-- Multiple view modes (side panel, float)
-- File operations with notifications
-
-### Within Neo-tree Window
-| Shortcut | Description |
-|----------|-------------|
-| `<CR>` | Open file/directory |
-| `o` | Open file |
-| `O` | Open with window picker |
-| `a` | Add file/directory |
-| `d` | Delete file/directory |
-| `r` | Rename file/directory |
-| `y` | Copy entry path |
-| `Y` | Copy relative path |
-| `x` | Cut to clipboard |
-| `p` | Paste from clipboard |
-| `c` | Copy file/directory |
-| `m` | Move file/directory |
-| `R` | Refresh |
-| `?` | Show help |
-| `<C-x>` | Open split horizontal |
-| `<C-v>` | Open split vertical |
-| `<C-t>` | Open in new tab |
-| `<BS>` | Close node |
-| `z` | Close all nodes |
-| `Z` | Close all nodes recursively |
-| `E` | Toggle auto-expand mode |
+- File operations (create, delete, rename, copy, move)
+- Split window preview
+- Fuzzy finding
+- Custom commands and filters
+- Icon support
+- Window animations
 
 ## Mini.surround
 
