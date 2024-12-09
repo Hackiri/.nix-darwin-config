@@ -91,12 +91,9 @@
     zen-mode-nvim
     vim-repeat
     vim-sleuth
-    supermaven-nvim
     noice-nvim
-
-    # copilot plugins required for nvim-cmp copilot source
-    # copilot-lua
-    # copilot-cmp
+    tree-sitter-context
+    codeium-nvim
 
     # Mini Plugins
     {
@@ -138,8 +135,10 @@ in {
     extraPackages = with pkgs; [
       git # Required for lazy.nvim bootstrap
       # Language Servers
-      ltex-ls
       lua-language-server
+      nil
+      codeium
+      ltex-ls
       nodePackages.typescript-language-server
       nodePackages.vscode-langservers-extracted # html, css, json, eslint
       nodePackages.bash-language-server
@@ -150,7 +149,6 @@ in {
       ruff-lsp
       rust-analyzer
       terraform-ls
-      nil # Nix LSP
       pyright
       gopls
       clang-tools
@@ -189,6 +187,9 @@ in {
 
       # Build Tools and Runtime
       nodejs_20
+      nodePackages.npm
+      nodePackages.node-gyp
+      git
       gcc
       gnumake
       gdb
