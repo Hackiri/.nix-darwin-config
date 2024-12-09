@@ -38,6 +38,13 @@
 in {
   imports = [];
 
+  home.packages = with pkgs; [
+    tmuxinator # For managing complex tmux sessions
+    truncate_path
+    moreutils # For sponge command used in tmux-resurrect
+    reattach-to-user-namespace
+  ];
+
   programs.tmux = {
     enable = true;
     shell = "/bin/zsh";
@@ -59,10 +66,4 @@ in {
       ${tmux_config}
     '';
   };
-
-  home.packages = with pkgs; [
-    tmuxinator # For managing complex tmux sessions
-    truncate_path
-    moreutils # For sponge command used in tmux-resurrect
-  ];
 }

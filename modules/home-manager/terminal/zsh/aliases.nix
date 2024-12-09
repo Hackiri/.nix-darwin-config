@@ -149,6 +149,7 @@
   vi = "nvim";
   files = "yazi";
   untar = "tar -xvf";
+  fin = "fzf --bind 'enter:become(nvim {})'";
 
   # Alias management
   aliasadd = "echo 'alias $1=\"$2\"' >> ~/.bash_aliases && source ~/.bash_aliases";

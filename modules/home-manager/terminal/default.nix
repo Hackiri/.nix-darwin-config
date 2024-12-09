@@ -3,6 +3,6 @@
     (./. + "/wezterm")
     (./. + "/alacritty")
     (./. + "/zsh")
-    (./. + "/zellij")
+    # (./. + "/zellij")
   ];
 }

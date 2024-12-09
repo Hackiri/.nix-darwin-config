@@ -293,6 +293,11 @@ return {
     },
   },
 
+  {
+    "dgox16/oldworld.nvim",
+    lazy = false,
+  },
+
   -- Configure LazyVim to load the colorscheme
   {
     "LazyVim/LazyVim",
@@ -302,6 +307,7 @@ return {
       -- colorscheme = "gruvbox",
       -- colorscheme = "vague",
       -- colorscheme = "kanagawa",
+      -- colorscheme = "oldworld",
       colorscheme = "tokyonight",
     },
   },
