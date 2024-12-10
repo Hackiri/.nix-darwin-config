@@ -46,7 +46,7 @@ return {
     vim.keymap.set("n", "<leader>rt", "<cmd>RenderToggle<CR>", { desc = "Toggle Markdown Rendering" })
     vim.keymap.set("n", "<leader>rr", "<cmd>RenderRefresh<CR>", { desc = "Refresh Markdown Rendering" })
     vim.keymap.set("n", "<leader>rc", "<cmd>RenderClose<CR>", { desc = "Close Markdown Rendering" })
-    
+
     -- Add checkbox operations
     vim.keymap.set("n", "<leader>rx", function()
       local line = vim.fn.getline(".")
