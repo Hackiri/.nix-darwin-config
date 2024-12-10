@@ -321,11 +321,7 @@ return {
           location,
           progress,
         },
-        lualine_z = {
-          function()
-            return " " .. os.date("%R")
-          end,
-        },
+        lualine_z = {},
       },
       inactive_sections = {
         lualine_a = {},

@@ -302,31 +302,29 @@ return {
     local opts = { noremap = true, silent = true }
 
     -- Navigate buffers
-    map("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>", opts)
-    map("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>", opts)
-    map("n", "]b", "<cmd>BufferLineCycleNext<cr>", opts)
-    map("n", "[b", "<cmd>BufferLineCyclePrev<cr>", opts)
+    map("n", "<leader>bp", "<cmd>BufferLineCyclePrev<cr>", opts)
+    map("n", "<leader>bn", "<cmd>BufferLineCycleNext<cr>", opts)
 
     -- Move buffers
-    map("n", "<leader>bl", "<cmd>BufferLineMoveNext<cr>", opts)
-    map("n", "<leader>bh", "<cmd>BufferLineMovePrev<cr>", opts)
+    map("n", "<leader>bP", "<cmd>BufferLineMovePrev<cr>", opts)
+    map("n", "<leader>bN", "<cmd>BufferLineMoveNext<cr>", opts)
 
     -- Pin/unpin buffer
     map("n", "<leader>bp", "<cmd>BufferLineTogglePin<cr>", opts)
 
     -- Close buffers
-    map("n", "<leader>bc", "<cmd>Bdelete!<cr>", opts) -- Close current buffer
-    map("n", "<leader>bC", "<cmd>BufferLineCloseOthers<cr>", opts) -- Close other buffers
+    map("n", "<leader>bx", "<cmd>Bdelete!<cr>", opts) -- Close current buffer
+    map("n", "<leader>bX", "<cmd>BufferLineCloseOthers<cr>", opts) -- Close other buffers
 
     -- Magic buffer-picking mode
-    map("n", "<leader>bp", "<cmd>BufferLinePick<cr>", opts)
+    map("n", "<leader>bl", "<cmd>BufferLinePick<cr>", opts)
 
     -- Sort by tabs or buffers
     map("n", "<leader>bb", "<cmd>BufferLineToggleMode<cr>", opts)
 
     -- Jump to buffer number
     for i = 1, 9 do
-      map("n", string.format("<leader>%d", i), string.format("<cmd>BufferLineGoToBuffer %d<cr>", i), opts)
+      map("n", string.format("<leader>b%d", i), string.format("<cmd>BufferLineGoToBuffer %d<cr>", i), opts)
     end
   end,
 }

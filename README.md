@@ -51,6 +51,11 @@ This repository contains a complete nix-darwin configuration that manages both s
   - Git integration
   - Markdown previews
 
+- **Emacs Configuration**
+  - LSP support for multiple languages
+  - Code completion enhancements (company)
+  - Syntax highlighting and colorization
+
 - **Git Configuration**
   - Git integration with Home Manager
   - Git-crypt for secure secrets

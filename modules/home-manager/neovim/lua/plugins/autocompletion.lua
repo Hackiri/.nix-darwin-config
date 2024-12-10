@@ -11,15 +11,8 @@ return {
       "saadparwaiz1/cmp_luasnip", -- for lua autocompletion
       "rafamadriz/friendly-snippets", -- useful snippets library
       "onsails/lspkind.nvim", -- vs-code like pictograms
-      "Exafunction/codeium.vim", -- AI completion
+      "Exafunction/codeium.nvim", -- AI completion
     },
-    opts = function(_, opts)
-      table.insert(opts.sources, 1, {
-        name = "codeium",
-        group_index = 1,
-        priority = 100,
-      })
-    end,
     config = function()
       local cmp = require("cmp")
       local luasnip = require("luasnip")
@@ -46,7 +39,7 @@ return {
           completeopt = "menu,menuone,preview,noselect",
           keyword_pattern = [[\k\+]],
           keyword_length = 1,
-          autocomplete = { cmp.TriggerEvent.InsertEnter, cmp.TriggerEvent.TextChanged },
+          autocomplete = false, -- Disable automatic completion
           trigger_characters = { ".", ":", "@", "/", "_" },
         },
 
@@ -80,7 +73,7 @@ return {
             mode = "symbol_text",
             maxwidth = 50,
             ellipsis_char = "...",
-            symbol_map = { supermaven = " " },
+            symbol_map = { Codeium = "󰚩 " },
             menu = {
               nvim_lsp = "[LSP]",
               luasnip = "[Snip]",
@@ -93,36 +86,10 @@ return {
 
         -- sources for autocompletion
         sources = cmp.config.sources({
-          {
-            name = "codeium",
-            priority = 1000,
-            max_item_count = 3,
-          },
-          {
-            name = "nvim_lsp",
-            priority = 900,
-            entry_filter = function(entry)
-              return require("cmp.types").lsp.CompletionItemKind[entry:get_kind()] ~= "Text"
-            end,
-          },
-          {
-            name = "luasnip",
-            priority = 750,
-            option = { show_autosnippets = true },
-          },
-          {
-            name = "buffer",
-            priority = 500,
-            option = {
-              get_bufnrs = function()
-                local bufs = {}
-                for _, win in ipairs(vim.api.nvim_list_wins()) do
-                  bufs[vim.api.nvim_win_get_buf(win)] = true
-                end
-                return vim.tbl_keys(bufs)
-              end,
-            },
-          },
+          { name = "nvim_lsp", priority = 1000 },
+          { name = "codeium", priority = 900 },
+          { name = "luasnip", priority = 750 },
+          { name = "buffer", priority = 500 },
           { name = "path", priority = 250 },
         }),
 
@@ -174,6 +141,15 @@ return {
               cmp.select_prev_item()
             elseif luasnip.locally_jumpable(-1) then
               luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+          ["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif luasnip.expand_or_locally_jumpable() then
+              luasnip.expand_or_jump()
             else
               fallback()
             end

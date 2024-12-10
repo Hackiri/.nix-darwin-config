@@ -1,14 +1,13 @@
 -- Easily comment visual regions/lines
 return {
   "numToStr/Comment.nvim",
+  event = { "BufReadPost", "BufNewFile" },
   opts = {},
   config = function()
-    local opts = { noremap = true, silent = true }
-    vim.keymap.set("n", "<C-_>", require("Comment.api").toggle.linewise.current, opts)
-    vim.keymap.set("n", "<C-c>", require("Comment.api").toggle.linewise.current, opts)
-    vim.keymap.set("n", "<C-/>", require("Comment.api").toggle.linewise.current, opts)
-    vim.keymap.set("v", "<C-_>", "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>", opts)
-    vim.keymap.set("v", "<C-c>", "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>", opts)
-    vim.keymap.set("v", "<C-/>", "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<cr>", opts)
+    local api = require("Comment.api")
+    vim.keymap.set("n", "<leader>/", api.toggle.linewise.current, { desc = "Toggle comment line" })
+    vim.keymap.set("v", "<leader>/", "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>", { desc = "Toggle comment selection" })
+    vim.keymap.set("n", "<leader>?", api.toggle.blockwise.current, { desc = "Toggle comment block" })
+    vim.keymap.set("v", "<leader>?", "<ESC><cmd>lua require('Comment.api').toggle.blockwise(vim.fn.visualmode())<CR>", { desc = "Toggle comment block" })
   end,
 }

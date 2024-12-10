@@ -90,24 +90,51 @@ return {
   },
   keys = {
     {
-      "<leader>sn",
+      "<leader>xs",
       function()
         require("snacks").success("Task completed successfully!", {
           title = "Success",
           timeout = 2000,
         })
       end,
-      desc = "Show success notification",
+      desc = "Show Success Notification",
     },
     {
-      "<leader>se",
+      "<leader>xe",
       function()
         require("snacks").error("An error occurred!", {
           title = "Error",
-          timeout = 4000,
+          timeout = 3000,
         })
       end,
-      desc = "Show error notification",
+      desc = "Show Error Notification",
+    },
+    {
+      "<leader>xw",
+      function()
+        require("snacks").warn("Warning: Proceed with caution", {
+          title = "Warning",
+          timeout = 3000,
+        })
+      end,
+      desc = "Show Warning Notification",
+    },
+    {
+      "<leader>xi",
+      function()
+        require("snacks").info("Here's some information", {
+          title = "Info",
+          timeout = 3000,
+        })
+      end,
+      desc = "Show Info Notification",
+    },
+    {
+      "<leader>xc",
+      function()
+        require("snacks").dismiss_all()
+      end,
+      desc = "Clear All Notifications",
     },
   },
 }

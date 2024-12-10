@@ -40,22 +40,22 @@ return {
           vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
         end
 
-        -- Keep your existing keymaps
-        map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-        map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-        map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
-        map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
-        map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
-        map("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
-        map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-        map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
-        map("K", vim.lsp.buf.hover, "Hover Documentation")
-        map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-        map("<leader>wa", vim.lsp.buf.add_workspace_folder, "[W]orkspace [A]dd Folder")
-        map("<leader>wr", vim.lsp.buf.remove_workspace_folder, "[W]orkspace [R]emove Folder")
-        map("<leader>wl", function()
+        -- Keep your existing keymaps but reorganize under <leader>l prefix
+        map("<leader>ld", require("telescope.builtin").lsp_definitions, "[L]SP [D]efinition")
+        map("<leader>lr", require("telescope.builtin").lsp_references, "[L]SP [R]eferences")
+        map("<leader>li", require("telescope.builtin").lsp_implementations, "[L]SP [I]mplementation")
+        map("<leader>lt", require("telescope.builtin").lsp_type_definitions, "[L]SP [T]ype Definition")
+        map("<leader>ls", require("telescope.builtin").lsp_document_symbols, "[L]SP Document [S]ymbols")
+        map("<leader>lw", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[L]SP [W]orkspace Symbols")
+        map("<leader>ln", vim.lsp.buf.rename, "[L]SP Re[n]ame")
+        map("<leader>la", vim.lsp.buf.code_action, "[L]SP Code [A]ction")
+        map("<leader>lk", vim.lsp.buf.hover, "[L]SP Hover Documentation")
+        map("<leader>lD", vim.lsp.buf.declaration, "[L]SP [D]eclaration")
+        map("<leader>lwa", vim.lsp.buf.add_workspace_folder, "[L]SP [W]orkspace [A]dd Folder")
+        map("<leader>lwr", vim.lsp.buf.remove_workspace_folder, "[L]SP [W]orkspace [R]emove Folder")
+        map("<leader>lwl", function()
           print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        end, "[W]orkspace [L]ist Folders")
+        end, "[L]SP [W]orkspace [L]ist Folders")
 
         -- Format on save if the client supports it
         if client.supports_method("textDocument/formatting") then

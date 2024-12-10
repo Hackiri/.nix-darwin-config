@@ -42,6 +42,19 @@ return {
         connection_ok = "✓",
         connection_error = "✕",
       }
+      -- Add keybindings for database operations under <leader>q prefix
+      vim.keymap.set("n", "<leader>qt", "<cmd>DBUIToggle<CR>", { desc = "Toggle DB UI" })
+      vim.keymap.set("n", "<leader>qf", "<cmd>DBUIFindBuffer<CR>", { desc = "Find DB Buffer" })
+      vim.keymap.set("n", "<leader>qr", "<cmd>DBUIRenameBuffer<CR>", { desc = "Rename DB Buffer" })
+      vim.keymap.set("n", "<leader>ql", "<cmd>DBUILastQueryInfo<CR>", { desc = "Last Query Info" })
+      -- Add execution keybindings in SQL files
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "sql", "mysql", "plsql" },
+        callback = function()
+          vim.keymap.set("n", "<leader>qe", "<cmd>DBUIExecuteQuery<CR>", { buffer = true, desc = "Execute Query" })
+          vim.keymap.set("v", "<leader>qe", "<cmd>'<,'>DBUIExecuteQuery<CR>", { buffer = true, desc = "Execute Selected Query" })
+        end,
+      })
     end,
   },
 }

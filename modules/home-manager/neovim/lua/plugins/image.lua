@@ -28,4 +28,12 @@ return {
     tmux_show_only_in_active_window = false, -- auto show/hide images in tmux window
     hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp" }, -- Patterns of files to hijack
   },
+  config = function()
+    -- Add keybindings for image operations under <leader>i prefix
+    vim.keymap.set("n", "<leader>it", "<cmd>ImageToggle<cr>", { desc = "Toggle Image" })
+    vim.keymap.set("n", "<leader>iT", "<cmd>ImageToggleAll<cr>", { desc = "Toggle All Images" })
+    vim.keymap.set("n", "<leader>ir", "<cmd>ImageReload<cr>", { desc = "Reload Image" })
+    vim.keymap.set("n", "<leader>iR", "<cmd>ImageReloadAll<cr>", { desc = "Reload All Images" })
+    vim.keymap.set("n", "<leader>is", "<cmd>ImageSave<cr>", { desc = "Save Image" })
+  end,
 }

@@ -25,6 +25,30 @@ return {
       end,
       desc = "Mini Files (Directory)",
     },
+    {
+      "<leader>mh",
+      function()
+        require("mini.files").open(vim.fn.expand("~"), true)
+      end,
+      desc = "Mini Files (Home)",
+    },
+    {
+      "<leader>mc",
+      function()
+        require("mini.files").open(vim.fn.stdpath("config"), true)
+      end,
+      desc = "Mini Files (Config)",
+    },
+    {
+      "<leader>mp",
+      function()
+        local mf = require("mini.files")
+        if not mf.close() then
+          mf.open(mf.get_fs_entry().path)
+        end
+      end,
+      desc = "Mini Files (Toggle Preview)",
+    },
   },
   opts = {
     windows = {

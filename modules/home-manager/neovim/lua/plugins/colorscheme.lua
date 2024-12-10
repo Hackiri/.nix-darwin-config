@@ -307,8 +307,8 @@ return {
       -- colorscheme = "gruvbox",
       -- colorscheme = "vague",
       -- colorscheme = "kanagawa",
-      -- colorscheme = "oldworld",
-      colorscheme = "tokyonight",
+      colorscheme = "oldworld",
+      -- colorscheme = "tokyonight",
     },
   },
 }

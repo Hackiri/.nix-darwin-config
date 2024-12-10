@@ -4,61 +4,61 @@ return {
   dependencies = { "nvim-lua/plenary.nvim" },
   keys = {
     {
-      "<leader>m",
+      "<leader>ma",
       function()
         require("harpoon"):list():add()
       end,
-      desc = "Harpoon Add File",
+      desc = "Add mark",
     },
     {
-      "<leader>M",
+      "<leader>mm",
       function()
         local harpoon = require("harpoon")
         harpoon.ui:toggle_quick_menu(harpoon:list())
       end,
-      desc = "Harpoon Menu",
+      desc = "Show marks",
     },
     {
-      "<leader>1",
+      "<leader>m1",
       function()
         require("harpoon"):list():select(1)
       end,
-      desc = "Harpoon File 1",
+      desc = "Jump to mark 1",
     },
     {
-      "<leader>2",
+      "<leader>m2",
       function()
         require("harpoon"):list():select(2)
       end,
-      desc = "Harpoon File 2",
+      desc = "Jump to mark 2",
     },
     {
-      "<leader>3",
+      "<leader>m3",
       function()
         require("harpoon"):list():select(3)
       end,
-      desc = "Harpoon File 3",
+      desc = "Jump to mark 3",
     },
     {
-      "<leader>4",
+      "<leader>m4",
       function()
         require("harpoon"):list():select(4)
       end,
-      desc = "Harpoon File 4",
+      desc = "Jump to mark 4",
     },
     {
-      "<C-p>",
+      "<leader>mp",
       function()
         require("harpoon"):list():prev()
       end,
-      desc = "Harpoon Previous",
+      desc = "Previous mark",
     },
     {
-      "<C-n>",
+      "<leader>mn",
       function()
         require("harpoon"):list():next()
       end,
-      desc = "Harpoon Next",
+      desc = "Next mark",
     },
   },
   config = function()

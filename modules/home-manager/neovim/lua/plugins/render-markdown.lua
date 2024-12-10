@@ -41,6 +41,23 @@ return {
     vim.cmd(string.format([[highlight RenderMD5Fg cterm=bold gui=bold guifg=%s]], color5_bg))
     vim.cmd(string.format([[highlight RenderMD6Fg cterm=bold gui=bold guifg=%s]], color6_bg))
   end,
+  config = function()
+    -- Add keybindings for markdown rendering under <leader>r prefix
+    vim.keymap.set("n", "<leader>rt", "<cmd>RenderToggle<CR>", { desc = "Toggle Markdown Rendering" })
+    vim.keymap.set("n", "<leader>rr", "<cmd>RenderRefresh<CR>", { desc = "Refresh Markdown Rendering" })
+    vim.keymap.set("n", "<leader>rc", "<cmd>RenderClose<CR>", { desc = "Close Markdown Rendering" })
+    
+    -- Add checkbox operations
+    vim.keymap.set("n", "<leader>rx", function()
+      local line = vim.fn.getline(".")
+      if line:match("%[%s%]") then
+        vim.cmd("s/\\[\\s\\]/[x]/e")
+      elseif line:match("%[x%]") then
+        vim.cmd("s/\\[x\\]/[ ]/e")
+      end
+      vim.cmd("nohl")
+    end, { desc = "Toggle Checkbox" })
+  end,
   opts = {
     bullet = {
       enabled = true,

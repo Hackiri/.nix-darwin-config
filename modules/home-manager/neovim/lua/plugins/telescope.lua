@@ -131,6 +131,39 @@ return {
     telescope.load_extension("fzf")
     telescope.load_extension("ui-select")
 
+    -- Add comprehensive keybindings under <leader>f prefix
+    local function map(key, fn, desc)
+      vim.keymap.set("n", key, fn, { desc = desc })
+    end
+
+    -- Files
+    map("<leader>ff", builtin.find_files, "Find Files")
+    map("<leader>fg", builtin.live_grep, "Find Text")
+    map("<leader>fw", builtin.grep_string, "Find Current Word")
+    map("<leader>fh", builtin.help_tags, "Find Help")
+    map("<leader>fm", builtin.marks, "Find Marks")
+    map("<leader>fo", builtin.oldfiles, "Find Recent Files")
+    map("<leader>fb", builtin.buffers, "Find Buffers")
+
+    -- Git
+    map("<leader>fgf", builtin.git_files, "Find Git Files")
+    map("<leader>fgc", builtin.git_commits, "Find Git Commits")
+    map("<leader>fgb", builtin.git_branches, "Find Git Branches")
+    map("<leader>fgs", builtin.git_status, "Find Git Status")
+
+    -- LSP
+    map("<leader>fd", builtin.diagnostics, "Find Diagnostics")
+    map("<leader>fs", builtin.lsp_document_symbols, "Find Symbols")
+    map("<leader>fr", builtin.lsp_references, "Find References")
+    map("<leader>fi", builtin.lsp_implementations, "Find Implementations")
+
+    -- Commands & Search
+    map("<leader>fc", builtin.commands, "Find Commands")
+    map("<leader>fk", builtin.keymaps, "Find Keymaps")
+    map("<leader>f/", builtin.current_buffer_fuzzy_find, "Find in Current Buffer")
+    map("<leader>f?", builtin.search_history, "Find Search History")
+    map("<leader>f:", builtin.command_history, "Find Command History")
+
     -- Keymaps
     vim.keymap.set("n", "<leader>?", builtin.oldfiles, { desc = "[?] Find recently opened files" })
     vim.keymap.set("n", "<leader>/", function()

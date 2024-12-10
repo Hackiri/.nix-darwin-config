@@ -21,7 +21,7 @@ vim.opt.showmode = false -- Don't show mode since we have a statusline
 vim.opt.signcolumn = "yes" -- Always show signcolumn
 vim.opt.cursorline = true -- Enable highlighting of the current line
 vim.opt.colorcolumn = "80" -- Line length marker
-vim.opt.cmdheight = 1 -- Height of command bar
+vim.opt.cmdheight = 0 -- Hide command line unless needed
 vim.opt.laststatus = 3 -- Global statusline
 
 -- Indenting

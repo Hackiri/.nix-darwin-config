@@ -29,5 +29,9 @@ return {
       },
     })
     require("telescope").load_extension("frecency")
+
+    -- Add keybindings for frecency under <leader>f prefix
+    vim.keymap.set("n", "<leader>fr", "<cmd>Telescope frecency<CR>", { desc = "Recent Files (Frecency)" })
+    vim.keymap.set("n", "<leader>fR", "<cmd>Telescope frecency workspace=plugins<CR>", { desc = "Recent Plugin Files" })
   end,
 }
