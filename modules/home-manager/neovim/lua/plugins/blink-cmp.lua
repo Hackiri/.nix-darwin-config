@@ -41,11 +41,11 @@ return {
           enabled = true,
           module = "blink.cmp.sources.codeium",
           kind = "Codeium",
-          score_offset = 70,  -- Lower than LSP and snippets
-          max_items = 3,  -- Limit number of suggestions
+          score_offset = 70, -- Lower than LSP and snippets
+          max_items = 3, -- Limit number of suggestions
           opts = {
             fuzzy = {
-              use_typo_resistance = false,
+              use_typo_resistance = false,  -- reduce fuzziness
               use_proximity = false,
             },
           },
