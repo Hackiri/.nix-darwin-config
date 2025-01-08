@@ -45,7 +45,7 @@ return {
           max_items = 3, -- Limit number of suggestions
           opts = {
             fuzzy = {
-              use_typo_resistance = false,  -- reduce fuzziness
+              use_typo_resistance = false, -- reduce fuzziness
               use_proximity = false,
             },
           },
