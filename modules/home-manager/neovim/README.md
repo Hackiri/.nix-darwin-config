@@ -1,6 +1,6 @@
 # Neovim Configuration Guide
 
-<img src="./assets/neovim-dashboard.png" width="800" alt="Neovim Dashboard">
+<img src="https://github.com/Hackiri/.nix-darwin-config/blob/main/modules/home-manager/neovim/neovim-dashboard.png" width="800" alt="Neovim Dashboard">
 
 ## Table of Contents
 - [Keybindings Overview](#keybindings-overview)
