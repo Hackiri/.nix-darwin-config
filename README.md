@@ -111,17 +111,18 @@ This repository contains a complete nix-darwin configuration that manages both s
 │   │   ├── emacs/        # Emacs configuration
 │   │   ├── neovim/       # Neovim setup
 │   │   │   └── lua/      # Lua configurations
-│   │   │       ├── config/
-│   │   │       └── plugins/
+│   │   │       ├── config/   # Configuration files
+│   │   │       ├── lazyvim/util # Utility functions
+│   │   │       └── plugins/   # Plugin configurations
 │   │   ├── starship/     # Shell prompt
 │   │   ├── terminal/     # Terminal emulators
 │   │   │   ├── alacritty/
 │   │   │   ├── wezterm/
 │   │   │   ├── zellij/   # Terminal multiplexer
 │   │   │   └── zsh/      # Shell configuration
-│   │   │       ├── lib/
-│   │   │       ├── themes/
-│   │   │       └── tools/
+│   │   │       ├── lib/      # Library files
+│   │   │       ├── themes/   # Theme files
+│   │   │       └── tools/    # Utility scripts
 │   │   └── tmux/         # Terminal multiplexer
 │   └── nix-darwin/       # System-wide settings
 │       └── nixd/         # Nix language server
