@@ -1,8 +1,14 @@
 return {
   "L3MON4D3/LuaSnip",
-  lazy = true,  -- Let nvim-cmp load it
+  lazy = true,
   config = function()
     local ls = require("luasnip")
+    local s = ls.snippet
+    local t = ls.text_node
+    local i = ls.insert_node
+    local f = ls.function_node
+    local fmt = require("luasnip.extras.fmt").fmt
+
     local snippet_dir = vim.fn.stdpath("config") .. "/snippets"
 
     -- Create directory for custom snippets if it doesn't exist
@@ -23,12 +29,7 @@ local i = ls.insert_node
 local f = ls.function_node
 local fmt = require("luasnip.extras.fmt").fmt
 
--- Get clipboard contents
-local function clipboard()
-  return vim.fn.getreg("+")
-end
-
-return {
+ls.add_snippets("markdown", {
   -- Code blocks
   s("```", fmt("```{}\n{}\n```", { i(1, "language"), i(2) })),
   s("py", fmt("```python\n{}\n```", { i(1) })),
@@ -79,16 +80,14 @@ return {
 ---
 title: {}
 date: {}
-tags: [{}]
+tags: {}
 ---
-
-{}]], {
+]], {
     i(1, "Title"),
-    f(function() return os.date("%Y-%m-%d") end),
-    i(2, "tag1, tag2"),
-    i(0),
+    i(2, os.date("%Y-%m-%d")),
+    i(3, ""),
   })),
-}
+})
 ]])
         file:close()
       end
@@ -106,16 +105,45 @@ local t = ls.text_node
 local i = ls.insert_node
 local fmt = require("luasnip.extras.fmt").fmt
 
-return {
+ls.add_snippets("all", {
   -- Comments
   s("todo", fmt("// TODO: {}", { i(1) })),
   s("fix", fmt("// FIXME: {}", { i(1) })),
   s("hack", fmt("// HACK: {}", { i(1) })),
   s("note", fmt("// NOTE: {}", { i(1) })),
-}
+})
 ]])
         file:close()
       end
     end
+
+    ls.add_snippets("markdown", {
+      s("ul", fmt("- {}", { i(1) })),
+      s("ol", fmt("1. {}", { i(1) })),
+      s("cl", fmt("- [ ] {}", { i(1) })),
+      s("table2", fmt([[
+| {} | {} |
+|---|---|
+| {} | {} |]], {
+        i(1, "Header 1"),
+        i(2, "Header 2"),
+        i(3, "Row 1"),
+        i(4, "Row 1"),
+      })),
+      s("note", fmt("> **Note**\n> {}", { i(1) })),
+      s("warn", fmt("> **Warning**\n> {}", { i(1) })),
+      s("info", fmt("> **Info**\n> {}", { i(1) })),
+      s("img", fmt("![{}]({})", { i(1, "alt text"), i(2, "url") })),
+      s("meta", fmt([[
+---
+title: {}
+date: {}
+tags: {}
+---]], {
+        i(1, "Title"),
+        f(function() return os.date("%Y-%m-%d") end),
+        i(2, ""),
+      }))
+    })
   end,
 }
