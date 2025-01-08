@@ -1,5 +1,7 @@
 # Neovim Configuration Guide
 
+<img src="./assets/neovim-dashboard.png" width="800" alt="Neovim Dashboard">
+
 ## Table of Contents
 - [Keybindings Overview](#keybindings-overview)
   - [Core Navigation](#core-navigation)
