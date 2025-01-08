@@ -41,6 +41,7 @@ in {
       # Debugging and analysis
       gdb
       lldb
+      viu
 
       # Network utilities
       bind # Provides dig command

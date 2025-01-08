@@ -30,13 +30,13 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = { signs = false },
   },
-  {
-    -- high-performance color highlighter
-    "norcalli/nvim-colorizer.lua",
-    config = function()
-      require("colorizer").setup()
-    end,
-  },
+  -- {
+  --   -- high-performance color highlighter
+  --   "norcalli/nvim-colorizer.lua",
+  --   config = function()
+  --     require("colorizer").setup()
+  --   end,
+  -- },
   {
     -- Notification manager
     "rcarriga/nvim-notify",

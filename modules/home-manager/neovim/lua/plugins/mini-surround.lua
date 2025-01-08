@@ -1,23 +1,7 @@
 return {
   "echasnovski/mini.surround",
-  recommended = true,
-  keys = function(_, keys)
-    -- Populate the keys based on the user's options
-    local opts = LazyVim.opts("mini.surround")
-    local mappings = {
-      { opts.mappings.add, desc = "Add surrounding", mode = { "n", "v" } },
-      { opts.mappings.delete, desc = "Delete surrounding" },
-      { opts.mappings.find, desc = "Find right surrounding" },
-      { opts.mappings.find_left, desc = "Find left surrounding" },
-      { opts.mappings.highlight, desc = "Highlight surrounding" },
-      { opts.mappings.replace, desc = "Replace surrounding" },
-      { opts.mappings.update_n_lines, desc = "Update `MiniSurround.config.n_lines`" },
-    }
-    mappings = vim.tbl_filter(function(m)
-      return m[1] and #m[1] > 0
-    end, mappings)
-    return vim.list_extend(mappings, keys)
-  end,
+  version = false,
+  event = "VeryLazy",
   opts = {
     mappings = {
       add = "<leader>sa", -- Add surrounding in Normal and Visual modes
@@ -29,4 +13,7 @@ return {
       update_n_lines = "<leader>sn", -- Update `n_lines`
     },
   },
+  config = function(_, opts)
+    require("mini.surround").setup(opts)
+  end,
 }

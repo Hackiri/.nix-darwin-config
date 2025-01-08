@@ -47,34 +47,34 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 -----------------------------------------------------------
--- Terminal Integration (Kitty)
+-- Terminal Integration (Alacritty)
 -----------------------------------------------------------
--- Set kitty terminal padding
-local function setup_kitty_padding()
-  -- Check if we're in Kitty terminal
-  if vim.env.TERM == "xterm-kitty" then
-    local kitty_group = vim.api.nvim_create_augroup("KittyPadding", { clear = true })
+-- Set alacritty terminal padding
+local function setup_alacritty_padding()
+  -- Check if we're in Alacritty terminal
+  if vim.env.TERM == "alacritty" then
+    local alacritty_group = vim.api.nvim_create_augroup("AlacrittyPadding", { clear = true })
 
     -- Reset padding on exit
     vim.api.nvim_create_autocmd("VimLeave", {
-      group = kitty_group,
+      group = alacritty_group,
       callback = function()
-        vim.fn.system("kitty @ set-spacing padding=default margin=default")
+        vim.fn.system("alacritty @ set-spacing padding=default margin=default")
       end,
     })
 
     -- Set padding on enter
     vim.api.nvim_create_autocmd("VimEnter", {
-      group = kitty_group,
+      group = alacritty_group,
       callback = function()
-        vim.fn.system("kitty @ set-spacing padding=0 margin=0 3 0 3")
+        vim.fn.system("alacritty @ set-spacing padding=0 margin=0 3 0 3")
       end,
     })
   end
 end
 
--- Initialize kitty padding settings
-setup_kitty_padding()
+-- Initialize alacritty padding settings
+setup_alacritty_padding()
 
 -----------------------------------------------------------
 -- Additional Utilities

@@ -1,9 +1,8 @@
 return {
   "echasnovski/mini.indentscope",
-  version = false, -- wait till new 0.7.0 release to put it back on semver
-  event = "LazyFile",
+  version = false,
+  event = "VeryLazy",
   opts = {
-    -- symbol = "▏",
     symbol = "│",
     options = { try_as_border = true },
   },
@@ -23,8 +22,8 @@ return {
     vim.keymap.set("o", "[[", function()
       require("mini.indentscope").textobject(true)
     end, { desc = "Select Indent Scope (Backwards)" })
-  end,
-  init = function()
+
+    -- Disable for certain filetypes
     vim.api.nvim_create_autocmd("FileType", {
       pattern = {
         "alpha",

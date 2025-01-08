@@ -11,9 +11,10 @@
   - [Code Actions](#code-actions)
   - [Session Management](#session-management)
   - [Text Objects](#text-objects)
-- [Telescope](#telescope-shortcuts)
-- [Treesitter](#treesitter-configuration)
-- [Buffer Management](#buffer-management)
+- [Completion and Snippets](#completion-and-snippets)
+- [LSP Features](#lsp-features)
+- [AI Assistance](#ai-assistance)
+- [File Explorers](#file-explorers)
 - [Plugin Features](#plugin-features)
 
 ## Keybindings Overview
@@ -70,6 +71,8 @@
 | `<leader>eg` | Neo-tree Git Status |
 | `<leader>mf` | Mini Files (Current File) |
 | `<leader>md` | Mini Files (Directory) |
+| `<leader>mh` | Mini Files (Home) |
+| `<leader>mc` | Mini Files (Config) |
 
 ### Git Integration
 | Shortcut | Description |
@@ -98,33 +101,102 @@
 | `<leader>lw` | Workspace symbols |
 | `<leader>ln` | Rename symbol |
 | `<leader>la` | Code action |
+| `<leader>lk` | Hover documentation |
+| `<leader>lD` | Go to declaration |
+| `<leader>lwa` | Add workspace folder |
+| `<leader>lwr` | Remove workspace folder |
+| `<leader>lwl` | List workspace folders |
+
+## Completion and Snippets
+
+The configuration uses nvim-cmp as the main completion engine with multiple sources:
+
+### Completion Sources (In Priority Order)
+1. LSP (1000) - Language Server completions
+2. Lua (900) - Neovim Lua API
+3. Snippets (800) - LuaSnip snippets
+4. Path (700) - Filesystem paths
+5. Emoji (600) - Emoji completions
+6. Buffer (500) - Words from current buffer
+7. Codeium (100) - AI-powered suggestions
+
+### Key Bindings
+| Shortcut | Description |
+|----------|-------------|
+| `<C-Space>` | Open completion menu |
+| `<C-e>` | Close completion menu |
+| `<C-y>` | Confirm completion |
+| `<C-j/k>` | Navigate completion items |
+| `<C-f/b>` | Scroll docs |
+| `<Tab>` | Next completion/Expand snippet |
+| `<S-Tab>` | Previous completion |
+
+### AI Assistance (Codeium)
+| Shortcut | Description |
+|----------|-------------|
+| `<M-l>` | Accept suggestion |
+| `<M-w>` | Accept word |
+| `<M-CR>` | Accept line |
+| `<M-c>` | Clear suggestions |
+| `<M-]>` | Next suggestion |
+| `<M-[>` | Previous suggestion |
+
+## LSP Features
+
+The configuration includes comprehensive LSP support with the following features:
+
+### Language Servers
+- Lua (`lua_ls`)
+- Rust (`rust-analyzer`)
+- Python (`pylsp`)
+- TypeScript/JavaScript (`ts_ls`)
+- Nix (`nixd`)
+- And many more basic servers
+
+### Special LSP Configurations
+- **Rust**: Enhanced with inlay hints, clippy integration, and cargo features
+- **Nix**: Configured with nixd for better completion and diagnostics
+- **Python**: Minimal configuration focusing on core features
+- **Lua**: Configured specifically for Neovim Lua development
+
+### Features
+- Automatic formatting on save (where supported)
+- Document highlighting
+- Folding support (language-specific)
+- Diagnostic display with virtual text
+- Code action support
+- Workspace folder management
+- Signature help
 
 ## Plugin Features
 
-### Which Key
-- Provides interactive key binding hints
-- Shows available commands based on prefix
-- Organizes commands into groups:
-  - `<leader>f`: Find/Files operations
-  - `<leader>g`: Git operations
-  - `<leader>l`: LSP operations
-  - `<leader>s`: Surround operations
+The configuration includes several key plugins for enhanced functionality:
 
-### Mini.nvim Suite
-- **Mini.files**: Fast and minimal file explorer
-- **Mini.surround**: Surround text operations
-- **Mini.comment**: Smart commenting
-- **Mini.pairs**: Auto-pair brackets and quotes
-- **Mini.ai**: Enhanced text objects
-- **Mini.move**: Move lines and blocks
-- **Mini.indentscope**: Show indent scope
-- **Mini.starter**: Custom start screen
+### File Management
+- **mini.files**: Enhanced file explorer with git status integration
+- **neo-tree**: Tree-style file explorer with git integration
 
-### Additional Features
-- **Telescope**: Fuzzy finder and picker
-- **Treesitter**: Advanced syntax highlighting
-- **Neo-tree**: File explorer with git integration
-- **Gitsigns**: Git integration in buffer
-- **Noice**: Enhanced UI notifications
-- **Codeium**: AI code completion
-- **Which-key**: Interactive key binding help
+### Git Integration
+- **LazyGit**: Full git interface
+- **gitsigns**: In-buffer git information
+
+### Completion and Snippets
+- **nvim-cmp**: Main completion engine
+- **LuaSnip**: Snippet engine
+- **friendly-snippets**: Community snippet collection
+
+### UI Enhancements
+- **lspkind**: VS Code-like pictograms
+- **noice**: UI improvements for cmdline and notifications
+- **fidget**: LSP progress information
+
+### Navigation
+- **telescope**: Fuzzy finder and picker
+- **harpoon**: Quick file navigation
+
+### Code Understanding
+- **treesitter**: Advanced syntax highlighting
+- **nvim-lspconfig**: LSP configuration
+
+### AI Integration
+- **codeium**: AI-powered code completion

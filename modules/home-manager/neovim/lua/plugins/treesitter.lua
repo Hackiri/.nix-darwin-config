@@ -3,12 +3,21 @@ return {
   build = ":TSUpdate",
   dependencies = {
     "nvim-treesitter/nvim-treesitter-textobjects",
+    "nvim-treesitter/nvim-treesitter-refactor",
+    "nvim-treesitter/nvim-treesitter-context",
     "windwp/nvim-ts-autotag",
     "JoosepAlviste/nvim-ts-context-commentstring",
-    "nvim-treesitter/nvim-treesitter-context",
     "nvim-treesitter/playground",
+    "RRethy/nvim-treesitter-endwise", -- Auto-add end in Ruby, Lua, etc.
+    "RRethy/nvim-treesitter-textsubjects", -- Text objects for text
   },
   config = function()
+    -- Skip ts_context_commentstring module
+    vim.g.skip_ts_context_commentstring_module = true
+
+    -- Set up ts_context_commentstring
+    require("ts_context_commentstring").setup({})
+
     -- Define language groups for better organization
     local language_groups = {
       -- Web Development
@@ -120,7 +129,7 @@ return {
       -- Indentation
       indent = {
         enable = true,
-        disable = {},
+        disable = { "python", "c", "cpp" }, -- Languages where treesitter indent might be problematic
       },
 
       -- Incremental selection
@@ -131,6 +140,14 @@ return {
           node_incremental = "<Leader>ti", -- treesitter increment
           node_decremental = "<Leader>td", -- treesitter decrement
           scope_incremental = "<Leader>tc", -- treesitter container/scope
+        },
+      },
+
+      textsubjects = {
+        enable = true,
+        keymaps = {
+          ["."] = "textsubjects-smart",
+          [";"] = "textsubjects-container-outer",
         },
       },
 
@@ -167,6 +184,10 @@ return {
             -- Call text objects
             ["a/"] = "@call.outer",
             ["i/"] = "@call.inner",
+
+            -- Comment text objects
+            ["ac"] = "@comment.outer",
+            ["ic"] = "@comment.inner",
           },
         },
 
@@ -180,10 +201,12 @@ return {
             ["]i"] = "@conditional.outer",
             ["]l"] = "@loop.outer",
             ["]s"] = "@statement.outer",
+            ["]z"] = "@fold.outer",
           },
           goto_next_end = {
             ["]M"] = "@function.outer",
             ["]["] = "@class.outer",
+            ["]Z"] = "@fold.outer",
           },
           goto_previous_start = {
             ["[m"] = "@function.outer",
@@ -191,10 +214,12 @@ return {
             ["[i"] = "@conditional.outer",
             ["[l"] = "@loop.outer",
             ["[s"] = "@statement.outer",
+            ["[z"] = "@fold.outer",
           },
           goto_previous_end = {
             ["[M"] = "@function.outer",
             ["[]"] = "@class.outer",
+            ["[Z"] = "@fold.outer",
           },
         },
 
@@ -212,16 +237,76 @@ return {
             ["<leader>E"] = "@element",
           },
         },
+
+        -- LSP interop
+        lsp_interop = {
+          enable = true,
+          border = "rounded",
+          floating_preview_opts = {},
+          peek_definition_code = {
+            ["<leader>df"] = "@function.outer",
+            ["<leader>dF"] = "@class.outer",
+          },
+        },
       },
 
       -- Additional modules
+      matchup = {
+        enable = true, -- mandatory, false will disable the whole extension
+        disable = {}, -- optional, list of language that will be disabled
+        disable_virtual_text = false,
+        include_match_words = true,
+      },
+
       autotag = {
         enable = true,
+        filetypes = {
+          "html",
+          "javascript",
+          "typescript",
+          "javascriptreact",
+          "typescriptreact",
+          "svelte",
+          "vue",
+          "tsx",
+          "jsx",
+          "rescript",
+          "xml",
+          "php",
+          "markdown",
+          "astro",
+          "glimmer",
+          "handlebars",
+          "hbs",
+        },
       },
 
       context_commentstring = {
+        enable = false,
+      },
+
+      endwise = {
         enable = true,
-        enable_autocmd = false,
+      },
+
+      -- Playground configuration
+      playground = {
+        enable = true,
+        disable = {},
+        updatetime = 25,
+        persist_queries = true,
+        keybindings = {
+          toggle_query_editor = "o",
+          toggle_hl_groups = "i",
+          toggle_injected_languages = "t",
+          toggle_anonymous_nodes = "a",
+          toggle_language_display = "I",
+          focus_language = "f",
+          unfocus_language = "F",
+          update = "R",
+          goto_node = "<cr>",
+          show_help = "?",
+        },
       },
     })
 
@@ -233,6 +318,10 @@ return {
       yaml = { "yaml", "yml" },
       dockerfile = { "Dockerfile", "dockerfile" },
       ruby = { "rb", "rake", "gemspec" },
+      javascript = { "js", "jsx", "mjs" },
+      typescript = { "ts", "tsx" },
+      rust = { "rs", "rust" },
+      nix = { "nix" },
     }
 
     for filetype, extensions in pairs(filetypes) do
@@ -246,5 +335,9 @@ return {
     vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
     vim.opt.foldenable = false
     vim.opt.foldlevel = 99
+
+    -- Performance optimization
+    vim.opt.maxmempattern = 10000 -- Increase max memory for pattern matching
+    vim.opt.regexpengine = 1 -- Use new regexp engine
   end,
 }

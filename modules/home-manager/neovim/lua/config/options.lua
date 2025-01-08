@@ -49,7 +49,11 @@ vim.opt.splitbelow = true -- Put new windows below current
 vim.opt.splitright = true -- Put new windows right of current
 
 -- Better buffer handling
-vim.opt.hidden = true -- Enable modified buffers in background
+vim.opt.hidden = true -- Enable background buffers
+
+-- Status column and signs
+vim.opt.statuscolumn = "" -- Reset statuscolumn to default
+vim.opt.signcolumn = "yes" -- Always show sign column
 
 -- Decrease update time
 vim.opt.updatetime = 250 -- Faster completion

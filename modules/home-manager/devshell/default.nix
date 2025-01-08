@@ -44,9 +44,30 @@
         ninja
         gcc
         go
-        rustup
-        taplo
+
+        # Rust development tools
+        rustc
+        cargo
+        rustfmt
+        clippy
+        rust-analyzer
+        cargo-edit
+        cargo-watch
+        cargo-audit
+        cargo-expand
+        cargo-tarpaulin
+        lldb
+
+        # JavaScript/TypeScript development
+        bun
         nodejs
+        yarn
+
+        # Container and services
+        docker
+        docker-compose
+
+        taplo
         python3
         python3Packages.pip
         python3Packages.pipx
@@ -77,11 +98,8 @@
         xh
         jless
         fx
-      ]
-      ++ lib.optionals (!pkgs.stdenv.isDarwin) [
-        valgrind
-      ]
-      ++ [
+        unzip
+
         # Version control and code quality
         git-crypt
         pre-commit
@@ -90,6 +108,9 @@
         alejandra
         deadnix
         statix
+      ]
+      ++ lib.optionals (!pkgs.stdenv.isDarwin) [
+        valgrind
       ];
 
     programs.zsh = {

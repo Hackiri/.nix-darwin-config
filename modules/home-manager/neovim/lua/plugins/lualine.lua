@@ -1,9 +1,26 @@
 return {
   "nvim-lualine/lualine.nvim",
-  dependencies = { "nvim-tree/nvim-web-devicons" },
+  dependencies = {
+    "nvim-tree/nvim-web-devicons",
+    "nvim-lua/lsp-status.nvim", -- For LSP status
+  },
   config = function()
     local lualine = require("lualine")
     local lazy_status = require("lazy.status") -- to configure lazy pending updates count
+
+    -- Utility function for string truncation
+    local function trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
+      return function(str)
+        local win_width = vim.fn.winwidth(0)
+        if hide_width and win_width < hide_width then
+          return ""
+        elseif trunc_width and trunc_len and win_width < trunc_width and #str > trunc_len then
+          return str:sub(1, trunc_len) .. (no_ellipsis and "" or "...")
+        end
+        return str
+      end
+    end
+
     -- Color palette
     local colors = {
       -- Base colors
@@ -38,30 +55,30 @@ return {
     -- Icons
     local icons = {
       -- Mode
-      normal = "",
-      insert = "",
-      visual = "",
+      normal = "",
+      insert = "",
+      visual = "",
       replace = "󰛔",
-      command = "",
-      terminal = "",
+      command = "",
+      terminal = "",
 
       -- Git
-      git_branch = "",
-      git_added = "",
-      git_modified = "",
-      git_removed = "",
+      git_branch = "",
+      git_added = "",
+      git_modified = "",
+      git_removed = "",
 
       -- Diagnostics
-      diagnostic_error = "",
-      diagnostic_warn = "",
-      diagnostic_info = "",
-      diagnostic_hint = "",
-      diagnostic_ok = "",
+      diagnostic_error = "",
+      diagnostic_warn = "",
+      diagnostic_info = "",
+      diagnostic_hint = "",
+      diagnostic_ok = "",
 
       -- Folding
       fold_lsp = "󱧊",
-      fold_treesitter = "",
-      fold_indent = "",
+      fold_treesitter = "",
+      fold_indent = "",
       fold_none = "󰝾",
 
       -- Misc
@@ -69,7 +86,7 @@ return {
       connected = "󰌘",
       disconnected = "󰌙",
       progress = "󰔟",
-      lock = "",
+      lock = "",
       dots = "󰇘",
     }
 
@@ -84,7 +101,8 @@ return {
     vim.api.nvim_create_autocmd({ "BufEnter", "FocusGained" }, {
       callback = function()
         -- Update git branch
-        cache.branch = vim.fn.system("git rev-parse --abbrev-ref HEAD"):gsub("\n", "")
+        local branch = vim.fn.system("git rev-parse --abbrev-ref HEAD 2>/dev/null"):gsub("\n", "")
+        cache.branch = (branch ~= "") and branch or ""
         cache.branch_color = (cache.branch == "live") and { fg = colors.red1, gui = "bold" } or nil
       end,
     })
@@ -124,7 +142,7 @@ return {
     end
 
     local function should_show_spell_status()
-      return vim.bo.filetype == "markdown" and vim.wo.spell
+      return vim.wo.spell
     end
 
     local function get_spell_status()
@@ -140,6 +158,35 @@ return {
       local permissions = file_path and vim.fn.getfperm(file_path) or "No File"
       local owner_permissions = permissions:sub(1, 3)
       return permissions, (owner_permissions == "rwx") and colors.green or colors.gray1
+    end
+
+    local function create_separator(condition)
+      return {
+        cond = condition,
+        function()
+          return " "
+        end,
+        color = { fg = colors.gray3, bg = colors.bg },
+        separator = { left = "", right = "" },
+        padding = 0,
+      }
+    end
+
+    -- LSP status function
+    local function get_lsp_status()
+      local clients = vim.lsp.get_active_clients()
+      if #clients == 0 then
+        return icons.disconnected .. " No LSP"
+      end
+      local buf_clients = vim.lsp.get_active_clients({ bufnr = 0 })
+      if #buf_clients == 0 then
+        return icons.disconnected .. " No LSP"
+      end
+      local buf_client_names = {}
+      for _, client in pairs(buf_clients) do
+        table.insert(buf_client_names, client.name)
+      end
+      return icons.connected .. " " .. table.concat(buf_client_names, ", ")
     end
 
     -- Component configurations
@@ -218,6 +265,7 @@ return {
       color = function()
         return cache.branch_color
       end,
+      fmt = trunc(120, 20), -- Truncate branch name in small windows
     }
 
     local location = {
@@ -258,12 +306,26 @@ return {
     require("lualine").setup({
       options = {
         icons_enabled = true,
-        theme = "tokyonight",
+        theme = "catppuccin-mocha", -- Changed to use specific catppuccin flavor
         component_separators = { left = "", right = "" },
         section_separators = { left = "", right = "" },
         disabled_filetypes = {
-          statusline = { "dashboard", "alpha" },
-          winbar = {},
+          statusline = { "dashboard", "alpha", "starter" },
+          winbar = {
+            "help",
+            "startify",
+            "dashboard",
+            "packer",
+            "neogitstatus",
+            "NvimTree",
+            "Trouble",
+            "alpha",
+            "lir",
+            "Outline",
+            "spectre_panel",
+            "toggleterm",
+            "qf",
+          },
         },
         ignore_focus = {},
         always_divide_middle = true,
@@ -290,20 +352,41 @@ return {
         lualine_c = {
           filename,
           diagnostics,
+          {
+            get_lsp_status,
+            color = { fg = colors.blue, gui = "bold" },
+            cond = hide_in_width,
+          },
         },
         lualine_x = {
+          -- Lazy status
+          {
+            lazy_status.updates,
+            cond = lazy_status.has_updates,
+            color = { fg = colors.orange },
+          },
+          -- Spell status with separators
+          create_separator(should_show_spell_status),
           {
             get_spell_status,
             cond = should_show_spell_status,
-            color = { fg = colors.purple, gui = "bold" },
+            color = function()
+              return { fg = colors.purple, bg = colors.bg, gui = "bold" }
+            end,
+            separator = { left = "", right = "" },
+            padding = 1,
           },
+          -- Permissions with separators
+          create_separator(should_show_permissions),
           {
             get_file_permissions,
             cond = should_show_permissions,
             color = function()
               local _, color = get_file_permissions()
-              return { fg = color, gui = "bold" }
+              return { fg = color, bg = colors.bg, gui = "bold" }
             end,
+            separator = { left = "", right = "" },
+            padding = 1,
           },
           fold_method,
           "encoding",
@@ -334,7 +417,14 @@ return {
       tabline = {},
       winbar = {},
       inactive_winbar = {},
-      extensions = { "neo-tree", "lazy" },
+      extensions = {
+        "neo-tree",
+        "lazy",
+        "trouble",
+        "quickfix",
+        "toggleterm",
+        "nvim-dap-ui",
+      },
     })
   end,
 }

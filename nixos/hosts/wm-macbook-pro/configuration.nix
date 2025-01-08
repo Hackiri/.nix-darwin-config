@@ -163,6 +163,7 @@
       "wireshark"
       "raycast"
       "visual-studio-code"
+      "ghostty"
     ];
     masApps = {
     };

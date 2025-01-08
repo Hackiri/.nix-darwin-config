@@ -30,13 +30,19 @@ require("lazy").setup({
     fallback = true,
   },
   spec = {
+    -- Import LazyVim plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
+    -- Import user plugins
+    { import = "plugins" },
+    -- Explicitly enable specific plugins
+    { "zbirenbaum/copilot.lua", enabled = true },
+    { "github/copilot.vim", enabled = true },
+    { "CopilotC-Nvim/CopilotChat.nvim", enabled = true },
+    -- Other plugin configurations
     { "nvim-telescope/telescope-fzf-native.nvim", enabled = true },
     { "williamboman/mason-lspconfig.nvim", enabled = false },
     { "williamboman/mason.nvim", enabled = false },
     { "nvim-treesitter/nvim-treesitter", opts = { ensure_installed = {} } },
-    -- { import = "lazyvim.plugins.extras.lsp.none-ls" },
-    { import = "plugins" },
   },
   install = { colorscheme = {} },
   checker = { enabled = true },
@@ -44,9 +50,6 @@ require("lazy").setup({
     rtp = {
       disabled_plugins = {
         "gzip",
-        -- "matchit",
-        -- "matchparen",
-        -- "netrwPlugin",
         "tarPlugin",
         "tohtml",
         "tutor",

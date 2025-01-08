@@ -58,6 +58,15 @@ return {
           },
           opts = { skip = true },
         },
+        -- Skip messages from snacks.nvim dashboard
+        {
+          filter = {
+            event = "msg_show",
+            kind = "",
+            find = "^%s*$", -- Skip empty messages
+          },
+          opts = { skip = true },
+        },
       },
       commands = {
         all = {
@@ -95,26 +104,55 @@ return {
         inc_rename = true,
         lsp_doc_border = true,
       },
+      -- Disable noice for certain filetypes
+      messages = {
+        enabled = true,
+        view_search = false,
+        view = "notify",
+        view_warn = "notify",
+        view_error = "notify",
+        view_history = "messages",
+      },
+      notify = {
+        enabled = true,
+        view = "notify",
+      },
       lsp = {
+        progress = {
+          enabled = true,
+          format = "lsp_progress",
+          format_done = "lsp_progress_done",
+          throttle = 1000 / 30, -- frequency to update lsp progress message
+          view = "mini",
+        },
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
           ["vim.lsp.util.stylize_markdown"] = true,
           ["cmp.entry.get_documentation"] = true,
         },
-      },
-      messages = {
-        enabled = true,
-        view = "notify",
-        view_error = "notify",
-        view_warn = "notify",
-        view_history = "messages",
-        view_search = "virtualtext",
+        hover = {
+          enabled = true,
+          silent = false,
+          view = nil,
+          opts = {},
+        },
+        signature = {
+          enabled = true,
+          auto_open = {
+            enabled = true,
+            trigger = true,
+            luasnip = true,
+            throttle = 50,
+          },
+          view = nil,
+          opts = {},
+        },
+        message = {
+          enabled = true,
+          view = "notify",
+          opts = {},
+        },
       },
     }
-  end,
-  config = function(_, opts)
-    require("noice").setup(opts)
-    vim.keymap.set("n", "<leader>nh", ":Noice history<CR>", { desc = "Noice History" })
-    vim.keymap.set("n", "<leader>nl", ":Noice last<CR>", { desc = "Noice Last Message" })
   end,
 }

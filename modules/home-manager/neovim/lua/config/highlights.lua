@@ -44,6 +44,9 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     vim.api.nvim_set_hl(0, "CmpItemMenu", { fg = "#565f89", bg = bg, italic = true })
     vim.api.nvim_set_hl(0, "CmpBorder", { fg = border_color, bg = bg })
 
+    -- Ghost text highlight
+    vim.api.nvim_set_hl(0, "CmpGhostText", { fg = "#565f89", italic = true })
+
     -- Kind highlights
     vim.api.nvim_set_hl(0, "CmpItemKindFunction", { fg = "#c678dd", bg = bg })
     vim.api.nvim_set_hl(0, "CmpItemKindMethod", { fg = "#c678dd", bg = bg })

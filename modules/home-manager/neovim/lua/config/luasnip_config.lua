@@ -1,5 +1,9 @@
-local luasnip = require("luasnip")
+local status_ok, luasnip = pcall(require, "luasnip")
+if not status_ok then
+  return
+end
 
+-- Configure LuaSnip
 luasnip.setup({
   history = true,
   update_events = "TextChanged,TextChangedI",
@@ -8,4 +12,6 @@ luasnip.setup({
 })
 
 -- Load friendly-snippets
-require("luasnip.loaders.from_vscode").lazy_load()
+pcall(function()
+  require("luasnip.loaders.from_vscode").lazy_load()
+end)
