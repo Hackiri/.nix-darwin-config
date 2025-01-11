@@ -15,7 +15,6 @@ if status_ok then
   require("config.luasnip_config")
 end
 
-require("config.snippets")
 require("config.highlights") -- Load custom highlights
 
 -- Load folding (with error handling)

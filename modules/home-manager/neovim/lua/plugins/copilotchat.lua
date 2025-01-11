@@ -1,47 +1,50 @@
--- https://github.com/CopilotC-Nvim/CopilotChat.nvim
-
 return {
-  {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "canary",
-    enabled = true, -- Explicitly enable the plugin
-    priority = 1000, -- High priority to load after copilot
-    dependencies = {
-      "zbirenbaum/copilot.lua", -- Make sure copilot is loaded first
-      "nvim-lua/plenary.nvim",
-    },
-    opts = function(_, opts)
-      -- Initialize options
-      opts = opts or {}
+  "CopilotC-Nvim/CopilotChat.nvim",
+  enabled = vim.g.neovim_mode ~= "skitty", -- Disable for skitty mode
+  opts = function(_, opts)
+    -- Initialize options
+    opts = opts or {}
 
-      -- Set default model if not set in options.lua
-      opts.model = _G.COPILOT_MODEL or "gpt-4"
+    -- I set this global variable in options.lua file
+    -- The copilotchat model is configured there, so if you need to change it go
+    -- to that file
+    opts.model = _G.COPILOT_MODEL
 
-      -- Format username
-      local user = (vim.env.USER or "User"):gsub("^%l", string.upper)
-      opts.question_header = string.format(" %s (%s) ", user, opts.model)
+    -- Format username
+    local user = (vim.env.USER or "User"):gsub("^%l", string.upper)
+    opts.question_header = string.format(" %s (%s) ", user, opts.model)
 
-      -- Configure mappings
-      opts.mappings = {
-        close = {
-          normal = "<Esc>",
-          insert = "<C-c>",
-        },
-        reset = "<C-l>",
-        submit_prompt = "<CR>",
-        accept_diff = "<C-y>",
-        show_diff = "<C-s>",
-      }
+    -- Configure mappings
+    opts.mappings = {
+      close = {
+        normal = "<Esc>",
+        insert = "<Esc>",
+      },
+      -- I hated this keymap with all my heart, when trying to navigate between
+      -- neovim splits I reset the chat by mistake if I was in insert mode
+      reset = {
+        normal = "",
+        insert = "",
+      },
+    }
 
-      return opts
-    end,
-    -- Add keymaps for quick access
-    keys = {
-      { "<leader>cc", "<cmd>CopilotChat<cr>", desc = "CopilotChat - Open" },
-      { "<leader>ce", "<cmd>CopilotChatExplain<cr>", desc = "CopilotChat - Explain code" },
-      { "<leader>ct", "<cmd>CopilotChatTests<cr>", desc = "CopilotChat - Generate tests" },
-      { "<leader>cf", "<cmd>CopilotChatFix<cr>", desc = "CopilotChat - Fix code" },
-      { "<leader>cr", "<cmd>CopilotChatReset<cr>", desc = "CopilotChat - Reset chat" },
+    -- opts.prompts = {
+    --   Lazy = {
+    --     prompt = "Specify a custom prompt here",
+    --   },
+    -- }
+
+    return opts
+  end,
+  keys = {
+    {
+      -- Toggle copilotchat, the default is <leader>aa
+      "<M-o>",
+      function()
+        return require("CopilotChat").toggle()
+      end,
+      desc = "[P]Toggle (CopilotChat)",
+      mode = { "n", "i", "v" },
     },
   },
 }
