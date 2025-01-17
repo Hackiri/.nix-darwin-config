@@ -56,7 +56,7 @@ in {
   home = {
     sessionVariables = {
       KREW_ROOT = "${config.home.homeDirectory}/.krew";
-      PATH = "${config.home.homeDirectory}/.krew/bin:${config.home.homeDirectory}/bin:$PATH";
+      PATH = "${config.home.homeDirectory}/.krew/bin:${config.home.homeDirectory}/bin:${config.home.homeDirectory}/.local/bin:$PATH";
       EDITOR = "nvim";
       VISUAL = "nvim";
       LANG = "en_US.UTF-8";

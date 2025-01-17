@@ -3,7 +3,6 @@ return {
   event = { "BufReadPre " .. vim.fn.expand("~") .. "/Documents/Obsidian Vault/**.md" },
   dependencies = {
     "nvim-lua/plenary.nvim",
-    "hrsh7th/nvim-cmp",
   },
   config = function()
     require("obsidian").setup({

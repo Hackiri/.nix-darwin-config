@@ -57,6 +57,7 @@
       shellcheck
       statix
       alejandra
+      pkgs.vimPlugins.luasnip # LuaSnip includes jsregexp functionality
     ];
 
     extraLuaConfig = ''

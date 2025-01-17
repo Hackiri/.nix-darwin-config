@@ -1,6 +1,8 @@
 return {
   "nvim-treesitter/nvim-treesitter",
   build = ":TSUpdate",
+  event = { "BufReadPost", "BufNewFile" }, -- Load on buffer read/new
+  priority = 1000, -- Give it high priority to load early
   dependencies = {
     "nvim-treesitter/nvim-treesitter-textobjects",
     "nvim-treesitter/nvim-treesitter-refactor",

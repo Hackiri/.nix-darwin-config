@@ -55,16 +55,26 @@ return {
         -- Add codeium to the sources configuration
         blink.setup({
           sources = {
-            providers = {
-              codeium = {
-                name = "codeium",
-                enabled = true,
-                module = "codeium.cmp",
-                kind = "Codeium",
-                score_offset = 50, -- Lower priority than LSP but higher than buffer
-              },
+            {
+              name = "codeium",
+              priority = 50,
+              group_index = 1,
             },
-            default = { "lsp", "path", "snippets", "buffer", "luasnip", "codeium" },
+            {
+              name = "nvim_lsp",
+              priority = 100,
+              group_index = 1,
+            },
+            {
+              name = "buffer",
+              priority = 30,
+              group_index = 2,
+            },
+            {
+              name = "path",
+              priority = 40,
+              group_index = 2,
+            },
           },
         })
       end

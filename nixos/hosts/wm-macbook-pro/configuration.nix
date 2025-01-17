@@ -16,6 +16,7 @@
       # Ensure proper clipboard support
       TERM = "xterm-256color";
     };
+
     systemPackages = with pkgs; [
       # System utilities
       mkalias
@@ -28,6 +29,7 @@
       nix-direnv
       direnv
     ];
+
     shells = [pkgs.zsh];
   };
 
@@ -46,6 +48,7 @@
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       ];
     };
+
     gc = {
       automatic = true;
       interval = {
@@ -56,6 +59,7 @@
       options = "--delete-older-than 30d";
       user = "wm";
     };
+
     optimise = {
       automatic = true;
       interval = {
@@ -98,16 +102,16 @@
     # Configure activation scripts
     activationScripts = {
       postActivation.text = ''
-          # Add pam_reattach to enable TouchID for tmux
-          sudo mkdir -p /usr/local/lib/pam
-          sudo cp ${pkgs.pam-reattach}/lib/pam/pam_reattach.so /usr/local/lib/pam/
+        # Add pam_reattach to enable TouchID for tmux
+        sudo mkdir -p /usr/local/lib/pam
+        sudo cp ${pkgs.pam-reattach}/lib/pam/pam_reattach.so /usr/local/lib/pam/
 
-          # Add pam_reattach to sudo config if not already present
-          if ! grep -q "pam_reattach.so" /etc/pam.d/sudo; then
-            sudo sed -i "" '2i\
+        # Add pam_reattach to sudo config if not already present
+        if ! grep -q "pam_reattach.so" /etc/pam.d/sudo; then
+          sudo sed -i "" '2i\
         auth       optional     pam_reattach.so
         ' /etc/pam.d/sudo
-          fi
+        fi
       '';
 
       applications.text = ''
@@ -120,15 +124,15 @@
           paths = config.environment.systemPackages;
           pathsToLink = "/Applications";
         }}/Applications -maxdepth 1 -type l -exec readlink '{}' + |
-            while read -r src; do
-              app_name=$(basename "$src")
-              echo "copying $src" >&2
-              ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
-              if [ -e "$HOME/Applications/Home Manager Apps/$app_name" ]; then
-                echo "linking Home Manager app: $app_name" >&2
-                ${pkgs.mkalias}/bin/mkalias "$HOME/Applications/Home Manager Apps/$app_name" "/Applications/Nix Apps/HM_$app_name"
-              fi
-            done
+          while read -r src; do
+            app_name=$(basename "$src")
+            echo "copying $src" >&2
+            ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
+            if [ -e "$HOME/Applications/Home Manager Apps/$app_name" ]; then
+              echo "linking Home Manager app: $app_name" >&2
+              ${pkgs.mkalias}/bin/mkalias "$HOME/Applications/Home Manager Apps/$app_name" "/Applications/Nix Apps/HM_$app_name"
+            fi
+          done
       '';
 
       postUserActivation.text = ''
@@ -153,6 +157,7 @@
       "mas"
     ];
     casks = [
+      "docker"
       "pika"
       "slack"
       "discord"
@@ -165,14 +170,14 @@
       "visual-studio-code"
       "ghostty"
     ];
-    masApps = {
-    };
+    masApps = {};
     onActivation = {
       cleanup = "zap";
       autoUpdate = true;
       upgrade = true;
     };
   };
+
   nix-homebrew.user = "wm";
 
   # Enable zsh system-wide

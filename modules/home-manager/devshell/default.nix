@@ -63,10 +63,6 @@
         nodejs
         yarn
 
-        # Container and services
-        docker
-        docker-compose
-
         taplo
         python3
         python3Packages.pip
