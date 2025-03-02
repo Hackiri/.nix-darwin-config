@@ -14,12 +14,13 @@
     withRuby = false;
 
     extraPackages = with pkgs; [
-      nodePackages.javascript-typescript-langserver
+      # Language servers
       nodePackages.typescript-language-server
       nodePackages.vscode-langservers-extracted
       nodePackages.prettier
       nodePackages."@tailwindcss/language-server"
       nodePackages.yaml-language-server
+      # LSP servers
       python3Packages.python-lsp-server
       python3Packages.pynvim
       rust-analyzer

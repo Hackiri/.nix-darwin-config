@@ -36,6 +36,7 @@ in {
       deadnix
       statix
       stylua
+      devenv
       customPkgs.dev-tools # Custom development helper scripts
 
       # Debugging and analysis

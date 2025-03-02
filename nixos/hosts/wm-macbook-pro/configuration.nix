@@ -48,30 +48,10 @@
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       ];
     };
-
-    gc = {
-      automatic = true;
-      interval = {
-        Weekday = 0;
-        Hour = 2;
-        Minute = 0;
-      };
-      options = "--delete-older-than 30d";
-      user = "wm";
-    };
-
-    optimise = {
-      automatic = true;
-      interval = {
-        Weekday = 0;
-        Hour = 3;
-        Minute = 0;
-      };
-    };
   };
 
   # Enable touch ID for sudo authentication
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   # System configuration
   system = {
@@ -142,11 +122,8 @@
       '';
     };
 
-    stateVersion = 4;
+    stateVersion = 5;
   };
-
-  # Enable nix daemon service
-  services.nix-daemon.enable = true;
 
   # Enable nix-index service to update nix packages
   programs.nix-index.enable = true;
@@ -154,9 +131,11 @@
   homebrew = {
     enable = true;
     brews = [
+      "webp"
       "mas"
     ];
     casks = [
+      "cmake"
       "docker"
       "pika"
       "slack"
@@ -185,7 +164,9 @@
 
   fonts = {
     packages = with pkgs; [
-      (nerdfonts.override {fonts = ["JetBrainsMono" "FiraCode" "IBMPlexMono"];})
+      nerd-fonts.jetbrains-mono
+      nerd-fonts.fira-code
+      nerd-fonts.blex-mono
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-emoji

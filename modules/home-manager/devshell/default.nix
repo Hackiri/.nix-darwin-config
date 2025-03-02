@@ -40,7 +40,6 @@
         # Development tools
         gh
         gnumake
-        cmake
         ninja
         gcc
         go
