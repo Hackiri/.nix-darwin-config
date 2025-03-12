@@ -7,11 +7,6 @@
 }: let
   customPkgs = import ../pkgs {inherit pkgs;};
 in {
-  # Allow unfree packages
-  nixpkgs.config = {
-    allowUnfree = true;
-  };
-
   # Import the module that handles all other imports
   imports = [
     ../modules/home-manager

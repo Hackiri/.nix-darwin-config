@@ -3,125 +3,54 @@
 
 ;;; Code:
 
-;; Basic UI Configuration
+;; uncopied: auto-complete-mode
 (setq inhibit-startup-message t)
 (tool-bar-mode 0)
 (menu-bar-mode 1)
 (set-scroll-bar-mode nil)
+
+;;;; Presentation font sizing (emacsclient)
+;; (setq default-frame-alist '((width . 80)
+;;                             (height . 34)
+;;                             (font-backend . "xft")
+;;                             (font . "Ubuntu Nerd Font Mono-22")))
+;;(set-face-attribute 'default nil :height 150)
+
+;;Normal font sizing (emacsclient)
+(setq default-frame-alist '((width . 80)
+                           (height . 34)
+                           (font . "JetBrainsMono NFM-22")
+                           (vertical-scroll-bars . nil)))
+
+(set-frame-font "JetBrainsMono NFM-22" nil t)
+
 (setq show-trailing-whitespace t)
 (setq-default indent-tabs-mode nil)
 (show-paren-mode t)
+;; Make region visible when it's active
 (transient-mark-mode t)
+;; turn off damn beeping
 (setq visible-bell t)
+;; Require a final newline in a file, to avoid confusing some tools
 (setq require-final-newline t)
 (setq line-spacing 0.2)
+;; Don't make me type out 'yes', 'y' is good enough.
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq column-number-mode t)
+; override default 72 column fill
 (setq-default fill-column 79)
-(global-display-line-numbers-mode 1)
+(setq indent-tabs-mode nil)
+;; tab width
+(setq tab-width 4)
+(add-hook 'after-init-hook 'hide-emacs-options-menu)
+;; Turn on font-lock in all modes that support it
+(if (fboundp 'global-font-lock-mode)
+    (global-font-lock-mode t))
+;; "maximum gaudiness"
+(setq font-lock-maximum-decoration t)
 
-;; Font Configuration
-(setq default-frame-alist '((width . 80)
-                           (height . 34)
-                           (font-backend . "xft")
-                           (font . "JetBrainsMono Nerd Font-14")
-                           (vertical-scroll-bars . nil)))
 
-;; Theme and Modeline
-(require 'doom-modeline)
-(doom-modeline-mode 1)
-(load-theme 'nord t)
-
-;; Ivy Configuration
-(require 'ivy)
-(ivy-mode 1)
-(setq ivy-use-virtual-buffers t)
-(setq ivy-count-format "(%d/%d) ")
-(global-set-key (kbd "C-s") 'swiper)
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(global-set-key (kbd "C-x b") 'ivy-switch-buffer)
-
-;; Which Key
-(require 'which-key)
-(which-key-mode)
-(setq which-key-idle-delay 0.3)
-
-;; Company Mode
-(require 'company)
-(add-hook 'after-init-hook 'global-company-mode)
-(setq company-idle-delay 0.1)
-(setq company-minimum-prefix-length 1)
-
-;; LSP Mode
-(require 'lsp-mode)
-(setq lsp-keymap-prefix "C-c l")
-(add-hook 'python-mode-hook #'lsp)
-(add-hook 'rust-mode-hook #'lsp)
-(add-hook 'nix-mode-hook #'lsp)
-
-;; LSP UI
-(require 'lsp-ui)
-(setq lsp-ui-doc-enable t)
-(setq lsp-ui-doc-position 'at-point)
-
-;; Projectile
-(require 'projectile)
-(projectile-mode +1)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-(setq projectile-completion-system 'ivy)
-
-;; Treemacs
-(require 'treemacs)
-(global-set-key (kbd "M-0") 'treemacs-select-window)
-(global-set-key (kbd "C-x t t") 'treemacs)
-
-;; Format All
-(require 'format-all)
-(add-hook 'prog-mode-hook 'format-all-mode)
-
-;; YASnippet
-(require 'yasnippet)
-(yas-global-mode 1)
-
-;; Multiple Cursors
-(require 'multiple-cursors)
-(global-set-key (kbd "C-S-l") 'mc/mark-all-like-this)
-
-;; Dired Customization
-(require 'dired)
-(require 'all-the-icons)
-(require 'all-the-icons-dired)
-(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
-
-;; Auto-complete
-(require 'auto-complete-config)
-(ac-config-default)
-
-;; Flycheck
-(require 'flycheck)
-(add-hook 'after-init-hook #'global-flycheck-mode)
-(require 'flycheck-pyflakes)
-(add-hook 'python-mode-hook 'flycheck-mode)
-(add-to-list 'flycheck-disabled-checkers 'python-flake8)
-(add-to-list 'flycheck-disabled-checkers 'python-pylint)
-
-;; Magit
-(require 'magit)
-(global-set-key (kbd "C-x g") 'magit-status)
-
-;; VTerm
-(require 'vterm)
-(setq vterm-max-scrollback 10000)
-(global-set-key (kbd "C-c t") 'vterm)
-
-;; File backups
-(defvar backup-dir "~/.emacs.d/backups")
-(make-directory backup-dir t)
-(setq backup-directory-alist `((".*" . ,backup-dir)))
-(setq auto-save-file-name-transforms `((".*" ,backup-dir t)))
-
-;; Integrate X clipboard and emacs copy/yank; see
+; Integrate X clipboard and emacs copy/yank; see
 ; http://www.emacswiki.org/emacs/CopyAndPaste#toc2
 
 (global-set-key "\C-w" 'clipboard-kill-region)
@@ -131,15 +60,20 @@
 (require 'uniquify)
 (require 'nxml-mode)
 (require 'saveplace)
+(require 'auto-complete-config)
+(require 'auto-complete)
 (require 'compile)
 (require 'web-mode)
 (require 'auth-source)
 (require 'server)
 (require 'font-core)
+(require 'dired)
 (require 'browse-url)
-(require 'multiple-cursors)
+;(require 'multiple-cursors)
 
 ;; set up multiple cursor mode like vs code
+
+(global-set-key (kbd "C-S-l") 'mc/mark-all-like-this)
 
 ; your fingers are wired to using C-x k to kill off buffers (and you
 ; dont like having to type C-x #)
@@ -223,7 +157,7 @@
    (if buffer-file-name
       (concat "#" (file-name-nondirectory buffer-file-name) "")
     (expand-file-name
-     (concat "#%" (buffer-name) "#"))))
+     (concat "#%" (buffer-name) "#")))))
 
 ;; Put backup files (ie foo~) in one place too. (The backup-directory-alist
 ;; list contains regexp=>directory mappings; filenames matching a regexp are
@@ -411,14 +345,18 @@
 (add-hook 'c-mode-common-hook
           (lambda () (setq indent-tabs-mode t)))
 
-(setq nix-nixfmt-bin "nixpkgs-fmt")
+; nix-mode "format buffer", cant find in PATH for some reason
+(setq nix-nixfmt-bin "/etc/profiles/per-user/chrism/bin/nixpkgs-fmt")
+
+; nixpkgs-fmt-buffer, can't find in PATH for some reason
+(setq nixpkgs-fmt-command "/etc/profiles/per-user/chrism/bin/nixpkgs-fmt")
 
 ;; hide the options menu
 (defun hide-emacs-options-menu ()
   "Hide the Emacs 'Options' menu."
   (define-key global-map [menu-bar options] nil))
 
-(setq gptel-model "gpt-4")
+;(setq gptel-model "gpt-4")
 
 ;; ;; flycheck-pos-tip font face, see
 ;; ;; https://github.com/flycheck/flycheck-pos-tip/issues/20
@@ -438,19 +376,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- ;; (this is to fix markdown mode preformatted text font size)
  '(fixed-pitch ((t (:family "Ubuntu Nerd Font Mono"))))
  '(font-lock-constant-face ((t (:foreground "purple"))))
- '(font-lock-string-face ((t (:foreground "RosyBrown3")))))
-
-(set-face-attribute 'web-mode-html-attr-name-face nil :foreground "sienna")
-(set-face-attribute 'web-mode-html-attr-value-face nil :foreground "RosyBrown3")
-(set-face-attribute 'web-mode-html-tag-face nil :foreground "Blue1")
-(set-face-attribute 'web-mode-doctype-face nil :foreground "Purple")
-
-(defun reload-init-file ()
-  "Reload init.el file."
-  (interactive)
-  (load-file user-init-file))
-
-(global-set-key (kbd "C-c r") 'reload-init-file)
+ '(font-lock-string-face ((t (:foreground "RosyBrown3"))))
+ '(web-mode-html-attr-name-face ((t (:foreground "sienna"))))
+ '(web-mode-html-attr-value-face ((t (:foreground "RosyBrown3"))))
+ '(web-mode-html-tag-face ((t (:foreground "Blue1"))))
+ '(web-mode-doctype-face ((t (:foreground "Purple"))))
+)

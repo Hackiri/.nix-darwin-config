@@ -58,6 +58,10 @@
       shellcheck
       statix
       alejandra
+
+      # Plugins
+      lynx
+      luajitPackages.tiktoken_core
       pkgs.vimPlugins.luasnip # LuaSnip includes jsregexp functionality
     ];
 

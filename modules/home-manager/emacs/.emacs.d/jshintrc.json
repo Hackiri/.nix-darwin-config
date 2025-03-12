@@ -1,4 +1,5 @@
-{ "browser": true, //browser constants, such as alert
+{
+  "browser": true, //browser constants, such as alert
   "curly": true, // require {} on one-line if
   "undef": true, // non-globals must be declared before use
   "newcap": true, // constructors must start with capital letter

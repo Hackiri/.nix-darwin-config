@@ -21,7 +21,6 @@
       # System utilities
       mkalias
       pam-reattach
-      obsidian
 
       # System tools
       git
@@ -135,6 +134,7 @@
       "mas"
     ];
     casks = [
+      "obsidian"
       "cmake"
       "docker"
       "pika"

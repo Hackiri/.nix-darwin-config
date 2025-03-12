@@ -8,7 +8,7 @@
 in {
   programs.emacs = {
     enable = true;
-    package = pkgs.emacs29-macport; # Better macOS integration
+    package = pkgs.emacs30; # Better macOS integration
     extraPackages = epkgs:
       with epkgs; [
         nix-mode
@@ -72,7 +72,7 @@ in {
     activation.copyEmacsMacOSApp = lib.hm.dag.entryAfter ["writeBoundary"] ''
       baseDir="$HOME/Applications/Home Manager Apps"
       mkdir -p "$baseDir"
-      for app in ${pkgs.emacs29-macport}/Applications/*; do
+      for app in ${pkgs.emacs30}/Applications/*; do
         target="$baseDir/$(basename "$app")"
         $DRY_RUN_CMD rm -rf "$target"
         $DRY_RUN_CMD cp -rL "$app" "$target"

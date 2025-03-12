@@ -134,7 +134,7 @@ return {
               "--ignore-case",
               "--",
               "${prefix}", -- this will be replaced by the result of 'get_prefix' function
-              vim.fn.expand("~/github/dotfiles-latest/dictionaries/words"), -- where you dictionary is
+              vim.fn.expand("~/.nix-darwin-config/modules/home-manager/neovim/dictionaries/words"), -- where you dictionary is
             },
             documentation = {
               enable = true, -- enable documentation to show the definition of the word
@@ -149,7 +149,7 @@ return {
             },
           },
         },
-        -- Third class citizen mf always talking shit
+
         copilot = {
           name = "copilot",
           enabled = true,
@@ -160,9 +160,12 @@ return {
           async = true,
         },
       },
+    })
+
+    opts.cmdline = {
       -- command line completion, thanks to dpetka2001 in reddit
       -- https://www.reddit.com/r/neovim/comments/1hjjf21/comment/m37fe4d/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
-      cmdline = function()
+      sources = function()
         local type = vim.fn.getcmdtype()
         if type == "/" or type == "?" then
           return { "buffer" }
@@ -172,7 +175,29 @@ return {
         end
         return {}
       end,
-    })
+    }
+
+    opts.completion = {
+      --   keyword = {
+      --     -- 'prefix' will fuzzy match on the text before the cursor
+      --     -- 'full' will fuzzy match on the text before *and* after the cursor
+      --     -- example: 'foo_|_bar' will match 'foo_' for 'prefix' and 'foo__bar' for 'full'
+      --     range = "full",
+      --   },
+      menu = {
+        border = "single",
+      },
+      documentation = {
+        auto_show = true,
+        window = {
+          border = "single",
+        },
+      },
+      -- Displays a preview of the selected item on the current line
+      ghost_text = {
+        enabled = true,
+      },
+    }
 
     -- Merge snippets configuration with existing options
     opts.snippets = vim.tbl_deep_extend("force", opts.snippets or {}, {
