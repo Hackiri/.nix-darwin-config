@@ -12,7 +12,6 @@ in {
     ../modules/home-manager
   ];
 
-
   # Enable devshell
 
   home = {
@@ -23,9 +22,8 @@ in {
     # Packages to be installed for the user
     packages = with pkgs; [
       customPkgs.dev-tools # Custom development helper scripts
+      pygments
     ];
-
-
   };
 
   programs = {
