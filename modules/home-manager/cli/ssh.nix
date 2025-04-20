@@ -1,3 +1,3 @@
-{pkgs, ...}: {
+_: {
   programs.ssh.enable = true;
 }

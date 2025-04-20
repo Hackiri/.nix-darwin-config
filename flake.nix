@@ -6,8 +6,6 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
-    alejandra.url = "github:kamadorueda/alejandra";
-    nixd.url = "github:nix-community/nixd";
     tokyonight = {
       url = "github:folke/tokyonight.nvim";
       flake = false;

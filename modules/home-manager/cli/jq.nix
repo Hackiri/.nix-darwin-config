@@ -1,3 +1,3 @@
-{pkgs, ...}: {
+_: {
   programs.jq.enable = true;
 }
