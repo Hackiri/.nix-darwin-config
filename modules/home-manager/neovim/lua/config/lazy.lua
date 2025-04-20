@@ -33,9 +33,10 @@ require("lazy").setup({
     -- Import LazyVim plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     -- Explicitly enable specific plugins
-    { "zbirenbaum/copilot.lua", enabled = true },
+    -- { "zbirenbaum/copilot.lua", enabled = true },
+    -- { "github/copilot.vim", enabled = true }, -- Remove this line
+    -- { "CopilotC-Nvim/CopilotChat.nvim", enabled = true },
     { "github/copilot.vim", enabled = true },
-    { "CopilotC-Nvim/CopilotChat.nvim", enabled = true },
     -- Other plugin configurations
     { "nvim-telescope/telescope-fzf-native.nvim", enabled = true },
     { "williamboman/mason-lspconfig.nvim", enabled = false },

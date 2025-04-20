@@ -161,7 +161,7 @@ After the initial installation, you can customize various aspects of your system
 
 3. **Package Management**
    - Add programs to import from home.nix: `modules/home-manager/default.nix`
-   - Add programs to import from configuration.nix: `modules/nix-darwin/default.nix`
+   - (REMOVED) Add programs to import from configuration.nix: `modules/nix-darwin/default.nix`
    - Add custom packages: `pkgs/default.nix`
    - Add custom overlays: `overlays/default.nix`
 

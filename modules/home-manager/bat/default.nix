@@ -1,4 +1,10 @@
-{ config, pkgs, theme, inputs, ... }: {
+{
+  config,
+  pkgs,
+  theme,
+  inputs,
+  ...
+}: {
   programs.bat = {
     enable = true;
     themes = {

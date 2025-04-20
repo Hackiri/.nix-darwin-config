@@ -5,7 +5,7 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
-    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+    nix-homebrew.url = "github:zhaofengli/nix-homebrew";
     alejandra.url = "github:kamadorueda/alejandra";
     nixd.url = "github:nix-community/nixd";
     tokyonight = {
@@ -29,16 +29,31 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
+    homebrew-bundle = {
+      url = "github:homebrew/homebrew-bundle";
+      flake = false;
+    };
   };
 
   nixConfig = {
     extra-substituters = [
       "https://nix-community.cachix.org"
       "https://cache.nixos.org"
+      "https://pre-commit-hooks.cachix.org"
     ];
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "pre-commit-hooks.cachix.org-1:Pkk3Panw5AW24TOv6kz3PvLhlH8puAsJTBbOPmBo7Rc="
     ];
     download-buffer-size = 100000000;
     system-features = ["big-parallel"];
@@ -53,6 +68,7 @@
     home-manager,
     ...
   }: let
+    inherit (nixpkgs-unstable) lib;
     system = "x86_64-darwin";
     overlays = [
       (final: prev: {
@@ -77,24 +93,20 @@
         inherit system;
         specialArgs = {inherit inputs;};
         modules = [
-          ./modules/nix-darwin
           home-manager.darwinModules.home-manager
           inputs.nix-homebrew.darwinModules.nix-homebrew
+          ./nixos/hosts/wm-macbook-pro/configuration.nix
           {
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
               users.wm = import ./home-manager/home.nix;
-              extraSpecialArgs = {
-                inherit inputs;
-              };
+              extraSpecialArgs = {inherit inputs;};
             };
           }
-          ./nixos/hosts/wm-macbook-pro/configuration.nix
         ];
       };
     };
-
     devShells.${system}.default = pkgs.mkShell {
       buildInputs = with pkgs; [
         zsh

@@ -58,9 +58,10 @@
         lldb
 
         # JavaScript/TypeScript development
+        pnpm
+        yarn
         bun
         nodejs
-        yarn
 
         taplo
         python3
@@ -147,6 +148,7 @@
         devshellInit() {
           # Source environment files
           [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+          [ -f "$HOME/.zshrc" ] && source "$HOME/.zshrc"
           [ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && source "$HOME/.nix-profile/etc/profile.d/nix.sh"
 
           # Set environment variables

@@ -69,146 +69,12 @@ in {
     };
 
     packages = with pkgs; [
-      direnv
-      fzf
-      zoxide
-      bat
-      jq
       oh-my-zsh
-      python3Packages.pygments # Required for syntax highlighting
-      starship
     ];
   };
 
   programs = {
-    yazi = {
-      enable = true;
-      enableZshIntegration = true;
-      settings = {
-        manager = {
-          show_hidden = true;
-          ratio = [1 2 5];
-        };
-        theme = {
-          manager = {
-            tab_normal.bg = {hex = theme.colors.bg;};
-            tab_normal.fg = {hex = theme.colors.comment;};
-            tab_select.bg = {hex = theme.colors.bg;};
-            tab_select.fg = {hex = theme.colors.blue;};
-            border_symbol = "│";
-            border_style.fg = {hex = theme.colors.blue0;};
-            selection.bg = {hex = theme.colors.blue0;};
-            selection.fg = {hex = theme.colors.fg;};
-            status_normal.bg = {hex = theme.colors.bg;};
-            status_normal.fg = {hex = theme.colors.fg_dark;};
-            status_select.bg = {hex = theme.colors.blue0;};
-            status_select.fg = {hex = theme.colors.fg;};
-            folder.fg = {hex = theme.colors.blue;};
-            link.fg = {hex = theme.colors.green1;};
-            exec.fg = {hex = theme.colors.green;};
-          };
-          preview = {
-            hovered.bg = {hex = theme.colors.bg_highlight;};
-            hovered.fg = {hex = theme.colors.fg;};
-          };
-          input = {
-            border.fg = {hex = theme.colors.blue;};
-            title.fg = {hex = theme.colors.fg_dark;};
-            value.fg = {hex = theme.colors.fg;};
-            selected.bg = {hex = theme.colors.blue0;};
-          };
-          completion = {
-            border.fg = {hex = theme.colors.blue;};
-            selected.bg = {hex = theme.colors.blue0;};
-          };
-          tasks = {
-            border.fg = {hex = theme.colors.blue;};
-            selected.bg = {hex = theme.colors.blue0;};
-          };
-          which = {
-            mask.bg = {hex = theme.colors.bg;};
-            desc.fg = {hex = theme.colors.comment;};
-            selected.bg = {hex = theme.colors.blue0;};
-            selected.fg = {hex = theme.colors.fg;};
-          };
-        };
-      };
-    };
-
-    gpg = {
-      enable = true;
-      settings = {
-        trust-model = "tofu+pgp";
-      };
-    };
-
-    git = {
-      enable = true;
-      userName = "hackiri";
-      userEmail = "128340174+Hackiri@users.noreply.github.com";
-      signing = {
-        signByDefault = true;
-        key = "6CE5860014793E29"; # Your GPG key ID
-      };
-      extraConfig = {
-        commit.gpgsign = true;
-        tag.gpgsign = true;
-      };
-    };
-
-    lazygit = {
-      enable = true;
-      settings = {
-        gui = {
-          theme = {
-            lightTheme = false;
-            activeBorderColor = [theme.colors.green "bold"];
-            inactiveBorderColor = [theme.colors.fg_dark];
-            selectedLineBgColor = [theme.colors.blue0 "bold"];
-          };
-          showIcons = true;
-          expandFocusedSidePanel = true;
-        };
-      };
-    };
-
-    fzf = {
-      enable = true;
-      enableZshIntegration = true;
-      colors = {
-        "bg+" = theme.colors.bg_highlight;
-        "fg+" = theme.colors.fg;
-        "hl+" = theme.colors.blue;
-        hl = theme.colors.blue;
-        header = theme.colors.comment;
-        info = theme.colors.cyan;
-        marker = theme.colors.red;
-        pointer = theme.colors.magenta;
-        prompt = theme.colors.yellow;
-        spinner = theme.colors.magenta;
-      };
-    };
-
-    bat = {
-      enable = true;
-      themes = {
-        tokyo-night = {
-          src = inputs.tokyonight;
-          file = "extras/sublime/tokyonight_night.tmTheme";
-        };
-      };
-      config = {
-        theme = "tokyo-night";
-        style = "numbers,changes,header";
-        color = "always";
-      };
-      extraPackages = with pkgs.bat-extras; [
-        batdiff
-        batman
-        batgrep
-        batwatch
-      ];
-    };
+    # yazi, lazygit, fzf, and bat have been moved to their own modules in /nix/modules/home-manager/
 
     zsh = {
       enable = true;
@@ -277,6 +143,9 @@ in {
 
                 # Initialize zoxide with cd as the command
                 eval "$(zoxide init zsh --cmd cd)"
+
+                # Initialize direnv
+                eval "$(direnv hook zsh)"
 
                 # FZF configuration
                 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'

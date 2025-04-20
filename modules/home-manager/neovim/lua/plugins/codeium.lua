@@ -7,52 +7,39 @@ return {
     },
     event = "InsertEnter",
     config = function()
+      -- Define the language server path
+      local cache_path = vim.fn.stdpath("cache")
+      local ls_path = cache_path .. "/codeium/bin/1.20.9/language_server_macos_x64"
+
+      -- Ensure directory exists
+      local ls_dir = vim.fn.fnamemodify(ls_path, ":h")
+      if vim.fn.isdirectory(ls_dir) == 0 then
+        vim.fn.mkdir(ls_dir, "p")
+      end
+
       require("codeium").setup({
-        enable_cmp_source = false, -- Disable cmp source since we're using blink.cmp
+        enable_cmp_source = false,
         enable_chat = true,
-        virtual_text = {
-          enabled = true,
-          manual = false,
-          filetypes = {
-            lua = true,
-            python = true,
-            javascript = true,
-            typescript = true,
-            rust = true,
-            go = true,
-            nix = true,
-            markdown = true,
-          },
-          default_filetype_enabled = false,
-          idle_delay = 75,
-          virtual_text_priority = 65535,
-          map_keys = true,
-          accept_fallback = "<C-f>",
-          key_bindings = {
-            -- Use Alt-j/k for next/prev to avoid conflicts with copilot's Alt-[/]
-            accept = "<M-;>", -- Changed from <M-l> to <M-;>
-            accept_word = "<M-w>",
-            accept_line = "<M-CR>",
-            clear = "<M-c>",
-            next = "<M-j>", -- Changed from <M-]> to <M-j>
-            prev = "<M-k>", -- Changed from <M-[> to <M-k>
-          },
+        language_server = {
+          binary_path = ls_path,
+          download_timeout = 300,
+          start_timeout = 300,
         },
-        filetypes = {
-          ["*"] = true,
-          TelescopePrompt = false,
-          TelescopeResults = false,
-          neo_tree = false,
-          lazy = false,
-          alpha = false,
-          dashboard = false,
+        tools = {
+          language_server = ls_path,
         },
       })
 
-      -- Register codeium with blink.cmp by modifying its config
+      -- Ensure the binary is executable after download
+      vim.defer_fn(function()
+        if vim.fn.filereadable(ls_path) == 1 then
+          vim.fn.system({ "chmod", "+x", ls_path })
+        end
+      end, 2000)
+
+      -- Register codeium with blink.cmp
       local ok, blink = pcall(require, "blink.cmp")
       if ok then
-        -- Add codeium to the sources configuration
         blink.setup({
           sources = {
             {
@@ -79,17 +66,15 @@ return {
         })
       end
 
-      -- Add commands for quick access
+      -- Add commands
+      vim.api.nvim_create_user_command("CodeiumReload", function()
+        require("codeium").reload()
+      end, {})
+
       vim.api.nvim_create_user_command("CodeiumToggle", function()
         vim.g.codeium_enabled = not vim.g.codeium_enabled
         print("Codeium " .. (vim.g.codeium_enabled and "enabled" or "disabled"))
       end, {})
-
-      -- Add keymaps for quick access
-      vim.keymap.set("n", "<leader>ce", "<cmd>CodeiumEnable<cr>", { desc = "Enable Codeium" })
-      vim.keymap.set("n", "<leader>cd", "<cmd>CodeiumDisable<cr>", { desc = "Disable Codeium" })
-      vim.keymap.set("n", "<leader>ct", "<cmd>CodeiumToggle<cr>", { desc = "Toggle Codeium" })
-      vim.keymap.set("n", "<leader>cc", "<cmd>Codeium Chat<cr>", { desc = "Codeium Chat" })
     end,
   },
 }

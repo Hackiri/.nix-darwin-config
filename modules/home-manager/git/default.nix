@@ -1,5 +1,5 @@
 # Home Manager module for git configuration
-{ ... }: {
+{_}: {
   programs.gpg = {
     enable = true;
     settings = {
@@ -21,4 +21,3 @@
     };
   };
 }
-

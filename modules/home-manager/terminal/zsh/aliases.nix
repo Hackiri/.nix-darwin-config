@@ -1,6 +1,5 @@
 {
   # Darwin rebuild commands
-  swnix = "darwin-rebuild switch --flake .--show-trace"; # Most common rebuild
   drynix = "darwin-rebuild dry-build --flake . --show-trace"; # Test build
   bootnix = "darwin-rebuild boot --flake . --show-trace"; # Build but don't activate
   rbnix = "darwin-rebuild build --rollback --flake . --show-trace"; # Rollback to previous generation
@@ -108,6 +107,9 @@
   ecx = "emacsclient -n -c";
   eterm = "emacsclient -nw -e '(vterm)'";
   sgrep = "rg -M 200 --hidden";
+
+  # pnpm commands
+  task-master = "pnpm task-master";
 
   # FZF combinations
   vif = "nvim $(fzf -m --preview=\"bat --color=always {}\")";

@@ -30,12 +30,27 @@
         mkdir -p "$baseDir"
         for app in ${apps}/Applications/*; do
           target="$baseDir/$(basename "$app")"
-          $DRY_RUN_CMD rm -rf "$target"
-          $DRY_RUN_CMD cp -rL "$app" "$target"
+          # Check if the target exists and is writable before attempting to remove it
+          if [ -e "$target" ] && [ -w "$target" ]; then
+            $DRY_RUN_CMD rm -rf "$target"
+          elif [ -e "$target" ]; then
+            echo "Warning: Cannot remove $target (permission denied). Skipping..."
+            continue
+          fi
+          # Only copy if the source app exists
+          if [ -e "$app" ]; then
+            $DRY_RUN_CMD cp -rL "$app" "$target" || echo "Warning: Failed to copy $app to $target"
+          fi
         done
 
-        # Set macOS font smoothing
-        defaults write org.alacritty AppleFontSmoothing -int 0
+        # Set macOS font smoothing if defaults command exists
+        if command -v defaults >/dev/null 2>&1; then
+          defaults write org.alacritty AppleFontSmoothing -int 0
+        elif [ -x /usr/bin/defaults ]; then
+          /usr/bin/defaults write org.alacritty AppleFontSmoothing -int 0
+        else
+          echo "Warning: 'defaults' command not found, skipping font smoothing setting"
+        fi
       '';
   };
 }

@@ -17,10 +17,12 @@ map("n", "<leader>wv", "<C-w>v", { desc = "Split window vertically" })
 map("n", "<leader>ws", "<C-w>s", { desc = "Split window horizontally" })
 map("n", "<leader>we", "<C-w>=", { desc = "Make splits equal size" })
 map("n", "<leader>wx", "<cmd>close<CR>", { desc = "Close current split" })
-map("n", "<C-h>", "<C-w>h", { desc = "Move to left window" })
-map("n", "<C-j>", "<C-w>j", { desc = "Move to bottom window" })
-map("n", "<C-k>", "<C-w>k", { desc = "Move to top window" })
-map("n", "<C-l>", "<C-w>l", { desc = "Move to right window" })
+
+-- Remove conflicting window movement keys (handled by vim-tmux-navigator)
+-- map("n", "<C-h>", "<C-w>h", { desc = "Move to left window" })
+-- map("n", "<C-j>", "<C-w>j", { desc = "Move to bottom window" })
+-- map("n", "<C-k>", "<C-w>k", { desc = "Move to top window" })
+-- map("n", "<C-l>", "<C-w>l", { desc = "Move to right window" })
 
 -- Tab Management (<leader>t prefix)
 map("n", "<leader>tn", "<cmd>tabnew<CR>", { desc = "New tab" })
@@ -120,7 +122,7 @@ map("n", "<leader>hn", function()
 end, { desc = "Navigate to next mark" })
 
 -- Misc Operations
-map("n", "<leader>h", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" })
+map("n", "<leader>ch", "<cmd>nohlsearch<CR>", { desc = "Clear search highlights" }) -- Changed from <leader>h to <leader>ch
 map("n", "<leader>+", "<C-a>", { desc = "Increment number" })
 map("n", "<leader>-", "<C-x>", { desc = "Decrement number" })
 

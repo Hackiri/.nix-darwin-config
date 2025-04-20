@@ -22,11 +22,15 @@ in {
     # Packages to be installed for the user
     packages = with pkgs; [
       customPkgs.dev-tools # Custom development helper scripts
-      pygments
+      python3Packages.pygments
+      nixd
     ];
   };
 
   programs = {
     # Git configuration can be added here
+    eza = {
+      enable = true;
+    };
   };
 }

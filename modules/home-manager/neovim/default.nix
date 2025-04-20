@@ -63,6 +63,9 @@
       lynx
       luajitPackages.tiktoken_core
       pkgs.vimPlugins.luasnip # LuaSnip includes jsregexp functionality
+      python3Packages.tiktoken # Add this for CopilotChat token counting
+      python312Packages.pylatexenc
+      wordnet # Add this for blink-cmp-dictionary word definitions
     ];
 
     extraLuaConfig = ''

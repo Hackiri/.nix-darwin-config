@@ -3,8 +3,9 @@ return {
   lazy = true,
   cmd = { "Outline", "OutlineOpen" },
   keys = {
-    { "<leader>vo", "<cmd>Outline<CR>", desc = "Toggle Code Outline" },
-    { "<leader>vO", "<cmd>OutlineOpen<CR>", desc = "Open Code Outline" },
+    -- Changed from vo/vO to so/sO to avoid conflicts
+    { "<leader>so", "<cmd>Outline<CR>", desc = "Toggle Code Outline" },
+    { "<leader>sO", "<cmd>OutlineOpen<CR>", desc = "Open Code Outline" },
   },
   opts = {
     -- Outline configuration
@@ -101,11 +102,11 @@ return {
       -- Unfold symbol under cursor
       unfold = "l",
       -- Fold all symbols
-      fold_all = "W",
+      fold_all = "<leader>zc", -- Changed from W
       -- Unfold all symbols
-      unfold_all = "E",
+      unfold_all = "<leader>zo", -- Changed from E
       -- Fold other symbols
-      fold_reset = "R",
+      fold_reset = "<leader>zr", -- Changed from R
       -- Toggle preview
       hover_symbol = "K",
     },
