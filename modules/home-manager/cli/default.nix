@@ -36,8 +36,9 @@ in {
   imports = [
     ./zoxide
     ./zellij
-    ./btop
+    ./bat
     ./gh
+    ./eza.nix
     ./direnv.nix
     ./ripgrep.nix
     ./fd.nix

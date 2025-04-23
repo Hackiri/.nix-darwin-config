@@ -2,7 +2,7 @@
   description = "Nix Flake configuration";
 
   inputs = {
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
@@ -14,18 +14,18 @@
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
       inputs = {
-        nixpkgs.follows = "nixpkgs-unstable";
+        nixpkgs.follows = "nixpkgs";
         flake-compat.follows = "flake-compat";
       };
     };
 
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     homebrew-core = {
@@ -61,16 +61,19 @@
 
   outputs = inputs @ {
     self,
-    nixpkgs-unstable,
+    nixpkgs,
     nix-darwin,
     home-manager,
     ...
   }: let
-    inherit (nixpkgs-unstable) lib;
-    system = "x86_64-darwin";
-    overlays = [
+    inherit (nixpkgs) lib;
+    linuxSystems = ["x86_64-linux" "aarch64-linux"];
+    darwinSystems = ["aarch64-darwin" "x86_64-darwin"];
+    allSystems = linuxSystems ++ darwinSystems;
+    forAllSystems = f: lib.genAttrs allSystems f;
+    overlaysFor = system: [
       (final: prev: {
-        unstable = import nixpkgs-unstable {
+        unstable = import nixpkgs {
           inherit system;
           config.allowUnfree = true;
         };
@@ -80,39 +83,65 @@
         customPkgs = import ./pkgs {pkgs = prev;};
       })
     ];
-    pkgs = import nixpkgs-unstable {
-      inherit system;
-      config.allowUnfree = true;
-      inherit overlays;
-    };
+    mkPkgs = system:
+      import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+        overlays = overlaysFor system;
+      };
   in {
     darwinConfigurations = {
-      "WMs-MacBook-Pro" = nix-darwin.lib.darwinSystem {
-        inherit system;
-        specialArgs = {inherit inputs;};
-        modules = [
-          home-manager.darwinModules.home-manager
-          inputs.nix-homebrew.darwinModules.nix-homebrew
-          ./nixos/hosts/wm-macbook-pro/configuration.nix
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.wm = import ./home-manager/home.nix;
-              extraSpecialArgs = {inherit inputs;};
-            };
-          }
-        ];
+      "WMs-MacBook-Pro" = let
+        system = "x86_64-darwin";
+        overlays = overlaysFor system;
+        pkgs = import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
+          inherit overlays;
+        };
+      in
+        nix-darwin.lib.darwinSystem {
+          inherit system;
+          specialArgs = {inherit inputs;};
+          modules = [
+            home-manager.darwinModules.home-manager
+            inputs.nix-homebrew.darwinModules.nix-homebrew
+            ./nixos/hosts/wm-macbook-pro/configuration.nix
+            # Modularized Homebrew integration
+            {
+              nix-homebrew = {
+                user = "wm";
+                enable = true;
+                taps = {
+                  "homebrew/homebrew-core" = inputs.homebrew-core;
+                  "homebrew/homebrew-cask" = inputs.homebrew-cask;
+                  "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
+                };
+                mutableTaps = false;
+                autoMigrate = true;
+              };
+            }
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.wm = import ./home-manager/home.nix;
+                extraSpecialArgs = {inherit inputs;};
+              };
+            }
+          ];
+        };
+    };
+    devShells = forAllSystems (system: let
+      pkgs = mkPkgs system;
+    in {
+      default = pkgs.mkShell {
+        buildInputs = with pkgs; [zsh];
+        shellHook = ''
+          export SHELL="${pkgs.zsh}/bin/zsh"
+          exec ${pkgs.zsh}/bin/zsh
+        '';
       };
-    };
-    devShells.${system}.default = pkgs.mkShell {
-      buildInputs = with pkgs; [
-        zsh
-      ];
-      shellHook = ''
-        export SHELL="${pkgs.zsh}/bin/zsh"
-        exec ${pkgs.zsh}/bin/zsh
-      '';
-    };
+    });
   };
 }

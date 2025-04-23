@@ -8,7 +8,6 @@
 }: {
   # Import other NixOS modules here
   imports = [
-    # ../../../modules/nix-darwin/default.nix
   ];
 
   environment = {
@@ -28,12 +27,6 @@
       zsh
       nix-direnv
       direnv
-
-      # CLI tools for formatting, linting, etc.
-      alejandra
-      deadnix
-      statix
-      stylua
     ];
 
     shells = [pkgs.zsh];

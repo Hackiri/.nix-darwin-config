@@ -28,9 +28,6 @@ in {
   };
 
   programs = {
-    # Git configuration can be added here
-    eza = {
-      enable = true;
-    };
+    devshell.enable = true;
   };
 }

@@ -14,7 +14,7 @@
     ./lazygit
     ./yazi
     ./fzf
-    ./bat
+    ./btop
     ./tmux
     ./terminal
     ./starship
