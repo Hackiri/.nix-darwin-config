@@ -214,6 +214,7 @@
       autoUpdate = true;
       upgrade = true;
     };
+    # We'll rely on mutableTaps in flake.nix to prevent untap errors
   };
 
   # Homebrew user configuration

@@ -14,10 +14,13 @@
   };
 
   # Create unstable package set with config
-  unstablePkgs = import inputs.nixpkgs-unstable unstableConfig;
+  unstablePkgs = import inputs.nixpkgs unstableConfig;
 in {
   # Make unstable packages available
   unstable = unstablePkgs;
+
+  # Import the fix-types overlay
+  inherit (import ./fix-types.nix final prev) lib;
 
   # Kubernetes and related tools from unstable
   inherit

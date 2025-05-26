@@ -67,6 +67,7 @@
         python3
         python3Packages.pip
         python3Packages.pipx
+        uv
         lazygit
         difftastic
         colordiff

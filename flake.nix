@@ -80,6 +80,7 @@
       })
       (import ./overlays {inherit inputs;})
       (final: prev: {
+        # Import custom packages
         customPkgs = import ./pkgs {pkgs = prev;};
       })
     ];
@@ -117,8 +118,9 @@
                   "homebrew/homebrew-cask" = inputs.homebrew-cask;
                   "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
                 };
-                mutableTaps = false;
-                autoMigrate = true;
+                # Enable these settings to fully let nix-darwin manage Homebrew
+                mutableTaps = true;
+                autoMigrate = true; # Automatically migrate your existing Homebrew packages
               };
             }
             {

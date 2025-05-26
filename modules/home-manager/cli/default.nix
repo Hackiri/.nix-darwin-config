@@ -35,7 +35,7 @@
 in {
   imports = [
     ./zoxide
-    ./zellij
+    #./zellij
     ./bat
     ./gh
     ./eza.nix
