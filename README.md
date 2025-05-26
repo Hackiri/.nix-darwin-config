@@ -215,33 +215,15 @@ mkdir -p ~/.config/nix
 echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 ```
 
-3. Initialize nix-darwin Configuration
+3. Clone This Repository
 ```bash
-# Create a basic nix-darwin configuration
-mkdir -p ~/.nix-darwin-config
-cd ~/.nix-darwin-config
-nix flake init -t nix-darwin
-sed -i '' "s/simple/$(scutil --get LocalHostName)/" flake.nix
-
-# Rebuild System Configuration
-darwin-rebuild switch --flake . # Rebuild the system configuration will take some time
-```
-
-4. Clone Repository
-```bash
-# Backup your initial configuration (optional)
-mv ~/.nix-darwin-config ~/.nix-darwin-config.bak
-
 # Clone the repository
-git clone https://github.com/Hackiri/nix-darwin-config.git ~/.nix-darwin-config
+git clone https://github.com/Hackiri/.nix-darwin-config.git ~/.nix-darwin-config
+cd ~/.nix-darwin-config
 ```
-
-5. Customize Configuration
-- Review and modify the configuration files according to your needs
-- The main configuration is in `flake.nix` and the modules directory
-- Update hostname and user-specific settings
 
 4. Configure Your System
+Before installing nix-darwin, you should customize the configuration files to match your system:
 
 a. Copy Host Configuration
 ```bash
@@ -300,30 +282,50 @@ home = {
 };
 ```
 
-e. Configure Git (Optional)
-Edit `~/.nix-darwin-config/modules/home-manager/terminal/zsh/default.nix`:
+5. Configure Additional Settings
+
+a. Configure Git
+Edit `~/.nix-darwin-config/modules/home-manager/git/default.nix`:
 ```nix
-    git = {
-      enable = true;
-      userName = "YOUR-USERNAME";  # Your GitHub username
-      userEmail = "YOUR-GITHUB-NOREPLY-EMAIL";  # Your GitHub no-reply email
-      
-      # GPG signing configuration (optional)
-      signing = {
-        signByDefault = true;
-        key = "YOUR-GPG-KEY-ID";  # Your GPG key ID from step 2 below
-      };
-      extraConfig = {
-        commit.gpgsign = true;
-        tag.gpgsign = true;
-      };
-    };
+programs.git = {
+  enable = true;
+  userName = "YOUR-USERNAME";  # Your GitHub username
+  userEmail = "YOUR-GITHUB-NOREPLY-EMAIL";  # Your GitHub no-reply email
+  
+  # GPG signing configuration (optional)
+  signing = {
+    signByDefault = true;
+    key = "YOUR-GPG-KEY-ID";  # Your GPG key ID
+  };
+  extraConfig = {
+    commit.gpgsign = true;
+    tag.gpgsign = true;
+  };
+};
 ```
 
-6. Build and Apply Configuration
+b. Configure Terminal (Optional)
+Edit `~/.nix-darwin-config/modules/home-manager/terminal/wezterm/main_config.lua` or `~/.nix-darwin-config/modules/home-manager/terminal/alacritty/alacritty.toml` to customize your terminal appearance.
+
+c. Configure Shell Prompt (Optional)
+Edit `~/.nix-darwin-config/modules/home-manager/starship/starship.toml` to customize your shell prompt.
+
+d. Configure Neovim/Emacs (Optional)
+Edit `~/.nix-darwin-config/modules/home-manager/neovim/default.nix` or `~/.nix-darwin-config/modules/home-manager/emacs/default.nix` to customize your editor.
+
+e. Set Up Shell Aliases
+Edit `~/.nix-darwin-config/modules/home-manager/terminal/zsh/aliases.nix` to add your preferred shell aliases.
+
+f. Review and Update Package Lists
+Review and modify package lists in the following files to include software you need:
+- `~/.nix-darwin-config/modules/home-manager/cli/default.nix` for CLI tools
+- `~/.nix-darwin-config/modules/home-manager/devshell/default.nix` for development tools
+- `~/.nix-darwin-config/nixos/hosts/YOUR-HOSTNAME/configuration.nix` for system packages
+
+6. Install nix-darwin
 ```bash
-cd ~/.nix-darwin-config
-darwin-rebuild switch --flake .
+# Install nix-darwin with your customized configuration
+nix run nixpkgs#nix-darwin -- switch --flake .
 ```
 
 ## Maintenance
