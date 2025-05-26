@@ -13,7 +13,7 @@ _: {
     userEmail = "128340174+Hackiri@users.noreply.github.com";
     signing = {
       signByDefault = true;
-      key = "6CE5860014793E29"; # Your GPG key ID
+      key = "C410F1549944D497"; # Updated GPG key ID
     };
     extraConfig = {
       commit.gpgsign = true;
