@@ -143,6 +143,22 @@ This repository contains a complete nix-darwin configuration that manages both s
 - `overlays/`: Package modifications
 - `pkgs/`: Custom packages
 
+### Separation of Concerns
+
+This configuration follows a clear separation of concerns between system and user configurations:
+
+#### System-Level (nix-darwin)
+- macOS system defaults and preferences
+- Security settings and system services
+- Core system utilities (mkalias, pam-reattach)
+- Homebrew package management
+
+#### User-Level (home-manager)
+- User packages and applications
+- Shell configuration and aliases
+- Development tools and environments
+- Application-specific settings
+
 
 Note: Make sure to review the configuration files and adjust them according to your needs before building. The system configuration is primarily managed through the modules in the repository.
 

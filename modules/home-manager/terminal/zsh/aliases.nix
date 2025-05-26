@@ -1,10 +1,10 @@
 {
   # Darwin rebuild commands
-  drynix = "darwin-rebuild dry-build --flake . --show-trace"; # Test build
-  bootnix = "darwin-rebuild boot --flake . --show-trace"; # Build but don't activate
-  rbnix = "darwin-rebuild build --rollback --flake . --show-trace"; # Rollback to previous generation
-  osbuild = "darwin-rebuild build --flake /Users/wm/.nix-darwin-config --show-trace";
-  rebuild = "darwin-rebuild switch --flake /Users/wm/.nix-darwin-config --show-trace";
+  drynix = "darwin-rebuild dry-build --flake /Users/wm/.nix-darwin-config --show-trace"; # Test build without making changes
+  bootnix = "darwin-rebuild boot --flake /Users/wm/.nix-darwin-config --show-trace"; # Build but don't activate until next boot
+  rbnix = "darwin-rebuild switch --rollback --flake /Users/wm/.nix-darwin-config --show-trace"; # Rollback to previous generation
+  osbuild = "darwin-rebuild build --flake /Users/wm/.nix-darwin-config --show-trace"; # Build only
+  rebuild = "darwin-rebuild switch --flake /Users/wm/.nix-darwin-config --show-trace"; # Build and activate changes
 
   # Nix utilities
   schnix = "nix search nixpkgs"; # Search packages
@@ -32,6 +32,10 @@
   pi = "podman images";
   pcomp = "podman-compose";
   prestart = "podman-compose down && podman-compose up -d";
+
+  # Docker aliases for Podman (moved from system configuration)
+  docker = "podman";
+  "docker-compose" = "podman-compose";
 
   # Get resource information
   kgps = "kubectl get pods --sort-by=.metadata.name";
