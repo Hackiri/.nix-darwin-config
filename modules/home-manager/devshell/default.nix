@@ -67,6 +67,11 @@
         python3
         python3Packages.pip
         python3Packages.pipx
+        python3Packages.pygments
+        python3Packages.pytest_7
+        python3Packages.pylint
+        python3Packages.markdown
+        python3Packages.tabulate
         uv
         lazygit
         difftastic

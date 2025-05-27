@@ -29,15 +29,11 @@ in {
 
     # Existing packages
     customPkgs.dev-tools # Custom development helper scripts
-    python3Packages.pygments
-    python3Packages.pytest_7
-    python3Packages.pylint
-    python3Packages.markdown
-    python3Packages.tabulate
     nixd
     kubectl
     k9s
     kubernetes-helm
+
     # Individual helm plugins instead of the whole set
     kubernetes-helmPlugins.helm-diff # Compare chart changes
     kubernetes-helmPlugins.helm-git # Git integration for Helm
