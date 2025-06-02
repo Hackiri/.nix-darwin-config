@@ -22,8 +22,6 @@
       # System utilities
       mkalias
       pam-reattach
-
-      # Note: git, zsh, nix-direnv, and direnv moved to home-manager
     ];
 
     shells = [pkgs.zsh];
@@ -73,6 +71,8 @@
   system = {
     # Set the state version for nix-darwin
     stateVersion = 6;
+    # Add this line to specify your primary user
+    primaryUser = "wm";
     # Configure defaults
     defaults = {
       NSGlobalDomain = {

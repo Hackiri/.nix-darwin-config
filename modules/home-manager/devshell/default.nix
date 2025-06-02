@@ -61,7 +61,7 @@
         pnpm
         yarn
         bun
-        nodejs
+        nodejs_22
 
         taplo
         python3
@@ -110,6 +110,7 @@
         alejandra
         deadnix
         statix
+        stylua
       ]
       ++ lib.optionals (!pkgs.stdenv.isDarwin) [
         valgrind
@@ -122,7 +123,7 @@
       history.size = 10000;
       history.path = "${config.home.homeDirectory}/.zsh_history";
 
-      initExtra = ''
+      initContent = ''
         # Function to show welcome message
         show_welcome() {
           echo "🚀 Entering development environment"

@@ -21,14 +21,11 @@ in {
   # Packages to be installed for the user
   # You can access overlays/default.nix packages and tools.
   home.packages = with pkgs; [
-    # Moved from system configuration
     git
     zsh
     nix-direnv
     direnv
-
-    # Existing packages
-    customPkgs.dev-tools # Custom development helper scripts
+    customPkgs.dev-tools
     nixd
     kubectl
     k9s
@@ -47,6 +44,7 @@ in {
     talosctl
     krew
     terraform
+    minicom
   ];
 
   programs = {

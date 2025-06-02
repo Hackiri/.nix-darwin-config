@@ -132,7 +132,7 @@ in {
         ];
       };
 
-      initExtra = ''
+      initContent = ''
                 # Set a fixed path for the completion dump
                 export ZSH_COMPDUMP="$ZSH_CACHE_DIR/.zcompdump"
 

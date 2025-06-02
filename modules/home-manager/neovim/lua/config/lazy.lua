@@ -39,8 +39,8 @@ require("lazy").setup({
     { "github/copilot.vim", enabled = true },
     -- Other plugin configurations
     { "nvim-telescope/telescope-fzf-native.nvim", enabled = true },
-    { "williamboman/mason-lspconfig.nvim", enabled = false },
-    { "williamboman/mason.nvim", enabled = false },
+    { "williamboman/mason-lspconfig.nvim", enabled = true },
+    { "williamboman/mason.nvim", enabled = true },
     { "nvim-treesitter/nvim-treesitter", opts = { ensure_installed = {} } },
     -- Import user plugins
     { import = "plugins" },

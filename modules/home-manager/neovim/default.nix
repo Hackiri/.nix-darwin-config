@@ -2,24 +2,31 @@
   config,
   lib,
   pkgs,
+  inputs,
   ...
 }: {
+  # No imports needed
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
-    withNodeJs = true;
+    # Don't specify a custom package - use the default with Node.js disabled
+    withNodeJs = false;
     withPython3 = true;
     withRuby = false;
 
     extraPackages = with pkgs; [
+      
       # Language servers
-      nodePackages.typescript-language-server
-      nodePackages.vscode-langservers-extracted
-      nodePackages.prettier
-      nodePackages."@tailwindcss/language-server"
-      nodePackages.yaml-language-server
+      # nodePackages.typescript-language-server
+      # nodePackages.vscode-langservers-extracted
+      # nodePackages.prettier
+      # nodePackages."@tailwindcss/language-server"
+      # nodePackages.yaml-language-server
+      # nodePackages.bash-language-server
+      # nodePackages.dockerfile-language-server-nodejs      
       # LSP servers
       python3Packages.python-lsp-server
       python3Packages.pynvim
@@ -47,8 +54,6 @@
       lua51Packages.mpack
       # Additional language servers
       clang-tools
-      nodePackages.bash-language-server
-      nodePackages.dockerfile-language-server-nodejs
       marksman
       taplo
       # Development tools
