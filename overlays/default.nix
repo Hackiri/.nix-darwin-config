@@ -21,7 +21,7 @@ in {
 
   # Import the fix-types overlay
   inherit (import ./fix-types.nix final prev) lib;
-  
+
   # Import the stable overlay
   inherit (import ./stable.nix {inherit inputs;} final prev) stable;
 

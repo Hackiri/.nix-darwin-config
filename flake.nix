@@ -2,17 +2,16 @@
   description = "Nix Flake configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";  # Use nixpkgs-unstable for compatibility with nix-darwin
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixpkgs-25.05-darwin";  # Stable Nix 25.05 for Darwin
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable"; # Use nixpkgs-unstable for compatibility with nix-darwin
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixpkgs-25.05-darwin"; # Stable Nix 25.05 for Darwin
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-compat.url = "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz";
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
-    
+
     tokyonight = {
       url = "github:folke/tokyonight.nvim";
       flake = false;
     };
-    
 
     git-hooks = {
       url = "github:cachix/git-hooks.nix";
@@ -50,11 +49,13 @@
       "https://nix-community.cachix.org"
       "https://cache.nixos.org"
       "https://pre-commit-hooks.cachix.org"
+      "https://hackiri.cachix.org"
     ];
     extra-trusted-public-keys = [
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "pre-commit-hooks.cachix.org-1:Pkk3Panw5AW24TOv6kz3PvLhlH8puAsJTBbOPmBo7Rc="
+      "hackiri.cachix.org-1:2NAzBdCn5cncneYoHYiTe8uzVbb6XVwWuojrSWESYV8="
     ];
     download-buffer-size = 200000000;
     system-features = ["big-parallel"];

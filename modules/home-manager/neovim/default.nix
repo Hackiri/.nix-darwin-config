@@ -18,7 +18,6 @@
     withRuby = false;
 
     extraPackages = with pkgs; [
-      
       # Language servers
       # nodePackages.typescript-language-server
       # nodePackages.vscode-langservers-extracted
@@ -26,7 +25,7 @@
       # nodePackages."@tailwindcss/language-server"
       # nodePackages.yaml-language-server
       # nodePackages.bash-language-server
-      # nodePackages.dockerfile-language-server-nodejs      
+      # nodePackages.dockerfile-language-server-nodejs
       # LSP servers
       python3Packages.python-lsp-server
       python3Packages.pynvim
