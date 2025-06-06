@@ -12,20 +12,11 @@
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
-    # Don't specify a custom package - use the default with Node.js disabled
-    withNodeJs = false;
+    withNodeJs = true;
     withPython3 = true;
     withRuby = false;
 
     extraPackages = with pkgs; [
-      # Language servers
-      # nodePackages.typescript-language-server
-      # nodePackages.vscode-langservers-extracted
-      # nodePackages.prettier
-      # nodePackages."@tailwindcss/language-server"
-      # nodePackages.yaml-language-server
-      # nodePackages.bash-language-server
-      # nodePackages.dockerfile-language-server-nodejs
       # LSP servers
       python3Packages.python-lsp-server
       python3Packages.pynvim

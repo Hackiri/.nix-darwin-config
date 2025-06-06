@@ -69,6 +69,7 @@
     nixpkgs-stable,
     nix-darwin,
     home-manager,
+    nix-homebrew,
     ...
   }: let
     inherit (nixpkgs) lib;

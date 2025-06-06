@@ -2,6 +2,9 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- Enable editorconfig
+vim.g.editorconfig = true
+
 -- General
 vim.opt.mouse = "a" -- Enable mouse support
 vim.opt.clipboard = "unnamedplus" -- Use system clipboard
@@ -19,17 +22,21 @@ vim.opt.number = true -- Print line number
 vim.opt.relativenumber = true -- Relative line numbers
 vim.opt.showmode = false -- Don't show mode since we have a statusline
 vim.opt.signcolumn = "yes" -- Always show signcolumn
+vim.opt.scrolloff = 8 -- Number of lines to keep above and below the cursor
 vim.opt.cursorline = true -- Enable highlighting of the current line
 vim.opt.colorcolumn = "80" -- Line length marker
 vim.opt.cmdheight = 0 -- Hide command line unless needed
 vim.opt.laststatus = 3 -- Global statusline
+vim.opt.guicursor = "n-v-c:block-Cursor/lCursor"
 
 -- Indenting
 vim.opt.expandtab = true -- Use spaces instead of tabs
 vim.opt.shiftwidth = 2 -- Shift 2 spaces when tab
 vim.opt.tabstop = 2 -- 1 tab == 2 spaces
+vim.opt.softtabstop = 2 -- 1 tab == 2 spaces
 vim.opt.smartindent = true -- Autoindent new lines
 vim.opt.autoindent = true -- Copy indent from current line when starting new one
+vim.opt.wrap = false -- Don't wrap lines
 
 -- Files
 vim.opt.backup = false -- No backup file
@@ -92,3 +99,5 @@ vim.g.markdown_recommended_style = 2
 
 -- backspace
 vim.opt.backspace = "indent,eol,start"
+
+
