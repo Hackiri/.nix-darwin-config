@@ -187,9 +187,6 @@
       shellAliases = {};
     };
 
-    programs.direnv = {
-      enable = true;
-      nix-direnv.enable = true;
-    };
+    # Direnv configuration moved to modules/home-manager/cli/direnv.nix
   };
 }
