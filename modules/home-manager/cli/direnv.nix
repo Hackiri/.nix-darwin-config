@@ -6,7 +6,7 @@
 
     config = {
       # Configuration for direnv.toml
-      warn_timeout = 5; # Warn if direnv takes more than 5 seconds to load
+      warn_timeout = "5s"; # Warn if direnv takes more than 5 seconds to load
       strict_env = true; # More secure environment handling
       load_dotenv = true; # Load .env files automatically
     };
