@@ -11,16 +11,11 @@
     ./cli
     ./devshell
     ./emacs
-    ./lazygit
-    ./yazi
-    ./fzf
-    ./btop
     ./tmux
     ./terminal
     ./starship
     ./neovim
     ./fonts
     ./session
-    ./git
   ];
 }
