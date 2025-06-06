@@ -23,8 +23,7 @@ in {
   home.packages = with pkgs; [
     git
     zsh
-    nix-direnv
-    direnv
+    # nix-direnv and direnv are now managed by programs.direnv in modules/home-manager/cli/direnv.nix
     customPkgs.dev-tools
     nixd
     kubectl
