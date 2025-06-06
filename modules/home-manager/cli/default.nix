@@ -34,17 +34,25 @@
   ];
 in {
   imports = [
-    ./zoxide
-    #./zellij
+    # Directory imports (for more complex configurations)
     ./bat
+    ./btop
+    ./fzf
     ./gh
-    ./eza.nix
+    ./git
+    ./lazygit
+    ./yazi
+    ./zellij
+    ./zoxide
+
+    # Simple .nix file imports
     ./direnv.nix
-    ./ripgrep.nix
+    ./eza.nix
     ./fd.nix
-    ./jq.nix
-    ./ssh.nix
     ./gpg.nix
+    ./jq.nix
+    ./ripgrep.nix
+    ./ssh.nix
     # Add more CLI tool modules here
   ];
   options.cliPackages = cliPackages;
