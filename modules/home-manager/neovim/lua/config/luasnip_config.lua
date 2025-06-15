@@ -9,6 +9,9 @@ luasnip.setup({
   update_events = "TextChanged,TextChangedI",
   enable_autosnippets = true,
   store_selection_keys = "<Tab>",
+  -- Enable jsregexp for variable/placeholder transformations
+  region_check_events = "InsertEnter",
+  delete_check_events = "TextChanged",
 })
 
 -- Load friendly-snippets

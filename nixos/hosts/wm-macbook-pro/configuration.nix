@@ -23,6 +23,10 @@
       mkalias
       pam-reattach
       cachix
+      (python312.withPackages(ps: with ps; [
+        debugpy
+        pip
+      ]))
     ];
 
     shells = [pkgs.zsh];
@@ -194,6 +198,7 @@
       "ffmpeg"
       "podman-compose"
       "podman"
+      "coreutils"
     ];
     casks = [
       "podman-desktop"

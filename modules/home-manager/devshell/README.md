@@ -20,24 +20,28 @@ The DevShell environment provides a declarative, version-controlled development 
 ### Programming Languages
 
 #### Python Development
+
 - Python 3 with pip and pipx integration
 - Virtual environment management
 - Package management tools
 - Development utilities and linters
 
 #### Rust Development
+
 - Rustup toolchain management
 - Latest stable compiler and tools
 - Cargo package ecosystem
 - Cross-compilation support
 
 #### Go Development
+
 - Go toolchain and compiler
 - Standard library and tools
 - Build and test utilities
 - Cross-platform support
 
 #### Node.js Development
+
 - Node.js runtime with npm
 - Package management tools
 - Build and development utilities
@@ -46,6 +50,7 @@ The DevShell environment provides a declarative, version-controlled development 
 ### Development Tools
 
 #### Version Control
+
 ```bash
 # Core Git functionality
 git          # Version control
@@ -58,6 +63,7 @@ pre-commit   # Git hooks framework
 ```
 
 #### Code Quality Tools
+
 ```bash
 # Formatters and Linters
 alejandra    # Nix formatter
@@ -67,6 +73,7 @@ ruff         # Python linter
 ```
 
 #### Shell Environment
+
 ```bash
 # Core Tools
 zsh          # Modern shell
@@ -82,6 +89,7 @@ direnv       # Env management
 ```
 
 #### Build System
+
 ```bash
 # Core Build Tools
 make         # Build automation
@@ -97,6 +105,7 @@ libtool      # Library tools
 ```
 
 #### Productivity Tools
+
 ```bash
 # Search and Navigation
 ripgrep      # Fast search
@@ -109,10 +118,11 @@ yq           # YAML processor
 ```
 
 #### Debugging Tools
+
 ```bash
 # Core Debuggers
 gdb          # GNU Debugger
-lldb         # LLVM Debugger
+lldb_17         # LLVM Debugger
 
 # Process Management
 htop         # Process viewer
@@ -121,12 +131,15 @@ htop         # Process viewer
 ## Installation
 
 ### Prerequisites
+
 - Nix package manager
 - Home Manager
 - Git
 
 ### Basic Setup
+
 Add to your Home Manager configuration:
+
 ```nix
 {
   programs.devshell = {
@@ -145,6 +158,7 @@ Add to your Home Manager configuration:
 ## Usage
 
 ### Entering the Environment
+
 ```bash
 # Enter development shell
 nix develop
@@ -154,6 +168,7 @@ nix develop --arg features '{ python = true; }'
 ```
 
 ### Pre-commit Hooks
+
 ```bash
 # Install hooks
 pre-commit install
@@ -165,6 +180,7 @@ pre-commit run --all-files
 ## Configuration
 
 ### Directory Structure
+
 ```
 devshell/
 ├── default.nix    # Main configuration
@@ -172,7 +188,9 @@ devshell/
 ```
 
 ### Customization
+
 Modify `default.nix` to:
+
 - Enable/disable features
 - Add custom packages
 - Configure tool settings
@@ -181,6 +199,7 @@ Modify `default.nix` to:
 ## Maintenance
 
 ### Updates
+
 ```bash
 # Update all tools
 nix flake update
@@ -190,6 +209,7 @@ nix flake lock --update-input nixpkgs
 ```
 
 ### Monitoring
+
 - Check tool versions regularly
 - Monitor disk usage
 - Review dependency updates

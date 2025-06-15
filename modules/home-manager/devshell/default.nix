@@ -55,7 +55,6 @@
         cargo-audit
         cargo-expand
         cargo-tarpaulin
-        lldb
 
         # JavaScript/TypeScript development
         pnpm
@@ -72,6 +71,7 @@
         python3Packages.pylint
         python3Packages.markdown
         python3Packages.tabulate
+        python3Packages.pynvim
         uv
         lazygit
         difftastic
@@ -89,7 +89,7 @@
 
         # Debugging and analysis
         gdb
-        lldb
+        lldb_17
 
         # Additional CLI tools
         curl
@@ -159,8 +159,13 @@
           [ -f "$HOME/.nix-profile/etc/profile.d/nix.sh" ] && source "$HOME/.nix-profile/etc/profile.d/nix.sh"
 
           # Set environment variables
-          export PYTHONPATH="$HOME/.local/lib/python3.12/site-packages:$PYTHONPATH"
+          export PYTHONPATH="$HOME/.local/lib/python3.12/site-packages:/etc/profiles/per-user/wm/lib/python3.12/site-packages:$PYTHONPATH"
           export VENV_DIR="$HOME/.local/lib/python3.12/site-packages"
+          
+          # Ensure pip is properly linked
+          if [ -f "/etc/profiles/per-user/wm/bin/pip3" ]; then
+            ln -sf /etc/profiles/per-user/wm/bin/pip3 /etc/profiles/per-user/wm/bin/pip 2>/dev/null || true
+          fi
           export GOPATH="$HOME/go"
           export PATH="$GOPATH/bin:$PATH"
           export NODE_PATH="$HOME/.npm-packages/lib/node_modules"

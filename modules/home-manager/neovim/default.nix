@@ -20,6 +20,9 @@
       # LSP servers
       python3Packages.python-lsp-server
       python3Packages.pynvim
+      python3Packages.pip
+      python3Packages.tiktoken # Add this for CopilotChat token counting
+      python312Packages.pylatexenc
       rust-analyzer
       lua-language-server
       luaformatter
@@ -42,6 +45,8 @@
       lua51Packages.luv
       lua51Packages.lpeg
       lua51Packages.mpack
+      luajitPackages.tiktoken_core
+      luajitPackages.jsregexp
       # Additional language servers
       clang-tools
       marksman
@@ -54,12 +59,19 @@
       statix
       alejandra
 
+      # Debugging tools
+      # Node.js debugging - using vscode-js-debug instead
+      delve # Go debugging
+
+      # Image and document rendering tools
+      imagemagick # Provides magick/convert for image conversion
+      ghostscript # Provides gs for PDF rendering
+      tectonic # LaTeX rendering
+      mermaid-cli # Provides mmdc for Mermaid diagrams
+      pngpaste # For img-clip.nvim clipboard image pasting
+
       # Plugins
       lynx
-      luajitPackages.tiktoken_core
-      pkgs.vimPlugins.luasnip # LuaSnip includes jsregexp functionality
-      python3Packages.tiktoken # Add this for CopilotChat token counting
-      python312Packages.pylatexenc
       wordnet # Add this for blink-cmp-dictionary word definitions
     ];
 
@@ -68,8 +80,12 @@
       vim.g.mapleader = " "
       vim.g.maplocalleader = " "
 
-      -- Set up Python path for hererocks
-      vim.g.python3_host_prog = "${pkgs.python3}/bin/python3"
+      -- Use system Python
+      -- vim.g.python3_host_prog is not set, so Neovim will find Python in PATH
+
+      -- Capture neovim_mode from environment variable
+      vim.g.neovim_mode = vim.env.NEOVIM_MODE or "default"
+      vim.g.md_heading_bg = vim.env.MD_HEADING_BG
 
       -- Load lazy.nvim configuration
       require("config.lazy")

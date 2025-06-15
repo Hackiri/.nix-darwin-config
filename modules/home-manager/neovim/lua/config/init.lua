@@ -7,6 +7,7 @@ require("config.lazy")
 require("config.options")
 require("config.keymaps")
 require("config.autocmds")
+require("config.colors")
 -- require("config.session")
 
 -- Load LuaSnip first
@@ -15,7 +16,8 @@ if status_ok then
   require("config.luasnip_config")
 end
 
-require("config.highlights") -- Load custom highlights
+-- Load custom highlights
+require("config.highlights")
 
 -- Load folding (with error handling)
 vim.schedule(function()

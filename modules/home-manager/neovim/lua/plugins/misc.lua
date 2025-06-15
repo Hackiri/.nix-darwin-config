@@ -23,6 +23,14 @@ return {
     config = true,
     opts = {},
   },
+  	{
+		'mireq/luasnip-snippets',
+		dependencies = {'L3MON4D3/LuaSnip'},
+		init = function()
+			-- Mandatory setup function
+			require('luasnip_snippets.common.snip_utils').setup()
+		end
+	},
   {
     -- Highlight todo, notes, etc in comments
     "folke/todo-comments.nvim",

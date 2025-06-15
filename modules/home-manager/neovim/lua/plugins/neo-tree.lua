@@ -88,6 +88,16 @@ return {
       end
     end
 
+    -- Monkey patch the toggle_node function to handle nil tree cases
+    local commands = require("neo-tree.sources.common.commands")
+    local original_toggle_node = commands.toggle_node
+    commands.toggle_node = function(state)
+      if not state or not state.tree then
+        return
+      end
+      return original_toggle_node(state)
+    end
+    
     neotree.setup({
       close_if_last_window = false,
       popup_border_style = "rounded",
@@ -130,6 +140,22 @@ return {
               vim.cmd("wincmd =")
             end
           end,
+        },
+        {
+          event = "file_opened",
+          handler = function()
+            -- Auto close neo-tree after opening a file
+            require("neo-tree.command").execute({ action = "close" })
+          end
+        },
+        {
+          event = "before_render",
+          handler = function(state)
+            -- Ensure window is valid before rendering
+            if state.window and state.window.winnr and not vim.api.nvim_win_is_valid(state.window.winnr) then
+              state.window.winnr = nil
+            end
+          end
         },
       },
       window = {

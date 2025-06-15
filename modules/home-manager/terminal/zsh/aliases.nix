@@ -1,10 +1,10 @@
 {
   # Darwin rebuild commands
-  drynix = "darwin-rebuild dry-build --flake /Users/wm/.nix-darwin-config --show-trace"; # Test build without making changes
-  bootnix = "darwin-rebuild boot --flake /Users/wm/.nix-darwin-config --show-trace"; # Build but don't activate until next boot
-  rbnix = "darwin-rebuild switch --rollback --flake /Users/wm/.nix-darwin-config --show-trace"; # Rollback to previous generation
-  osbuild = "darwin-rebuild build --flake /Users/wm/.nix-darwin-config --show-trace"; # Build only
-  rebuild = "darwin-rebuild switch --flake /Users/wm/.nix-darwin-config --show-trace"; # Build and activate changes
+  drynix = "sudo darwin-rebuild dry-build --flake /Users/wm/.nix-darwin-config --show-trace"; # Test build without making changes
+  bootnix = "sudo darwin-rebuild boot --flake /Users/wm/.nix-darwin-config --show-trace"; # Build but don't activate until next boot
+  rbnix = "sudo darwin-rebuild switch --rollback --flake /Users/wm/.nix-darwin-config --show-trace"; # Rollback to previous generation
+  osbuild = "sudo darwin-rebuild build --flake /Users/wm/.nix-darwin-config --show-trace"; # Build only
+  rebuild = "sudo darwin-rebuild switch --flake /Users/wm/.nix-darwin-config --show-trace"; # Build and activate changes
 
   # Nix utilities
   schnix = "nix search nixpkgs"; # Search packages

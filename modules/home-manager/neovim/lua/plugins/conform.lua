@@ -1,5 +1,3 @@
--- Filename: ~/github/dotfiles-latest/neovim/neobean/lua/plugins/conform.lua
--- ~/github/dotfiles-latest/neovim/neobean/lua/plugins/conform.lua
 --
 -- https://github.com/stevearc/conform.nvim
 
