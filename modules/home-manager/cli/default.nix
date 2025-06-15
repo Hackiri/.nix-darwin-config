@@ -10,7 +10,6 @@
     devenv
     pre-commit
     gdb
-    lldb
     viu
     bind
     omnictl
@@ -42,14 +41,13 @@ in {
     ./git
     ./lazygit
     ./yazi
-    ./zellij
+    #./zellij
     ./zoxide
 
     # Simple .nix file imports
     ./direnv.nix
     ./eza.nix
     ./fd.nix
-    ./gpg.nix
     ./jq.nix
     ./ripgrep.nix
     ./ssh.nix

@@ -147,6 +147,9 @@ in {
                 # Initialize direnv
                 eval "$(direnv hook zsh)"
 
+                # Set GPG_TTY for Git commit signing
+                export GPG_TTY=$(tty)
+
                 # FZF configuration
                 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
                 export FZF_DEFAULT_OPTS="--height 50% -1 --layout=reverse --multi"
