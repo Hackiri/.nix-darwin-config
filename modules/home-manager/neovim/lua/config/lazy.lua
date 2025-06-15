@@ -18,6 +18,19 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- Set the python3_host_prog variable
+vim.g.python3_host_prog = vim.fn.expand("~/.venvs/neovim/bin/python")
+
+-- Safe require function to handle missing modules
+local function safe_require(module)
+  local ok, result = pcall(require, module)
+  if not ok then
+    vim.notify("Could not load " .. module, vim.log.levels.WARN)
+    return nil
+  end
+  return result
+end
+
 -- Set up lazy.nvim
 require("lazy").setup({
   defaults = {
@@ -39,9 +52,9 @@ require("lazy").setup({
     { "github/copilot.vim", enabled = true },
     -- Other plugin configurations
     { "nvim-telescope/telescope-fzf-native.nvim", enabled = true },
-    { "williamboman/mason-lspconfig.nvim", enabled = true },
-    { "williamboman/mason.nvim", enabled = true },
     { "nvim-treesitter/nvim-treesitter", opts = { ensure_installed = {} } },
+    -- Ensure eldritch theme is loaded
+    { "eldritch-theme/eldritch.nvim", priority = 1000, lazy = false },
     -- Import user plugins
     { import = "plugins" },
   },
