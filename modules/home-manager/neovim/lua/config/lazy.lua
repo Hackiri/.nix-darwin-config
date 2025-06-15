@@ -53,14 +53,22 @@ require("lazy").setup({
     -- Other plugin configurations
     { "nvim-telescope/telescope-fzf-native.nvim", enabled = true },
     { "nvim-treesitter/nvim-treesitter", opts = { ensure_installed = {} } },
-    -- Ensure eldritch theme is loaded
-    { "eldritch-theme/eldritch.nvim", priority = 1000, lazy = false },
     -- Import user plugins
+    -- import any extras modules here
+    { import = "lazyvim.plugins.extras.lang.typescript" },
+    { import = "lazyvim.plugins.extras.lang.json" },
+    -- { import = "lazyvim.plugins.extras.ui.mini-animate" },
+    -- import/override with your plugins
+    { import = "lazyvim.plugins.extras.lang.tailwind" },
+    { import = "lazyvim.plugins.extras.formatting.prettier" },
     { import = "plugins" },
+    -- Import colorschemes from the colorschemes directory
+    { import = "plugins.colorschemes" },
   },
   install = { colorscheme = {} },
   checker = { enabled = true },
   performance = {
+    enabled = true,
     rtp = {
       disabled_plugins = {
         "gzip",
