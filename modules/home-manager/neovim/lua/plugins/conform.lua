@@ -41,7 +41,7 @@ return {
       -- But none showed as `ready` This fixed that issue and now templ files
       -- are formatted correctly and :ConformInfo shows:
       -- "LSP: html, templ"
-      -- "templ ready (templ) /Users/wm/.local/share/neobean/mason/bin/templ"
+      -- "templ ready (templ) /Users/wm/.local/share/nvim/mason/bin/templ"
       templ = { "templ" },
       -- Not sure why I couldn't make ruff work, so I'll use ruff_format instead
       -- it didn't work even if I added the pyproject.toml in the project or

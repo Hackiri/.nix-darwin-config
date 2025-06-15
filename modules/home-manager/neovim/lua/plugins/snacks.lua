@@ -1,6 +1,3 @@
--- Filename: ~/github/dotfiles-latest/neovim/neobean/lua/plugins/snacks.lua
--- ~/github/dotfiles-latest/neovim/neobean/lua/plugins/snacks.lua
-
 -- https://github.com/folke/snacks.nvim/blob/main/docs/lazygit.md
 -- https://github.com/folke/snacks.nvim/blob/main/docs/picker.md
 -- https://github.com/folke/snacks.nvim/blob/main/docs/image.md
@@ -175,8 +172,8 @@ return {
           if item.file:match("lazyvim/lua/config/keymaps%.lua") then
             item.score_add = (item.score_add or 0) - 30
           end
-          -- Boost the "neobean" keymaps file:
-          -- if item.file:match("neobean/lua/config/keymaps%.lua") then
+          -- Boost the "neovim" keymaps file:
+          -- if item.file:match("neovim/lua/config/keymaps%.lua") then
           --   item.score_add = (item.score_add or 0) + 100
           -- end
           return item
@@ -327,7 +324,7 @@ return {
           -- Where are the cached images stored?
           -- This path is found in the docs
           -- :lua print(vim.fn.stdpath("cache") .. "/snacks/image")
-          -- For me returns `~/.cache/neobean/snacks/image`
+          -- For me returns `~/.cache/neovim/snacks/image`
           -- Go 1 dir above and check `sudo du -sh ./* | sort -hr | head -n 5`
         },
       },

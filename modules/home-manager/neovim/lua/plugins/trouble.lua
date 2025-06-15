@@ -1,6 +1,3 @@
--- Filename: ~/github/dotfiles-latest/neovim/neobean/lua/plugins/trouble.lua
--- ~/github/dotfiles-latest/neovim/neobean/lua/plugins/trouble.lua
-
 return {
   "folke/trouble.nvim",
   opts = {

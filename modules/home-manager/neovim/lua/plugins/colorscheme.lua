@@ -1,17 +1,15 @@
--- I manually created this file
 return {
+  -- Configure LazyVim to load the colorscheme
   {
     "LazyVim/LazyVim",
     opts = {
+      colorscheme = "catppuccin",
       -- catppuccin catppuccin-latte, catppuccin-frappe, catppuccin-macchiato, catppuccin-mocha
-      -- colorscheme = "catppuccin",
-      -- colorscheme = "eldritch",
-      -- colorscheme = "catppuccin-frappe",
       -- colorscheme = "Duskfox",
       -- colorscheme = "Nightfox",
       -- colorscheme = "Carbonfox",
+      -- colorscheme = "eldritch",
       -- colorscheme = "gruvbox",
-      colorscheme = "tokyonight",
     },
   },
 }

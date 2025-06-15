@@ -1,5 +1,3 @@
--- Filename: ~/github/dotfiles-latest/neovim/neobean/lua/plugins/snipe.lua
--- ~/github/dotfiles-latest/neovim/neobean/lua/plugins/snipe.lua
 --
 -- https://github.com/leath-dub/snipe.nvim
 return {

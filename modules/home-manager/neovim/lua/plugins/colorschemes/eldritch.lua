@@ -1,7 +1,5 @@
 -- https://github.com/eldritch-theme/eldritch.nvim
 --
--- Filename: ~/github/dotfiles-latest/neovim/neobean/lua/plugins/colorschemes/eldritch.lua
--- ~/github/dotfiles-latest/neovim/neobean/lua/plugins/colorschemes/eldritch.lua
 
 -- Require the colors.lua module and access the colors directly without
 -- additional file reads
