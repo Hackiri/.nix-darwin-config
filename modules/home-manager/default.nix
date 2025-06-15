@@ -15,6 +15,7 @@
     ./terminal
     ./starship
     ./neovim
+    ./neovide
     ./fonts
     ./session
   ];

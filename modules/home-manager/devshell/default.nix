@@ -27,6 +27,7 @@
         htop
         git
         git-lfs
+        git-delta
         direnv
         nix-direnv
         zoxide

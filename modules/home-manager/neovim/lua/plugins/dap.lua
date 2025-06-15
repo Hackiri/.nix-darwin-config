@@ -201,29 +201,67 @@ return {
         })
       end
 
-      -- Set up js-debug-adapter manually with correct path
-      local mason_registry = require("mason-registry")
-      if mason_registry.is_installed("js-debug-adapter") then
-        local js_debug_path = mason_registry.get_package("js-debug-adapter"):get_install_path()
-
-        -- Check if the js-debug directory exists
-        local js_debug_dir = js_debug_path .. "/js-debug"
-        if vim.fn.isdirectory(js_debug_dir) == 0 then
-          -- Try alternative path structure
-          js_debug_dir = js_debug_path
-        end
-
-        -- Check if the debug server file exists
-        local debug_server_path = js_debug_dir .. "/src/dapDebugServer.js"
-        if vim.fn.filereadable(debug_server_path) == 0 then
+      -- Set up js-debug-adapter with multiple path finding strategies
+      local function find_js_debug()
+        -- Strategy 1: Check if installed via Mason
+        local mason_registry = require("mason-registry")
+        if mason_registry.is_installed("js-debug-adapter") then
+          local js_debug_path = mason_registry.get_package("js-debug-adapter"):get_install_path()
+          
+          -- Check common paths within the Mason installation
+          local possible_paths = {
+            js_debug_path .. "/js-debug/src/dapDebugServer.js",
+            js_debug_path .. "/src/dapDebugServer.js",
+            js_debug_path .. "/out/src/dapDebugServer.js",
+          }
+          
+          for _, path in ipairs(possible_paths) do
+            if vim.fn.filereadable(path) == 1 then
+              return path
+            end
+          end
+          
           -- Try to find the file in the installation directory
           local found_files = vim.fn.glob(js_debug_path .. "/**/dapDebugServer.js", true, true)
           if #found_files > 0 then
-            debug_server_path = found_files[1]
+            return found_files[1]
           end
         end
-
-        -- Set up the adapter with the correct path
+        
+        -- Strategy 2: Check if installed via Nix
+        local nix_paths = {
+          "/run/current-system/sw/lib/vscode-js-debug/js-debug/src/dapDebugServer.js",
+          "/run/current-system/sw/share/vscode-js-debug/js-debug/src/dapDebugServer.js",
+          "/nix/store/*-vscode-js-debug/lib/vscode-js-debug/js-debug/src/dapDebugServer.js",
+        }
+        
+        for _, pattern in ipairs(nix_paths) do
+          local found_files = vim.fn.glob(pattern, true, true)
+          if #found_files > 0 then
+            return found_files[1]
+          end
+        end
+        
+        -- Strategy 3: Try to find it in the PATH
+        local handle = io.popen("find /nix/store -path '*/vscode-js-debug/*' -name 'dapDebugServer.js' 2>/dev/null | head -n 1")
+        if handle then
+          local result = handle:read("*a")
+          handle:close()
+          if result and result ~= "" then
+            return result:gsub("%s+$", "") -- Trim whitespace
+          end
+        end
+        
+        -- Not found
+        return nil
+      end
+      
+      -- Find the debug server path
+      local debug_server_path = find_js_debug()
+      
+      -- Set up the adapter with the found path
+      if debug_server_path then
+        vim.notify("Found js-debug-adapter at: " .. debug_server_path, vim.log.levels.INFO)
         dap.adapters["pwa-node"] = {
           type = "server",
           host = "localhost",
@@ -233,6 +271,8 @@ return {
             args = { debug_server_path, "${port}" },
           },
         }
+      else
+        vim.notify("Could not find js-debug-adapter. JavaScript debugging will not work.", vim.log.levels.WARN)
       end
 
       -- Configure JavaScript/TypeScript debugging

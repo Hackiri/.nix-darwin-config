@@ -46,7 +46,6 @@
       lua51Packages.lpeg
       lua51Packages.mpack
       luajitPackages.tiktoken_core
-      luajitPackages.jsregexp
       # Additional language servers
       clang-tools
       marksman
@@ -58,6 +57,7 @@
       shellcheck
       statix
       alejandra
+      vscode-js-debug
 
       # Debugging tools
       # Node.js debugging - using vscode-js-debug instead

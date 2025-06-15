@@ -16,6 +16,8 @@ return {
         "json-lsp",
         "eslint-lsp",
         "prettier",
+        "templ",
+        "ruff-lsp",
         "tailwindcss-language-server",
         "yaml-language-server",
         "bash-language-server",
