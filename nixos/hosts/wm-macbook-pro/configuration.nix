@@ -215,6 +215,7 @@
       "raycast"
       "visual-studio-code"
       "ghostty"
+      "neovide"
     ];
     masApps = {};
     onActivation = {
