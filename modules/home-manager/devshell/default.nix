@@ -161,7 +161,7 @@
           # Set environment variables
           export PYTHONPATH="$HOME/.local/lib/python3.12/site-packages:/etc/profiles/per-user/wm/lib/python3.12/site-packages:$PYTHONPATH"
           export VENV_DIR="$HOME/.local/lib/python3.12/site-packages"
-          
+
           # Ensure pip is properly linked
           if [ -f "/etc/profiles/per-user/wm/bin/pip3" ]; then
             ln -sf /etc/profiles/per-user/wm/bin/pip3 /etc/profiles/per-user/wm/bin/pip 2>/dev/null || true

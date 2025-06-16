@@ -23,10 +23,11 @@
       mkalias
       pam-reattach
       cachix
-      (python312.withPackages(ps: with ps; [
-        debugpy
-        pip
-      ]))
+      (python312.withPackages (ps:
+        with ps; [
+          debugpy
+          pip
+        ]))
     ];
 
     shells = [pkgs.zsh];

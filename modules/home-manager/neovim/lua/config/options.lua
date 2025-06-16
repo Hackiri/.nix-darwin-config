@@ -99,5 +99,3 @@ vim.g.markdown_recommended_style = 2
 
 -- backspace
 vim.opt.backspace = "indent,eol,start"
-
-

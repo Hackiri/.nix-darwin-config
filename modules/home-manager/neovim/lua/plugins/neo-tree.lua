@@ -97,7 +97,7 @@ return {
       end
       return original_toggle_node(state)
     end
-    
+
     neotree.setup({
       close_if_last_window = false,
       popup_border_style = "rounded",
@@ -146,7 +146,7 @@ return {
           handler = function()
             -- Auto close neo-tree after opening a file
             require("neo-tree.command").execute({ action = "close" })
-          end
+          end,
         },
         {
           event = "before_render",
@@ -155,7 +155,7 @@ return {
             if state.window and state.window.winnr and not vim.api.nvim_win_is_valid(state.window.winnr) then
               state.window.winnr = nil
             end
-          end
+          end,
         },
       },
       window = {

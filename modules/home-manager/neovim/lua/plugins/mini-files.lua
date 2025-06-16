@@ -101,7 +101,7 @@ return {
 
     -- Set up enhanced Git status indicators (from mini-files-git.lua)
     local nsMiniFiles = vim.api.nvim_create_namespace("mini_files_git")
-    
+
     -- Cache for git status
     local gitStatusCache = {}
     local cacheTimeout = 2000 -- Cache timeout in milliseconds
@@ -117,15 +117,15 @@ return {
         [" M"] = { symbol = "✹", hlGroup = "MiniDiffSignChange" }, -- Modified in working directory
         ["M "] = { symbol = "•", hlGroup = "MiniDiffSignChange" }, -- Modified in index
         ["MM"] = { symbol = "≠", hlGroup = "MiniDiffSignChange" }, -- Modified in both
-        ["A "] = { symbol = "+", hlGroup = "MiniDiffSignAdd" },    -- Added to staging
-        ["AA"] = { symbol = "≈", hlGroup = "MiniDiffSignAdd" },    -- Added in both
+        ["A "] = { symbol = "+", hlGroup = "MiniDiffSignAdd" }, -- Added to staging
+        ["AA"] = { symbol = "≈", hlGroup = "MiniDiffSignAdd" }, -- Added in both
         ["D "] = { symbol = "-", hlGroup = "MiniDiffSignDelete" }, -- Deleted from staging
         ["AM"] = { symbol = "⊕", hlGroup = "MiniDiffSignChange" }, -- Added in working tree, modified in index
-        ["AD"] = { symbol = "-•", hlGroup = "MiniDiffSignChange"}, -- Added in index, deleted in working dir
+        ["AD"] = { symbol = "-•", hlGroup = "MiniDiffSignChange" }, -- Added in index, deleted in working dir
         ["R "] = { symbol = "→", hlGroup = "MiniDiffSignChange" }, -- Renamed in index
         ["U "] = { symbol = "‖", hlGroup = "MiniDiffSignChange" }, -- Unmerged path
-        ["UU"] = { symbol = "⇄", hlGroup = "MiniDiffSignAdd" },    -- Unmerged
-        ["UA"] = { symbol = "⊕", hlGroup = "MiniDiffSignAdd" },    -- Unmerged, added in working tree
+        ["UU"] = { symbol = "⇄", hlGroup = "MiniDiffSignAdd" }, -- Unmerged
+        ["UA"] = { symbol = "⊕", hlGroup = "MiniDiffSignAdd" }, -- Unmerged, added in working tree
         ["??"] = { symbol = "?", hlGroup = "MiniDiffSignDelete" }, -- Untracked
         ["!!"] = { symbol = "!", hlGroup = "MiniDiffSignChange" }, -- Ignored
       }
@@ -323,10 +323,10 @@ return {
               vim.notify("Failed to retrieve current entry in mini.files.", vim.log.levels.ERROR)
               return
             end
-            
+
             local curr_dir = curr_entry.fs_type == "directory" and curr_entry.path
               or vim.fn.fnamemodify(curr_entry.path, ":h")
-              
+
             local script = [[
               tell application "System Events"
                 try
@@ -338,29 +338,29 @@ return {
                 end try
               end tell
             ]]
-            
+
             local output = vim.fn.system("osascript -e " .. vim.fn.shellescape(script))
             if vim.v.shell_error ~= 0 or output:find("error") then
               vim.notify("Clipboard does not contain a valid file or directory.", vim.log.levels.WARN)
               return
             end
-            
+
             local source_path = output:gsub("%s+$", "")
             if source_path == "" then
               vim.notify("Clipboard is empty or invalid.", vim.log.levels.WARN)
               return
             end
-            
+
             local dest_path = curr_dir .. "/" .. vim.fn.fnamemodify(source_path, ":t")
             local copy_cmd = vim.fn.isdirectory(source_path) == 1 and { "cp", "-R", source_path, dest_path }
               or { "cp", source_path, dest_path }
-              
+
             local result = vim.fn.system(copy_cmd)
             if vim.v.shell_error ~= 0 then
               vim.notify("Paste operation failed: " .. result, vim.log.levels.ERROR)
               return
             end
-            
+
             mini_files.synchronize()
             vim.notify("Pasted successfully.", vim.log.levels.INFO)
           end, { buffer = buf_id, noremap = true, silent = true, desc = "Paste from clipboard" })

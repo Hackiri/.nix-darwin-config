@@ -207,43 +207,44 @@ return {
         local mason_registry = require("mason-registry")
         if mason_registry.is_installed("js-debug-adapter") then
           local js_debug_path = mason_registry.get_package("js-debug-adapter"):get_install_path()
-          
+
           -- Check common paths within the Mason installation
           local possible_paths = {
             js_debug_path .. "/js-debug/src/dapDebugServer.js",
             js_debug_path .. "/src/dapDebugServer.js",
             js_debug_path .. "/out/src/dapDebugServer.js",
           }
-          
+
           for _, path in ipairs(possible_paths) do
             if vim.fn.filereadable(path) == 1 then
               return path
             end
           end
-          
+
           -- Try to find the file in the installation directory
           local found_files = vim.fn.glob(js_debug_path .. "/**/dapDebugServer.js", true, true)
           if #found_files > 0 then
             return found_files[1]
           end
         end
-        
+
         -- Strategy 2: Check if installed via Nix
         local nix_paths = {
           "/run/current-system/sw/lib/vscode-js-debug/js-debug/src/dapDebugServer.js",
           "/run/current-system/sw/share/vscode-js-debug/js-debug/src/dapDebugServer.js",
           "/nix/store/*-vscode-js-debug/lib/vscode-js-debug/js-debug/src/dapDebugServer.js",
         }
-        
+
         for _, pattern in ipairs(nix_paths) do
           local found_files = vim.fn.glob(pattern, true, true)
           if #found_files > 0 then
             return found_files[1]
           end
         end
-        
+
         -- Strategy 3: Try to find it in the PATH
-        local handle = io.popen("find /nix/store -path '*/vscode-js-debug/*' -name 'dapDebugServer.js' 2>/dev/null | head -n 1")
+        local handle =
+          io.popen("find /nix/store -path '*/vscode-js-debug/*' -name 'dapDebugServer.js' 2>/dev/null | head -n 1")
         if handle then
           local result = handle:read("*a")
           handle:close()
@@ -251,14 +252,14 @@ return {
             return result:gsub("%s+$", "") -- Trim whitespace
           end
         end
-        
+
         -- Not found
         return nil
       end
-      
+
       -- Find the debug server path
       local debug_server_path = find_js_debug()
-      
+
       -- Set up the adapter with the found path
       if debug_server_path then
         vim.notify("Found js-debug-adapter at: " .. debug_server_path, vim.log.levels.INFO)

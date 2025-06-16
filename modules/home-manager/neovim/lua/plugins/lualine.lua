@@ -66,19 +66,19 @@ return {
 
     -- Cache system for better performance
     local cache = {
-    branch = "",
-    branch_color = nil,
-    commit_hash = "",
-    file_permissions = { perms = "", color = nil },
+      branch = "",
+      branch_color = nil,
+      commit_hash = "",
+      file_permissions = { perms = "", color = nil },
     }
-    
+
     -- Helper function to get color with proper naming convention
     local function getColor(name)
-    -- Convert color03 format to color3 format if needed
-    if type(name) == "string" and name:match("^color0%d$") then
-    name = "color" .. tonumber(name:sub(-1))
-    end
-    return colors[name] or colors.foreground
+      -- Convert color03 format to color3 format if needed
+      if type(name) == "string" and name:match("^color0%d$") then
+        name = "color" .. tonumber(name:sub(-1))
+      end
+      return colors[name] or colors.foreground
     end
 
     -- Set up autocmds for cache updates
@@ -92,7 +92,7 @@ return {
         else
           cache.branch_color = (cache.branch == "live") and { fg = getColor("color11"), gui = "bold" } or nil
         end
-        
+
         -- Update commit hash only for dotfiles-latest repo
         local git_dir = vim.fn.system("git rev-parse --git-dir 2>/dev/null"):gsub("\n", "")
         if git_dir ~= "" and not git_dir:match("fatal") then
@@ -139,7 +139,7 @@ return {
       if file == "" or vim.bo.filetype ~= "sh" then
         return ""
       end
-      
+
       return " " .. cache.file_permissions.perms
     end
 
@@ -148,12 +148,12 @@ return {
       if not vim.wo.spell then
         return ""
       end
-      
+
       local lang_map = {
         en = "EN",
         es = "ES",
       }
-      
+
       return "󰓆 " .. (lang_map[vim.bo.spelllang] or vim.bo.spelllang)
     end
 
@@ -171,7 +171,7 @@ return {
       if cache.branch == "" then
         return ""
       end
-      
+
       return cache.branch .. (cache.commit_hash ~= "" and " " .. cache.commit_hash or "")
     end
 

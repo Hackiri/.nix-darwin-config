@@ -4,13 +4,9 @@
   pkgs,
   ...
 }:
-
-with lib;
-
-let
+with lib; let
   cfg = config.modules.neovide;
-in
-{
+in {
   options.modules.neovide = {
     enable = mkEnableOption "neovide";
 
@@ -116,21 +112,57 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ cfg.package ];
+    home.packages = [cfg.package];
 
     xdg.configFile."neovide/config.toml" = {
       source = pkgs.writeText "neovide-config.toml" ''
-        fork = ${if cfg.settings.fork then "true" else "false"}
+        fork = ${
+          if cfg.settings.fork
+          then "true"
+          else "false"
+        }
         frame = "${cfg.settings.frame}"
-        idle = ${if cfg.settings.idle then "true" else "false"}
-        maximized = ${if cfg.settings.maximized then "true" else "false"}
-        no-multigrid = ${if cfg.settings.noMultigrid then "true" else "false"}
-        srgb = ${if cfg.settings.srgb then "true" else "false"}
-        tabs = ${if cfg.settings.tabs then "true" else "false"}
+        idle = ${
+          if cfg.settings.idle
+          then "true"
+          else "false"
+        }
+        maximized = ${
+          if cfg.settings.maximized
+          then "true"
+          else "false"
+        }
+        no-multigrid = ${
+          if cfg.settings.noMultigrid
+          then "true"
+          else "false"
+        }
+        srgb = ${
+          if cfg.settings.srgb
+          then "true"
+          else "false"
+        }
+        tabs = ${
+          if cfg.settings.tabs
+          then "true"
+          else "false"
+        }
         theme = "${cfg.settings.theme}"
-        title-hidden = ${if cfg.settings.titleHidden then "true" else "false"}
-        vsync = ${if cfg.settings.vsync then "true" else "false"}
-        wsl = ${if cfg.settings.wsl then "true" else "false"}
+        title-hidden = ${
+          if cfg.settings.titleHidden
+          then "true"
+          else "false"
+        }
+        vsync = ${
+          if cfg.settings.vsync
+          then "true"
+          else "false"
+        }
+        wsl = ${
+          if cfg.settings.wsl
+          then "true"
+          else "false"
+        }
 
         [font]
         normal = ${builtins.toJSON cfg.settings.font.normal}
